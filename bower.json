@@ -1,0 +1,22 @@
+{
+  "name": "client",
+  "homepage": "https://github.com/alvinlao/ape-escape",
+  "authors": [
+    "Alvin Lao <alvin.lao.is@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser": "~2.4.4"
+  }
+}

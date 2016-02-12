@@ -1,0 +1,26 @@
+{
+  "name": "ape-escape",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "watchify client/js/*.js -o client/bundle.js -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvinlao/ape-escape.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alvinlao/ape-escape/issues"
+  },
+  "homepage": "https://github.com/alvinlao/ape-escape#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-bower-concat": "^0.6.0",
+    "gulp": "^3.9.1",
+    "gulp-bower": "0.0.13"
+  }
+}
