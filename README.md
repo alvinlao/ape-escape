@@ -2,13 +2,14 @@
 
 # Setup
 
-1. Install gulp `npm install -g gulp`
-2. Install bower `npm install -g bower`
-3. Run `gulp build`
+1. Install dependencies `npm install`
+2. Install gulp `npm install -g gulp`
+3. Install bower `npm install -g bower`
+4. Run `gulp build`
 
 # Development
 
 1. Run `gulp watch`
-2. Run an http server in `/public`
+2. Run a http server in `/public`
 
     For example: `python -m http.server`
