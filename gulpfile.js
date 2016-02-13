@@ -49,12 +49,12 @@ gulp.task('watch-js', function() {
 
 // Copy assets
 gulp.task('assets', function() {
-  return gulp.src('client/assets/*')
+  return gulp.src('client/assets/**/*')
     .pipe(gulp.dest(config.outputDir + '/assets'));
 });
 
 gulp.task('watch-assets', function() {
-  gulp.watch('client/assets/*', ['assets']);
+  gulp.watch('client/assets/**/*', ['assets']);
 });
 
 gulp.task('clean', function() {

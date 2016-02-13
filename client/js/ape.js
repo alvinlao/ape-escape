@@ -16,7 +16,6 @@ class Ape extends Phaser.Sprite {
     game.physics.enable(this, Phaser.Physics.ARCADE);
 
     this.body.collideWorldBounds = true;
-    //this.body.setSize(width, height, offsetX, offsetY);
   }
 
   moveLeft() {
