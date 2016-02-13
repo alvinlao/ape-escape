@@ -3,6 +3,7 @@ var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var bower = require('gulp-bower');
 var mainBowerFiles = require('main-bower-files');
+var webpack = require('webpack-stream');
 
 var config = {
   bowerDir: './bower_components',
@@ -31,9 +32,14 @@ gulp.task('bower-files', function() {
     .pipe(gulp.dest(config.outputDir + '/lib'));
 });
 
+gulp.task('watch-bower-files', function() {
+  gulp.watch(mainBowerFiles(), ['bower-files']);
+});
+
 // Copy js files
 gulp.task('js', function() {
-  return gulp.src('client/js/*')
+  return gulp.src('client/js/main.js')
+    .pipe(webpack(require('./webpack.config.js')))
     .pipe(gulp.dest(config.outputDir + '/js'));
 });
 
@@ -56,6 +62,6 @@ gulp.task('clean', function() {
     .pipe(clean());
 });
 
-gulp.task('build', ['clean', 'html', 'bower-files', 'assets']);
-gulp.task('watch', ['watch-html', 'watch-js', 'watch-assets']);
+gulp.task('build', ['clean', 'html', 'bower-files', 'js', 'assets']);
+gulp.task('watch', ['watch-bower-files', 'watch-html', 'watch-js', 'watch-assets']);
 gulp.task('default', ['bower', 'clean']);

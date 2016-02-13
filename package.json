@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/alvinlao/ape-escape#readme",
   "devDependencies": {
+    "babel-core": "^6.5.2",
+    "babel-loader": "^6.2.2",
+    "babel-preset-es2015": "^6.5.0",
     "grunt": "^0.4.5",
     "grunt-bower-concat": "^0.6.0",
     "gulp": "^3.9.1",
@@ -25,6 +28,8 @@
     "gulp-bower-files": "^0.2.7",
     "gulp-clean": "^0.3.1",
     "gulp-rename": "^1.2.2",
-    "main-bower-files": "^2.11.1"
+    "main-bower-files": "^2.11.1",
+    "webpack": "^1.12.13",
+    "webpack-stream": "^3.1.0"
   }
 }
