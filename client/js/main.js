@@ -31,47 +31,18 @@ function create() {
   // Input
   cursors = game.input.keyboard.createCursorKeys();
 
-  // Entities
-  ape = new Ape(game, 100, 0);
-
   // Map
   map = new Map(game, 'test', 'tilesheet');
+
+  // Entities
+  ape = new Ape(game, 100, 0, "firefly");
 
   game.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
   game.camera.follow(ape);
 }
 
-var leftDownTime, rightDownTime;
 function update() {
   game.physics.arcade.collide(ape, map.createdLayers['main']);
 
-  if (!cursors.left.isDown) {
-    leftDownTime = -1;
-  }
-
-  if (!cursors.right.isDown) {
-    rightDownTime = -1;
-  }
-
-  if (cursors.left.isDown && leftDownTime === -1) {
-    leftDownTime = rightDownTime + 1;
-  }
-
-  if (cursors.right.isDown && rightDownTime === -1) {
-    rightDownTime = leftDownTime + 1;
-  }
-
-  if (leftDownTime != -1 || rightDownTime != -1) {
-    if (leftDownTime > rightDownTime) {
-      ape.moveLeft();
-    } else {
-      ape.moveRight();
-    }
-  } else {
-    ape.stop();
-  }
-
-  if (cursors.up.isDown) {
-    ape.jump();
-  }
+  ape.update(cursors);
 }
