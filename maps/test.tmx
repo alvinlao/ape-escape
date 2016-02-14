@@ -2,6 +2,16 @@
 <map version="1.0" orientation="orthogonal" renderorder="left-down" width="20" height="10" tilewidth="64" tileheight="64" nextobjectid="1">
  <tileset firstgid="1" name="tilesheet" tilewidth="64" tileheight="64" tilecount="20" columns="5">
   <image source="../client/assets/tilesheet.png" width="320" height="256"/>
+  <tile id="15">
+   <properties>
+    <property name="powerup" value="SHIELD"/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="powerup" value="BLINK"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="main" width="20" height="10">
   <properties>
@@ -14,9 +24,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-1,1,1,1,1,1,1,1,1,0,1,1,0,0,1,1,1,1,0,0,
-2,2,2,2,2,2,2,2,2,0,2,2,0,0,2,2,2,2,0,0,
-2,2,2,2,2,2,2,2,2,0,0,0,0,2,2,2,2,2,0,0,
+0,0,1,1,1,1,1,1,1,0,1,1,0,0,1,1,1,1,0,0,
+0,2,2,0,0,0,2,2,2,0,2,2,0,0,2,2,2,2,0,0,
+0,0,0,0,2,0,2,2,2,0,0,0,0,2,2,2,2,2,0,0,
 2,2,2,2,2,2,2,2,2,0,0,0,0,2,2,2,2,2,0,0
 </data>
  </layer>
@@ -38,13 +48,16 @@
 </data>
  </layer>
  <layer name="powerups" width="20" height="10">
+  <properties>
+   <property name="collision" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,17,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,17,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
