@@ -12,6 +12,7 @@ var SHIELD_TIME = 2;
 class Ape extends Phaser.Sprite {
   constructor(game, x, y, name) {
     super(game, x, y, 'ape');
+    game.add.existing(this);
 
     this.anchor.setTo(0.5, 0.5);
     this.animations.add('walk', [0, 1], 10, true);
@@ -20,8 +21,6 @@ class Ape extends Phaser.Sprite {
     // Movement
     this.leftDownTime = -1;
     this.rightDownTime = -1;
-
-    game.add.existing(this);
 
     // Physics
     game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -88,6 +87,7 @@ class Ape extends Phaser.Sprite {
 
           var shieldImage = this.addChild(this.game.add.image(-30, -30, 'shield'));
           this.game.time.events.add((Phaser.Timer.SECOND * SHIELD_TIME) - Phaser.Timer.HALF, function() {
+            // Make the shield fade out during last half second
             var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
 
             tween.onStart.add(function() { console.log('start'); }, this);
