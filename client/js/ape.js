@@ -36,6 +36,9 @@ class Ape extends Phaser.Sprite {
     //Powerups
     this.powerupActive = false;
     this.currentPowerup = POWERUP.SHIELD;
+
+    //Life
+    this.isDead = false;
   }
 
   moveLeft() {
@@ -83,11 +86,20 @@ class Ape extends Phaser.Sprite {
     }
   }
 
+  die() {
+    this.rotation = 1.5;
+    this.isDead = true;
+  }
+
   update(cursors) {
+
     this.nametag.x = this.x;
     this.nametag.y = Math.floor(this.y - 20 - this.height / 2);
 
     if (!cursors) return;
+
+    //Do nothing if dead
+    if(this.isDead) return;
 
     if (!cursors.left.isDown) {
       this.leftDownTime = -1;
@@ -117,10 +129,6 @@ class Ape extends Phaser.Sprite {
 
     if (cursors.up.isDown) {
       this.jump();
-    }
-
-    if(cursors.down.isDown) {
-      this.powerup();
     }
   }
 }

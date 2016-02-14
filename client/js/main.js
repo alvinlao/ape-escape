@@ -24,6 +24,7 @@ function create() {
   // Physics
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.physics.arcade.gravity.y = 2500;
+  game.physics.arcade.TILE_BIAS = 40;
   game.time.deltaCap = 0.2;
 
   // Performance
@@ -44,6 +45,9 @@ function create() {
 }
 
 function update() {
+  game.physics.arcade.collide(ape, map.createdLayers['spikes'], function(){
+    ape.die();
+  });
   game.physics.arcade.collide(ape, map.createdLayers['main']);
 
   ape.update(cursors);
