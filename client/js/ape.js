@@ -31,7 +31,10 @@ class Ape extends Phaser.Sprite {
     // Name tag
     var style = { font: "18px Arial", fill: "#000", align: "center" }
     this.nametag = game.add.text(0, 0, name, style);
+    this.nametag.y = -40;
     this.nametag.anchor.set(0.5);
+
+    this.addChild(this.nametag);
 
     //Powerups
     this.powerupActive = false;
@@ -44,12 +47,14 @@ class Ape extends Phaser.Sprite {
   moveLeft() {
     this.body.velocity.x = -SPEED;
     this.scale.x = -1;
+    this.nametag.scale.x = -1;
     this.animations.play('walk');
   }
 
   moveRight() {
     this.body.velocity.x = SPEED;
     this.scale.x = 1;
+    this.nametag.scale.x = 1;
     this.animations.play('walk');
   }
 
@@ -80,9 +85,9 @@ class Ape extends Phaser.Sprite {
           shieldImage.destroy();
           this.powerupActive = false;
         },this);
-      break;
+        break;
       default:
-      break;
+        break;
     }
   }
 
@@ -92,10 +97,6 @@ class Ape extends Phaser.Sprite {
   }
 
   update(cursors) {
-
-    this.nametag.x = this.x;
-    this.nametag.y = Math.floor(this.y - 20 - this.height / 2);
-
     if (!cursors) return;
 
     //Do nothing if dead
