@@ -1,7 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="left-down" width="20" height="10" tilewidth="64" tileheight="64" nextobjectid="1">
- <tileset firstgid="1" name="tilesheet" tilewidth="64" tileheight="64" tilecount="20" columns="5">
-  <image source="../client/assets/tilesheet.png" width="320" height="256"/>
+ <tileset firstgid="1" name="tilesheet" tilewidth="64" tileheight="64" tilecount="30" columns="5">
+  <image source="../client/assets/tilesheet.png" width="320" height="384"/>
+  <tile id="5">
+   <properties>
+    <property name="direction" value="left"/>
+    <property name="name" value="laser"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="direction" value="right"/>
+    <property name="name" value="laser"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="direction" value="up"/>
+    <property name="name" value="laser"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="name" value="laser"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="name" value="drop"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="name" value="fire"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="main" width="20" height="10">
   <properties>
@@ -13,7 +47,7 @@
 0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,0,0,
 1,1,1,1,1,1,1,1,1,0,1,1,0,0,1,1,1,1,0,0,
 2,2,2,2,2,2,2,2,2,0,2,2,0,0,2,2,2,2,0,0,
 2,2,2,2,2,2,2,2,2,0,0,0,0,2,2,2,2,2,0,0,
@@ -46,6 +80,20 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer name="trap_activators" width="20" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,
+0,0,0,0,0,0,11,0,0,0,0,11,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
