@@ -42,12 +42,24 @@ function create() {
 
   game.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
   game.camera.follow(ape);
+
+  //Needed for raycasting so that objects can query
+  game.getMap = function() {
+    return map;
+  }
 }
 
 function update() {
   game.physics.arcade.collide(ape, map.createdLayers['spikes'], function(){
     ape.die();
   });
+  game.physics.arcade.overlap(ape, map.createdLayers['powerups'], function(sprite, tile){
+    //TODO why does it call this all the time?
+    if(tile.index===-1) return;
+    ape.grabPowerup(tile.properties.powerup);
+    map.removeTile(tile.x,tile.y, map.createdLayers['powerups']);
+  },null,this);
+
   game.physics.arcade.collide(ape, map.createdLayers['main']);
 
   ape.update(cursors);

@@ -2,8 +2,10 @@ var SPEED = 350;
 var JUMP_SPEED = 850;
 var POWERUP  = {
   NONE: 0,
-  SHIELD: 1
+  SHIELD: 1,
+  BLINK: 2
 };
+var BLINK_DISTANCE = 100;
 
 // In seconds
 // NOTE: Last half second of the shield will start fading out
@@ -12,6 +14,7 @@ var SHIELD_TIME = 2;
 class Ape extends Phaser.Sprite {
   constructor(game, x, y, name) {
     super(game, x, y, 'ape');
+    game.add.existing(this);
 
     this.anchor.setTo(0.5, 0.5);
     this.animations.add('walk', [0, 1], 10, true);
@@ -20,8 +23,6 @@ class Ape extends Phaser.Sprite {
     // Movement
     this.leftDownTime = -1;
     this.rightDownTime = -1;
-
-    game.add.existing(this);
 
     // Physics
     game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -88,6 +89,7 @@ class Ape extends Phaser.Sprite {
 
           var shieldImage = this.addChild(this.game.add.image(-30, -30, 'shield'));
           this.game.time.events.add((Phaser.Timer.SECOND * SHIELD_TIME) - Phaser.Timer.HALF, function() {
+            // Make the shield fade out during last half second
             var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
 
             tween.onStart.add(function() { console.log('start'); }, this);
@@ -98,9 +100,33 @@ class Ape extends Phaser.Sprite {
           }, this);
         }
         break;
+      case POWERUP.BLINK:
+        //Cast Ray
+        var gameMap = this.game.getMap();
+        var blinkRay = new Phaser.Line();
+        blinkRay.start.set(this.x, this.y);
+        blinkRay.end.set(this.x + BLINK_DISTANCE*this.scale.x, this.y);
+        var collidedTiles = gameMap.createdLayers['main'].getRayCastTiles(blinkRay, 4, true);
+        if(collidedTiles.length){
+          if(this.scale.x === 1){
+            this.x = collidedTiles[0].worldX - this.width/2;
+          } else {
+            this.x = collidedTiles[collidedTiles.length-1].worldX + collidedTiles[collidedTiles.length-1].width - this.width/2;
+          }
+        } else {
+          this.x += BLINK_DISTANCE * this.scale.x;
+        }
+        break;
       default:
         break;
     }
+  }
+
+  grabPowerup(powerupName){
+    var newPowerup = POWERUP[powerupName];
+    if(!newPowerup) return;
+
+    this.currentPowerup = newPowerup;
   }
 
   die() {
