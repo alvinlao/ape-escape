@@ -5,6 +5,10 @@ var POWERUP  = {
   SHIELD: 1
 };
 
+// In seconds
+// NOTE: Last half second of the shield will start fading out
+var SHIELD_TIME = 2;
+
 class Ape extends Phaser.Sprite {
   constructor(game, x, y, name) {
     super(game, x, y, 'ape');
@@ -79,12 +83,20 @@ class Ape extends Phaser.Sprite {
   powerup() {
     switch(this.currentPowerup){
       case POWERUP.SHIELD:
-        this.powerupActive = true;
-        var shieldImage = this.addChild(this.game.add.image(-30,-30,'shield'));
-        this.game.time.events.add(Phaser.Timer.SECOND * 2,function(){
-          shieldImage.destroy();
-          this.powerupActive = false;
-        },this);
+        if (!this.powerupActive) {
+          this.powerupActive = true;
+
+          var shieldImage = this.addChild(this.game.add.image(-30, -30, 'shield'));
+          this.game.time.events.add((Phaser.Timer.SECOND * SHIELD_TIME) - Phaser.Timer.HALF, function() {
+            var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
+
+            tween.onStart.add(function() { console.log('start'); }, this);
+            tween.onComplete.add(function() {
+              shieldImage.destroy();
+              this.powerupActive = false;
+            }, this);
+          }, this);
+        }
         break;
       default:
         break;
