@@ -86,6 +86,14 @@
                 {
                  "name":"fire"
                 },
+             "15":
+                {
+                 "powerup":"SHIELD"
+                },
+             "16":
+                {
+                 "powerup":"BLINK"
+                },
              "5":
                 {
                  "direction":"left",

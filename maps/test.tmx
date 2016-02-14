@@ -36,6 +36,16 @@
     <property name="name" value="fire"/>
    </properties>
   </tile>
+  <tile id="15">
+   <properties>
+    <property name="powerup" value="SHIELD"/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="powerup" value="BLINK"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="main" width="20" height="10">
   <properties>
