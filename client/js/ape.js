@@ -5,6 +5,7 @@ var POWERUP  = {
   SHIELD: 1,
   BLINK: 2
 };
+var BLINK_DISTANCE = 100;
 
 // In seconds
 // NOTE: Last half second of the shield will start fading out
@@ -104,7 +105,7 @@ class Ape extends Phaser.Sprite {
         var gameMap = this.game.getMap();
         var blinkRay = new Phaser.Line();
         blinkRay.start.set(this.x, this.y);
-        blinkRay.end.set(this.x + 100*this.scale.x, this.y);
+        blinkRay.end.set(this.x + BLINK_DISTANCE*this.scale.x, this.y);
         var collidedTiles = gameMap.createdLayers['main'].getRayCastTiles(blinkRay, 4, true);
         if(collidedTiles.length){
           if(this.scale.x === 1){
@@ -113,7 +114,7 @@ class Ape extends Phaser.Sprite {
             this.x = collidedTiles[collidedTiles.length-1].worldX + collidedTiles[collidedTiles.length-1].width - this.width/2;
           }
         } else {
-          this.x += 100 * this.scale.x;
+          this.x += BLINK_DISTANCE * this.scale.x;
         }
         break;
       default:
