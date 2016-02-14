@@ -12,6 +12,7 @@ var map, layer;
 
 function preload() {
   game.load.spritesheet('ape', 'assets/ape_spritesheet.png', 50, 50);
+  game.load.image('shield', 'assets/shield.png');
 
   game.load.tilemap('test', 'assets/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('tilesheet', 'assets/tilesheet.png');
@@ -30,6 +31,7 @@ function create() {
 
   // Input
   cursors = game.input.keyboard.createCursorKeys();
+  game.input.keyboard.addKeyCapture([Phaser.Keyboard.Z]);
 
   // Map
   map = new Map(game, 'test', 'tilesheet');

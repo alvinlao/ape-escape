@@ -1,5 +1,9 @@
 var SPEED = 350;
 var JUMP_SPEED = 850;
+var POWERUP  = {
+  NONE: 0,
+  SHIELD: 1
+};
 
 class Ape extends Phaser.Sprite {
   constructor(game, x, y, name) {
@@ -20,10 +24,18 @@ class Ape extends Phaser.Sprite {
 
     this.body.collideWorldBounds = true;
 
+    //Input
+    var zButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+    zButton.onDown.add(this.powerup,this);
+
     // Name tag
     var style = { font: "18px Arial", fill: "#000", align: "center" }
     this.nametag = game.add.text(0, 0, name, style);
     this.nametag.anchor.set(0.5);
+
+    //Powerups
+    this.powerupActive = false;
+    this.currentPowerup = POWERUP.SHIELD;
   }
 
   moveLeft() {
@@ -53,6 +65,21 @@ class Ape extends Phaser.Sprite {
     this.animations.play('jump');
     if (this.body.onFloor()) {
       this.body.velocity.y = -JUMP_SPEED;
+    }
+  }
+
+  powerup() {
+    switch(this.currentPowerup){
+      case POWERUP.SHIELD:
+        this.powerupActive = true;
+        var shieldImage = this.addChild(this.game.add.image(-30,-30,'shield'));
+        this.game.time.events.add(Phaser.Timer.SECOND * 2,function(){
+          shieldImage.destroy();
+          this.powerupActive = false;
+        },this);
+      break;
+      default:
+      break;
     }
   }
 
@@ -90,6 +117,10 @@ class Ape extends Phaser.Sprite {
 
     if (cursors.up.isDown) {
       this.jump();
+    }
+
+    if(cursors.down.isDown) {
+      this.powerup();
     }
   }
 }
