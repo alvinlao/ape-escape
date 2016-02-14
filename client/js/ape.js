@@ -2,7 +2,8 @@ var SPEED = 350;
 var JUMP_SPEED = 850;
 var POWERUP  = {
   NONE: 0,
-  SHIELD: 1
+  SHIELD: 1,
+  BLINK: 2
 };
 
 // In seconds
@@ -98,9 +99,33 @@ class Ape extends Phaser.Sprite {
           }, this);
         }
         break;
+      case POWERUP.BLINK:
+        //Cast Ray
+        var gameMap = this.game.getMap();
+        var blinkRay = new Phaser.Line();
+        blinkRay.start.set(this.x, this.y);
+        blinkRay.end.set(this.x + 100*this.scale.x, this.y);
+        var collidedTiles = gameMap.createdLayers['main'].getRayCastTiles(blinkRay, 4, true);
+        if(collidedTiles.length){
+          if(this.scale.x === 1){
+            this.x = collidedTiles[0].worldX - this.width/2;
+          } else {
+            this.x = collidedTiles[collidedTiles.length-1].worldX + collidedTiles[collidedTiles.length-1].width - this.width/2;
+          }
+        } else {
+          this.x += 100 * this.scale.x;
+        }
+        break;
       default:
         break;
     }
+  }
+
+  grabPowerup(powerupName){
+    var newPowerup = POWERUP[powerupName];
+    if(!newPowerup) return;
+
+    this.currentPowerup = newPowerup;
   }
 
   die() {
