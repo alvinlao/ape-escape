@@ -62,6 +62,6 @@ gulp.task('clean', function() {
     .pipe(clean());
 });
 
-gulp.task('build', ['clean', 'html', 'bower-files', 'js', 'assets']);
+gulp.task('build', ['html', 'bower-files', 'js', 'assets']);
 gulp.task('watch', ['watch-bower-files', 'watch-html', 'watch-js', 'watch-assets']);
 gulp.task('default', ['bower', 'clean']);
