@@ -1,13 +1,14 @@
 var spritesheets = require('./spritesheets.js');
+var config = require('./config.js');
 
-var SPEED = 350;
-var JUMP_SPEED = 850;
+var SPEED = config.APE.SPEED;
+var JUMP_SPEED = config.APE.JUMP_SPEED;
 var POWERUP  = {
   NONE: 0,
   SHIELD: 1,
   BLINK: 2
 };
-var BLINK_DISTANCE = 100;
+var BLINK_DISTANCE = config.APE.BLINK_DISTANCE;
 
 // In seconds
 // NOTE: Last half second of the shield will start fading out
@@ -152,6 +153,7 @@ class Ape extends Phaser.Sprite {
   }
 
   die() {
+    this.body.velocity.x = 0;
     this.rotation = 1.5;
     this.isDead = true;
   }

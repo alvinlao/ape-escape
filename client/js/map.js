@@ -1,12 +1,8 @@
 var FireTrapActivator = require('./traps/firetrapactivator.js');
 
-var Trap = require('./traps/trap.js');
-var FireTrap = require('./traps/firetrap.js');
-var DropTrap = require('./traps/droptrap.js');
-var LaserTrap = require('./traps/lasertrap.js');
 
 // TODO: Remove this
-var numJailers = 10;
+var numJailers = 1;
 
 class Map extends Phaser.Tilemap {
   constructor(game, mapName, tilesetNames, numPlayers) {
@@ -24,16 +20,13 @@ class Map extends Phaser.Tilemap {
       var name = layer.name;
       this.createdLayers[name] = this.createLayer(layer.name);
 
+      // display property
       if (typeof layer.properties.display !== 'undefined' &&
           layer.properties.display === 'false') {
         this.createdLayers[name].visible = false;
       }
 
-      if (name === 'trap_activators') {
-        this.buildTraps(layer);
-      }
-
-      // Find all non-blank tiles
+      // collision property
       if (typeof layer.properties.collision !== 'undefined' &&
           layer.properties.collision === 'true') {
         var collisionTiles = [];
@@ -47,6 +40,11 @@ class Map extends Phaser.Tilemap {
         }, this);
         this.setCollision(collisionTiles, true, layer.name);
       }
+
+      // Trap activator layer
+      if (name === 'trap_activators') {
+        this.buildTraps(layer);
+      }
     }, this);
   }
 
@@ -59,14 +57,11 @@ class Map extends Phaser.Tilemap {
 
         switch(type) {
           case "drop":
-            //trap = new DropTrap(this.numPlayers);
             break;
           case "fire":
-            //trap = new FireTrap(this.game, 0, 0);
             trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY, numJailers);
             break;
           case "laser":
-            //trap = new LaserTrap();
             break;
           default:
             console.warn("Invalid trap activator type: " + type);

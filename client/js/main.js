@@ -1,7 +1,10 @@
 var config = require('./config.js');
 var spritesheets = require('./spritesheets.js');
+
 var Ape = require('./ape.js');
 var Map = require('./map.js');
+
+var FireTrap = require('./traps/firetrap.js');
 
 // Phaser game
 var game = new Phaser.Game(config.CANVAS_WIDTH, config.CANVAS_HEIGHT, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
@@ -10,6 +13,7 @@ var cursors;
 var ape;
 
 var map, layer;
+var activeTraps;
 
 function preload() {
   game.load.spritesheet(spritesheets.ape.name, spritesheets.ape.file, 50, 50);
@@ -38,6 +42,9 @@ function create() {
   cursors = game.input.keyboard.createCursorKeys();
   game.input.keyboard.addKeyCapture([Phaser.Keyboard.Z]);
 
+  // Active Traps
+  activeTraps = game.add.group();
+
   // Map
   map = new Map(game, 'test',
       [
@@ -56,12 +63,20 @@ function create() {
   game.getMap = function() {
     return map;
   }
+
+  // Needed for adding and removing traps
+  game.getActiveTraps = function() {
+    return activeTraps;
+  }
 }
 
 function update() {
+  // SPIKES!
   game.physics.arcade.collide(ape, map.createdLayers['spikes'], function(){
     ape.die();
   });
+
+  // Powerups
   game.physics.arcade.overlap(ape, map.createdLayers['powerups'], function(sprite, tile){
     //TODO why does it call this all the time?
     if(tile.index===-1) return;
@@ -69,7 +84,13 @@ function update() {
     map.removeTile(tile.x,tile.y, map.createdLayers['powerups']);
   },null,this);
 
+  // Blocks
   game.physics.arcade.collide(ape, map.createdLayers['main']);
+
+  // Active Traps
+  game.physics.arcade.overlap(ape, activeTraps, function(ape, trap) {
+    ape.die();
+  });
 
   ape.update(cursors);
 }
