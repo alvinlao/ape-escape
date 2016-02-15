@@ -130,6 +130,7 @@ class Ape extends Phaser.Sprite {
         blinkRay.start.set(this.x, this.y);
         blinkRay.end.set(this.x + BLINK_DISTANCE*this.scale.x, this.y);
         var collidedTiles = gameMap.createdLayers['main'].getRayCastTiles(blinkRay, 4, true);
+        //collidedTiles.append(gameMap.createdLayers['colli'])
         if(collidedTiles.length){
           if(this.scale.x === 1){
             this.x = collidedTiles[0].worldX - this.width/2;

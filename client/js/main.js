@@ -15,11 +15,16 @@ var ape;
 var map, layer;
 var activeTraps, dropTraps;
 
+var loadingLevel = false;
+var currentLevelId = -1; //No level
+var levelOrder = ["test","level2"];
+
 function preload() {
   game.load.spritesheet(spritesheets.ape.name, spritesheets.ape.file, 50, 50);
   game.load.image(spritesheets.shield.name, spritesheets.shield.file);
 
   game.load.tilemap('test', 'assets/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
+  game.load.tilemap('level2', 'assets/maps/level2.json', null, Phaser.Tilemap.TILED_JSON);
 
   game.load.spritesheet(spritesheets.tiles.name, spritesheets.tiles.file, 64, 64);
   game.load.spritesheet(spritesheets.misc.name, spritesheets.misc.file, 64, 64);
@@ -62,16 +67,38 @@ function create() {
     return dropTraps;
   }
 
-  // Map
-  map = new Map(game, 'test',
-      [
-        spritesheets.tiles.name,
-        spritesheets.misc.name,
-        spritesheets.traps.name
-      ], 2);
+  //Swap maps
+  game.loadLevel = function(levelName) {
+    if(map){
+      //Destroy the previous level
+      for(var level in map.createdLayers){
+        map.createdLayers[level].destroy();
+      }
+      map.destroy();
+    }
+    map = new Map(game, levelName,
+        [
+          spritesheets.tiles.name,
+          spritesheets.misc.name,
+          spritesheets.traps.name
+        ], 2);
+
+    if(ape){
+      ape.x = 100;
+      ape.y = 50;
+    }
+    loadingLevel = false;
+  }
+
+  game.loadNextLevel = function(){
+    game.loadLevel(levelOrder[++currentLevelId]);
+  }
+
+  //Load the first level
+  game.loadNextLevel();
 
   // Entities
-  ape = new Ape(game, 100, 0, "Mr. Ape");
+  ape = new Ape(game, 100, 50, "Mr. Ape");
 
   game.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
   game.camera.follow(ape);
@@ -90,6 +117,16 @@ function update() {
     ape.grabPowerup(tile.properties.powerup);
     map.removeTile(tile.x,tile.y, map.createdLayers['powerups']);
   },null,this);
+
+  //Load next level!
+  game.physics.arcade.overlap(ape, map.createdLayers['teleporters'], function(sprite, tile){
+    if(tile.index===-1 || loadingLevel) return;
+    loadingLevel = true;
+    game.time.events.add((Phaser.Timer.SECOND * 1), function() {
+      //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
+      game.loadNextLevel();
+    });
+  });
 
   // Blocks
   game.physics.arcade.collide(ape, [map.createdLayers['main'], dropTraps]);

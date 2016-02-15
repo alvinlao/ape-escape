@@ -13,5 +13,7 @@ module.exports = {
     SPEED: 350,
     JUMP_SPEED: 850,
     BLINK_DISTANCE: 100
-  }
+  },
+
+  TELEPORTER_TIME: 3
 }
