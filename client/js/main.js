@@ -77,7 +77,9 @@ function create() {
         map.createdLayers[level].destroy();
       }
       map.destroy();
+      game.world.removeAll();
     }
+
     map = new Map(game, levelName,
         [
           spritesheets.tiles.name,
@@ -88,6 +90,7 @@ function create() {
     if(ape){
       ape.x = 100;
       ape.y = 50;
+      game.world.add(ape);
     }
     loadingLevel = false;
   }
