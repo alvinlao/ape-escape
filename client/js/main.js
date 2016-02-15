@@ -40,7 +40,7 @@ function create() {
   map = new Map(game, 'test', ['tile_spritesheet', 'misc_spritesheet', 'traps_spritesheet']);
 
   // Entities
-  ape = new Ape(game, 100, 0, "firefly");
+  ape = new Ape(game, 100, 0, "Mr. Ape");
 
   game.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
   game.camera.follow(ape);

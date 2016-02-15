@@ -1,5 +1,9 @@
 # Ape Escape
 
+# About
+
+![Ape Escape](preview.png)
+
 # Setup
 
 1. Install dependencies `npm install`
