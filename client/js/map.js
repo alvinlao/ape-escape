@@ -4,8 +4,10 @@ var DropTrap = require('./traps/droptrap.js');
 var LaserTrap = require('./traps/lasertrap.js');
 
 class Map extends Phaser.Tilemap {
-  constructor(game, mapName, tilesetNames) {
+  constructor(game, mapName, tilesetNames, numPlayers) {
     super(game, mapName);
+
+    this.numPlayers = numPlayers;
 
     for (var i = 0; i < tilesetNames.length; i++) {
       this.addTilesetImage(tilesetNames[i]);
@@ -46,13 +48,13 @@ class Map extends Phaser.Tilemap {
 
         switch(name) {
           case "drop":
-            trap = new DropTrap();
+            //trap = new DropTrap(this.numPlayers);
             break;
           case "fire":
-            trap = new FireTrap();
+            trap = new FireTrap(this.game, 0, 0, 2);
             break;
           case "laser":
-            trap = new LaserTrap();
+            //trap = new LaserTrap();
             break;
           default:
             console.warn("Invalid trap activator name: " + name);

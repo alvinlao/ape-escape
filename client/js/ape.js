@@ -37,8 +37,7 @@ class Ape extends Phaser.Sprite {
 
     // Name tag
     var style = { font: "18px Arial", fill: "#000", align: "center" }
-    this.nametag = game.add.text(0, 0, name, style);
-    this.nametag.y = -40;
+    this.nametag = game.add.text(0, -40, name, style);
     this.nametag.anchor.set(0.5);
 
     this.addChild(this.nametag);

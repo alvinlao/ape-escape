@@ -44,7 +44,7 @@ function create() {
         spritesheets.tiles.name,
         spritesheets.misc.name,
         spritesheets.traps.name
-      ]);
+      ], 2);
 
   // Entities
   ape = new Ape(game, 100, 0, "Mr. Ape");
