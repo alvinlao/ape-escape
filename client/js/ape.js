@@ -1,3 +1,5 @@
+var spritesheets = require('./spritesheets.js');
+
 var SPEED = 350;
 var JUMP_SPEED = 850;
 var POWERUP  = {
@@ -11,9 +13,12 @@ var BLINK_DISTANCE = 100;
 // NOTE: Last half second of the shield will start fading out
 var SHIELD_TIME = 2;
 
+//Entire duration of poof (in seconds)
+var POOF_TIME = 0.2;
+
 class Ape extends Phaser.Sprite {
   constructor(game, x, y, name) {
-    super(game, x, y, 'ape');
+    super(game, x, y, spritesheets.ape.name);
     game.add.existing(this);
 
     this.anchor.setTo(0.5, 0.5);
@@ -35,8 +40,7 @@ class Ape extends Phaser.Sprite {
 
     // Name tag
     var style = { font: "18px Arial", fill: "#000", align: "center" }
-    this.nametag = game.add.text(0, 0, name, style);
-    this.nametag.y = -40;
+    this.nametag = game.add.text(0, -40, name, style);
     this.nametag.anchor.set(0.5);
 
     this.addChild(this.nametag);
@@ -87,7 +91,7 @@ class Ape extends Phaser.Sprite {
         if (!this.powerupActive) {
           this.powerupActive = true;
 
-          var shieldImage = this.addChild(this.game.add.image(-30, -30, 'shield'));
+          var shieldImage = this.addChild(this.game.add.image(-32,-32, 'shield')); //TODO magic #
           this.game.time.events.add((Phaser.Timer.SECOND * SHIELD_TIME) - Phaser.Timer.HALF, function() {
             // Make the shield fade out during last half second
             var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
@@ -101,7 +105,26 @@ class Ape extends Phaser.Sprite {
         }
         break;
       case POWERUP.BLINK:
-        //Cast Ray
+        //Poof!
+        var littlePoof = this.game.add.sprite(this.x - 32, this.y - 32, 'misc_spritesheet');
+        littlePoof.frame = 12;
+        var bigPoof = this.game.add.sprite(this.x - 32, this.y - 32,'misc_spritesheet');
+        bigPoof.frame = 13;
+
+        var bigPoofTween = this.game.add.tween(bigPoof).to({alpha: 1}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,true, 0, 0, false);
+        var littlePoofTween = this.game.add.tween(littlePoof).to({alpha:1}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,false, 0, 0, false);
+        bigPoofTween.onComplete.add(function(){
+          bigPoof.destroy();
+        });
+        this.game.time.events.add((Phaser.Timer.SECOND * POOF_TIME/2), function() {
+          littlePoofTween.start();
+          littlePoofTween.onComplete.add(function(){
+            bigPoof.destroy();
+            littlePoof.destroy();
+          });
+        });
+
+        //Raycast and determine future location
         var gameMap = this.game.getMap();
         var blinkRay = new Phaser.Line();
         blinkRay.start.set(this.x, this.y);
