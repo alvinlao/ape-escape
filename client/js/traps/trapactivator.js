@@ -33,14 +33,13 @@ class TrapActivator extends Phaser.Sprite {
 
     if (this.clicksLeft === 0) {
       this.activate();
-      this.clicksLeft--;
-      this.alpha = 0.4;
     }
   }
 
   // Override
   activate() {
-    throw "Not implemented";
+    this.clicksLeft--;
+    this.alpha = 0.4;
   }
 
   // Override

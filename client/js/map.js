@@ -1,4 +1,5 @@
 var FireTrapActivator = require('./traps/firetrapactivator.js');
+var DropTrapActivator = require('./traps/droptrapactivator.js');
 
 
 // TODO: Remove this
@@ -49,6 +50,8 @@ class Map extends Phaser.Tilemap {
   }
 
   buildTraps(layer) {
+    var traps = [];
+
     mapTile(layer, function(tile, x, y) {
       var trap;
 
@@ -57,6 +60,10 @@ class Map extends Phaser.Tilemap {
 
         switch(type) {
           case "drop":
+            var x = tile.x;
+            var y = tile.y;
+
+            trap = new DropTrapActivator(this.game, tile.worldX, tile.worldY, numJailers);
             break;
           case "fire":
             trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY, numJailers);
@@ -67,10 +74,14 @@ class Map extends Phaser.Tilemap {
             console.warn("Invalid trap activator type: " + type);
             break;
         }
+
+        traps.push(trap);
       } else {
         console.warn("Trap activator missing property: 'type'");
       }
     }, this);
+
+    return traps;
   }
 }
 

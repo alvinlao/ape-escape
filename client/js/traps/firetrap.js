@@ -8,13 +8,12 @@ class FireTrap extends Trap {
     super(game, x, y - 64);
 
     this.animations.add('fire', [8, 9, 10, 11], 10, true);
-    this.visible = false;
   }
 
+  // @param forever (bool) = keep fire alive forever
   activate(forever) {
     super.activate();
 
-    this.visible = true;
     this.animations.play('fire');
 
     if (typeof forever !== 'undefined' && forever) return;

@@ -71,7 +71,7 @@ class Ape extends Phaser.Sprite {
   stop() {
     this.body.velocity.x = 0;
 
-    if (this.body.onFloor()) {
+    if (this.body.onFloor() || this.body.touching.down) {
       this.frame = 3;
       this.animations.stop();
     } else {
@@ -81,7 +81,8 @@ class Ape extends Phaser.Sprite {
 
   jump() {
     this.animations.play('jump');
-    if (this.body.onFloor()) {
+
+    if (this.body.onFloor() || this.body.touching.down) {
       this.body.velocity.y = -JUMP_SPEED;
     }
   }
@@ -156,6 +157,7 @@ class Ape extends Phaser.Sprite {
 
   die() {
     this.body.velocity.x = 0;
+    this.animations.play('jump');
     this.rotation = 1.5;
     this.isDead = true;
   }

@@ -13,7 +13,7 @@ var cursors;
 var ape;
 
 var map, layer;
-var activeTraps;
+var activeTraps, dropTraps;
 
 function preload() {
   game.load.spritesheet(spritesheets.ape.name, spritesheets.ape.file, 50, 50);
@@ -45,6 +45,23 @@ function create() {
   // Active Traps
   activeTraps = game.add.group();
 
+  // Drop traps
+  dropTraps = game.add.group();
+
+  //Needed for raycasting so that objects can query
+  game.getMap = function() {
+    return map;
+  }
+
+  // Needed for adding and removing traps
+  game.getActiveTraps = function() {
+    return activeTraps;
+  }
+
+  game.getDropTraps = function() {
+    return dropTraps;
+  }
+
   // Map
   map = new Map(game, 'test',
       [
@@ -58,16 +75,6 @@ function create() {
 
   game.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
   game.camera.follow(ape);
-
-  //Needed for raycasting so that objects can query
-  game.getMap = function() {
-    return map;
-  }
-
-  // Needed for adding and removing traps
-  game.getActiveTraps = function() {
-    return activeTraps;
-  }
 }
 
 function update() {
@@ -85,7 +92,7 @@ function update() {
   },null,this);
 
   // Blocks
-  game.physics.arcade.collide(ape, map.createdLayers['main']);
+  game.physics.arcade.collide(ape, [map.createdLayers['main'], dropTraps]);
 
   // Active Traps
   game.physics.arcade.overlap(ape, activeTraps, function(ape, trap) {

@@ -1,6 +1,6 @@
 module.exports = {
   CANVAS_WIDTH: 1200,
-  CANVAS_HEIGHT: 800,
+  CANVAS_HEIGHT: 640,
 
   TRAPS: {
     FIRE: {
