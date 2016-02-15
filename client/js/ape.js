@@ -37,7 +37,7 @@ class Ape extends Phaser.Sprite {
 
     //Input
     var zButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-    zButton.onDown.add(this.powerup,this);
+    zButton.onDown.add(this.powerup, this);
 
     // Name tag
     var style = { font: "18px Arial", fill: "#000", align: "center" }
@@ -87,6 +87,8 @@ class Ape extends Phaser.Sprite {
   }
 
   powerup() {
+    if (this.isDead) return;
+
     switch(this.currentPowerup){
       case POWERUP.SHIELD:
         if (!this.powerupActive) {
