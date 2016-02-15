@@ -17,9 +17,9 @@ function preload() {
 
   game.load.tilemap('test', 'assets/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
 
-  game.load.image(spritesheets.tiles.name, spritesheets.tiles.file);
-  game.load.image(spritesheets.misc.name, spritesheets.misc.file);
-  game.load.image(spritesheets.traps.name, spritesheets.traps.file);
+  game.load.spritesheet(spritesheets.tiles.name, spritesheets.tiles.file, 64, 64);
+  game.load.spritesheet(spritesheets.misc.name, spritesheets.misc.file, 64, 64);
+  game.load.spritesheet(spritesheets.traps.name, spritesheets.traps.file, 64, 64);
 }
 
 function create() {
