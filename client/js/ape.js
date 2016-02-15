@@ -123,7 +123,9 @@ class Ape extends Phaser.Sprite {
   }
 
   grabPowerup(powerupName){
+    console.log(powerupName);
     var newPowerup = POWERUP[powerupName];
+    console.log(
     if(!newPowerup) return;
 
     this.currentPowerup = newPowerup;

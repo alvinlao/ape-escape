@@ -15,7 +15,9 @@ function preload() {
   game.load.image('shield', 'assets/shield.png');
 
   game.load.tilemap('test', 'assets/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
-  game.load.image('tilesheet', 'assets/tilesheet.png');
+  game.load.image('tile_spritesheet', 'assets/tile_spritesheet.png');
+  game.load.image('misc_spritesheet', 'assets/misc_spritesheet.png');
+  game.load.image('traps_spritesheet', 'assets/traps_spritesheet.png');
 }
 
 function create() {
@@ -35,7 +37,7 @@ function create() {
   game.input.keyboard.addKeyCapture([Phaser.Keyboard.Z]);
 
   // Map
-  map = new Map(game, 'test', 'tilesheet');
+  map = new Map(game, 'test', ['tile_spritesheet', 'misc_spritesheet', 'traps_spritesheet']);
 
   // Entities
   ape = new Ape(game, 100, 0, "firefly");
