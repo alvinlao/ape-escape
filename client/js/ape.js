@@ -87,6 +87,10 @@ class Ape extends Phaser.Sprite {
     }
   }
 
+  isInvincible() {
+    return this.powerupActive && this.currentPowerup === POWERUP.SHIELD;
+  }
+
   powerup() {
     if (this.isDead) return;
 
@@ -157,10 +161,12 @@ class Ape extends Phaser.Sprite {
   }
 
   die() {
-    this.body.velocity.x = 0;
-    this.animations.play('jump');
-    this.rotation = 1.5;
-    this.isDead = true;
+    if (!this.isInvincible()) {
+      this.body.velocity.x = 0;
+      this.animations.play('jump');
+      this.rotation = 1.5;
+      this.isDead = true;
+    }
   }
 
   update(cursors) {
