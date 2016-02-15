@@ -93,7 +93,6 @@ class Ape extends Phaser.Sprite {
             // Make the shield fade out during last half second
             var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
 
-            tween.onStart.add(function() { console.log('start'); }, this);
             tween.onComplete.add(function() {
               shieldImage.destroy();
               this.powerupActive = false;
