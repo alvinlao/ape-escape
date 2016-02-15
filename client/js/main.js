@@ -77,6 +77,11 @@ function create() {
         map.createdLayers[level].destroy();
       }
       map.destroy();
+      game.world.children.forEach(function(child) {
+        if (child !== ape) {
+          child.destroy();
+        }
+      });
       game.world.removeAll();
     }
 
