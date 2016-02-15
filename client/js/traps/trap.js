@@ -1,28 +1,20 @@
+var spritesheets = require('../spritesheets.js');
+
 class Trap extends Phaser.Sprite {
-  constructor(game, x, y, trapSpriteIndex, numPlayers) {
-    super(game, x, y, 'traps_spritesheet');
+  constructor(game, x, y) {
+    super(game, x, y, spritesheets.misc.name);
     game.add.existing(this);
+    game.physics.enable(this, Phaser.Physics.ARCADE);
 
-    // Choose frame from spritesheet
-    this.frame = trapSpriteIndex;
-
-    // Activation
-    this.clicksLeft = this.calculateClicks(numPlayers);
-
-    // Activation draw
-    var style = { font: "12px Arial", fill: "#562e03" };
-    this.clicksLeftText = game.add.text(0, 0, this.clicksLeft, style);
-    this.addChild(this.clicksLeftText);
+    this.body.allowGravity = false;
   }
 
-  click() {
-    this.clicksLeft--;
-    this.clicksLeftText.text = this.clicksLeft;
+  activate() {
+    this.game.getActiveTraps().add(this);
   }
 
-  // Override
-  calculateClicks(numPlayers) {
-    return 10 * numPlayers;
+  deactivate() {
+    this.game.getActiveTraps().remove(this);
   }
 }
 

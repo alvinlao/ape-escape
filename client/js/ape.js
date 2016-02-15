@@ -1,13 +1,14 @@
 var spritesheets = require('./spritesheets.js');
+var config = require('./config.js');
 
-var SPEED = 350;
-var JUMP_SPEED = 850;
+var SPEED = config.APE.SPEED;
+var JUMP_SPEED = config.APE.JUMP_SPEED;
 var POWERUP  = {
   NONE: 0,
   SHIELD: 1,
   BLINK: 2
 };
-var BLINK_DISTANCE = 100;
+var BLINK_DISTANCE = config.APE.BLINK_DISTANCE;
 
 // In seconds
 // NOTE: Last half second of the shield will start fading out
@@ -36,7 +37,7 @@ class Ape extends Phaser.Sprite {
 
     //Input
     var zButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-    zButton.onDown.add(this.powerup,this);
+    zButton.onDown.add(this.powerup, this);
 
     // Name tag
     var style = { font: "18px Arial", fill: "#000", align: "center" }
@@ -86,6 +87,8 @@ class Ape extends Phaser.Sprite {
   }
 
   powerup() {
+    if (this.isDead) return;
+
     switch(this.currentPowerup){
       case POWERUP.SHIELD:
         if (!this.powerupActive) {
@@ -96,7 +99,6 @@ class Ape extends Phaser.Sprite {
             // Make the shield fade out during last half second
             var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
 
-            tween.onStart.add(function() { console.log('start'); }, this);
             tween.onComplete.add(function() {
               shieldImage.destroy();
               this.powerupActive = false;
@@ -153,6 +155,7 @@ class Ape extends Phaser.Sprite {
   }
 
   die() {
+    this.body.velocity.x = 0;
     this.rotation = 1.5;
     this.isDead = true;
   }

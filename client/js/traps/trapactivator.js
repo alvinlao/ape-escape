@@ -8,6 +8,13 @@ class TrapActivator extends Phaser.Sprite {
     // Choose frame from spritesheet
     this.frame = trapSpriteIndex;
 
+    // Enable input
+    this.inputEnabled = true;
+    this.input.useHandCursor = true;
+
+    // Faster clicking
+    this.events.onInputDown.add(this.click, this);
+
     // Activation
     this.clicksLeft = this.calculateClicks(numPlayers);
 
@@ -17,14 +24,28 @@ class TrapActivator extends Phaser.Sprite {
     this.addChild(this.clicksLeftText);
   }
 
+  // TODO: Send to server and let it decide
   click() {
-    this.clicksLeft--;
-    this.clicksLeftText.text = this.clicksLeft;
+    if (this.clicksLeft > 0) {
+      this.clicksLeft--;
+      this.clicksLeftText.text = this.clicksLeft;
+    } 
+
+    if (this.clicksLeft === 0) {
+      this.activate();
+      this.clicksLeft--;
+      this.alpha = 0.4;
+    }
+  }
+
+  // Override
+  activate() {
+    throw "Not implemented";
   }
 
   // Override
   calculateClicks(numPlayers) {
-    return 10 * numPlayers;
+    return 3 * numPlayers;
   }
 }
 
