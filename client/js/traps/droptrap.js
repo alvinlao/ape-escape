@@ -19,13 +19,14 @@ class DropTrap extends Trap {
   activate() {
     super.activate();
 
-
     this.body.checkCollision.up = false;
     this.body.allowGravity = true;
 
-    // Create sprite
-    
-    // Enable gravity
+    // Remove drop trap from the game
+    this.checkWorldBounds = true;
+    this.events.onOutOfBounds.add(function() {
+      this.game.getDropTraps().remove(this);
+    }, this);
   }
 }
 
