@@ -1,3 +1,5 @@
+var spritesheets = require('./spritesheets.js');
+
 var SPEED = 350;
 var JUMP_SPEED = 850;
 var POWERUP  = {
@@ -13,7 +15,7 @@ var SHIELD_TIME = 2;
 
 class Ape extends Phaser.Sprite {
   constructor(game, x, y, name) {
-    super(game, x, y, 'ape');
+    super(game, x, y, spritesheets.ape.name);
     game.add.existing(this);
 
     this.anchor.setTo(0.5, 0.5);

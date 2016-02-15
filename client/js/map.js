@@ -1,7 +1,7 @@
-//var Trap = require('./traps/trap.js');
-//var FireTrap = require('./traps/firetrap.js');
-//var DropTrap = require('./traps/droptrap.js');
-//var LaserTrap = require('./traps/lasertrap.js');
+var Trap = require('./traps/trap.js');
+var FireTrap = require('./traps/firetrap.js');
+var DropTrap = require('./traps/droptrap.js');
+var LaserTrap = require('./traps/lasertrap.js');
 
 class Map extends Phaser.Tilemap {
   constructor(game, mapName, tilesetNames) {
@@ -38,7 +38,6 @@ class Map extends Phaser.Tilemap {
   }
 
   buildTraps(layer) {
-    /*
     mapTile(layer, function(tile, x, y) {
       var trap;
 
@@ -63,14 +62,13 @@ class Map extends Phaser.Tilemap {
         console.warn("Trap activator missing property: 'name'");
       }
     }, this);
-    */
   }
 }
 
 // Iterate through each tile and apply function
 function mapTile(layer, f, context) {
   layer.data.forEach(function (data_row, y) {
-    data_row.forEach(function (tile, y) {
+    data_row.forEach(function (tile, x) {
       if (tile.index > 0) {
         f(tile, x, y);
       }

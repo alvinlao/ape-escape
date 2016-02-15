@@ -1,4 +1,5 @@
 var config = require('./config.js');
+var spritesheets = require('./spritesheets.js');
 var Ape = require('./ape.js');
 var Map = require('./map.js');
 
@@ -11,13 +12,14 @@ var ape;
 var map, layer;
 
 function preload() {
-  game.load.spritesheet('ape', 'assets/ape_spritesheet.png', 50, 50);
-  game.load.image('shield', 'assets/shield.png');
+  game.load.spritesheet(spritesheets.ape.name, spritesheets.ape.file, 50, 50);
+  game.load.image(spritesheets.shield.name, spritesheets.shield.file);
 
   game.load.tilemap('test', 'assets/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
-  game.load.image('tile_spritesheet', 'assets/tile_spritesheet.png');
-  game.load.image('misc_spritesheet', 'assets/misc_spritesheet.png');
-  game.load.image('traps_spritesheet', 'assets/traps_spritesheet.png');
+
+  game.load.image(spritesheets.tiles.name, spritesheets.tiles.file);
+  game.load.image(spritesheets.misc.name, spritesheets.misc.file);
+  game.load.image(spritesheets.traps.name, spritesheets.traps.file);
 }
 
 function create() {
@@ -37,7 +39,12 @@ function create() {
   game.input.keyboard.addKeyCapture([Phaser.Keyboard.Z]);
 
   // Map
-  map = new Map(game, 'test', ['tile_spritesheet', 'misc_spritesheet', 'traps_spritesheet']);
+  map = new Map(game, 'test',
+      [
+        spritesheets.tiles.name,
+        spritesheets.misc.name,
+        spritesheets.traps.name
+      ]);
 
   // Entities
   ape = new Ape(game, 100, 0, "Mr. Ape");
