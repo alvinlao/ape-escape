@@ -15,6 +15,7 @@ var ape;
 var map, layer;
 var activeTraps, dropTraps;
 
+var loadingLevel = false;
 var currentLevelId = -1; //No level
 var levelOrder = ["test","level2"];
 
@@ -84,8 +85,9 @@ function create() {
 
     if(ape){
       ape.x = 100;
-      ape.y = 0;
+      ape.y = 50;
     }
+    loadingLevel = false;
   }
 
   game.loadNextLevel = function(){
@@ -96,7 +98,7 @@ function create() {
   game.loadNextLevel();
 
   // Entities
-  ape = new Ape(game, 100, 0, "Mr. Ape");
+  ape = new Ape(game, 100, 50, "Mr. Ape");
 
   game.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
   game.camera.follow(ape);
@@ -118,8 +120,12 @@ function update() {
 
   //Load next level!
   game.physics.arcade.overlap(ape, map.createdLayers['teleporters'], function(sprite, tile){
-    if(tile.index===-1) return;
-    game.loadNextLevel();
+    if(tile.index===-1 || loadingLevel) return;
+    loadingLevel = true;
+    game.time.events.add((Phaser.Timer.SECOND * 1), function() {
+      //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
+      game.loadNextLevel();
+    });
   });
 
   // Blocks
