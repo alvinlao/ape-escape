@@ -23,8 +23,10 @@ function preload() {
   game.load.spritesheet(spritesheets.ape.name, spritesheets.ape.file, 50, 50);
   game.load.image(spritesheets.shield.name, spritesheets.shield.file);
 
-  game.load.tilemap('test', 'assets/maps/test.json', null, Phaser.Tilemap.TILED_JSON);
-  game.load.tilemap('level2', 'assets/maps/level2.json', null, Phaser.Tilemap.TILED_JSON);
+  for (var i = 0; i < levelOrder.length; i++) {
+    var levelName = levelOrder[i]
+    game.load.tilemap(levelName, 'assets/maps/' + levelName + '.json', null, Phaser.Tilemap.TILED_JSON);
+  }
 
   game.load.spritesheet(spritesheets.tiles.name, spritesheets.tiles.file, 64, 64);
   game.load.spritesheet(spritesheets.misc.name, spritesheets.misc.file, 64, 64);
@@ -53,7 +55,7 @@ function create() {
   // Drop traps
   dropTraps = game.add.group();
 
-  //Needed for raycasting so that objects can query
+  // Needed for raycasting so that objects can query
   game.getMap = function() {
     return map;
   }
@@ -67,7 +69,7 @@ function create() {
     return dropTraps;
   }
 
-  //Swap maps
+  // Swap maps
   game.loadLevel = function(levelName) {
     if(map){
       //Destroy the previous level
