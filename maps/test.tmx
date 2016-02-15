@@ -119,6 +119,9 @@
 </data>
  </layer>
  <layer name="trap_activators" width="20" height="10">
+  <properties>
+   <property name="display" value="false"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

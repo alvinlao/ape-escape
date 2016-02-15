@@ -4,7 +4,7 @@ var Ape = require('./ape.js');
 var Map = require('./map.js');
 
 // Phaser game
-var game = new Phaser.Game(config.CANVAS_WIDTH, config.CANVAS_HEIGHT, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(config.CANVAS_WIDTH, config.CANVAS_HEIGHT, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
 var cursors;
 var ape;
