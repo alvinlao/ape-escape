@@ -44,7 +44,7 @@ gulp.task('js', function() {
 });
 
 gulp.task('watch-js', function() {
-  gulp.watch('client/js/*', ['js']);
+  gulp.watch('client/js/**/*', ['js']);
 });
 
 // Copy assets

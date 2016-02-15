@@ -61,6 +61,10 @@
          "height":10,
          "name":"trap_activators",
          "opacity":1,
+         "properties":
+            {
+             "display":"false"
+            },
          "type":"tilelayer",
          "visible":true,
          "width":20,
