@@ -25,7 +25,7 @@ class DropTrap extends Trap {
     // Remove drop trap from the game
     this.checkWorldBounds = true;
     this.events.onOutOfBounds.add(function() {
-      this.game.getDropTraps().remove(this);
+      this.deactivate();
     }, this);
   }
 }

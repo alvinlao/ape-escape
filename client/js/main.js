@@ -5,6 +5,8 @@ var Ape = require('./ape.js');
 var Map = require('./map.js');
 
 var FireTrap = require('./traps/firetrap.js');
+var LaserTrap = require('./traps/lasertrap.js');
+var LaserHead = require('./traps/laserhead.js');
 
 // Phaser game
 var game = new Phaser.Game(config.CANVAS_WIDTH, config.CANVAS_HEIGHT, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
@@ -77,6 +79,8 @@ function create() {
         map.createdLayers[level].destroy();
       }
       map.destroy();
+
+      // Clean up all the objects
       game.world.children.forEach(function(child) {
         if (child !== ape) {
           child.destroy();
@@ -95,6 +99,7 @@ function create() {
     if(ape){
       ape.x = 100;
       ape.y = 50;
+
       game.world.add(ape);
     }
     loadingLevel = false;

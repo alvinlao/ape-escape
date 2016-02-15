@@ -1,5 +1,6 @@
 var FireTrapActivator = require('./traps/firetrapactivator.js');
 var DropTrapActivator = require('./traps/droptrapactivator.js');
+var LaserTrapActivator = require('./traps/lasertrapactivator.js');
 
 
 // TODO: Remove this
@@ -69,6 +70,8 @@ class Map extends Phaser.Tilemap {
             trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY, numJailers);
             break;
           case "laser":
+            var direction = tile.properties.direction;
+            trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, numJailers, direction, 3);
             break;
           default:
             console.warn("Invalid trap activator type: " + type);

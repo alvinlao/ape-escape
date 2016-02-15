@@ -17,7 +17,7 @@ class Trap extends Phaser.Sprite {
   }
 
   deactivate() {
-    this.game.getActiveTraps().remove(this);
+    this.game.getActiveTraps().remove(this, true);
   }
 }
 

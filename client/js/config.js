@@ -2,11 +2,17 @@ module.exports = {
   CANVAS_WIDTH: 1200,
   CANVAS_HEIGHT: 640,
 
+  TILE_SIZE: 64,
+
   TRAPS: {
     FIRE: {
       // In seconds
       DURATION: 1.5
-    }
+    },
+    LASER: {
+      // In seconds
+      DURATION: 1
+    },
   },
 
   APE: {

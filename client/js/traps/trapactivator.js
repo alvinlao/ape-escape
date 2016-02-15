@@ -20,7 +20,7 @@ class TrapActivator extends Phaser.Sprite {
 
     // Activation draw
     var style = { font: "14px Arial", fill: "#562e03" };
-    this.clicksLeftText = game.add.text(0, 8, this.clicksLeft, style);
+    this.clicksLeftText = game.add.text(4, 6, this.clicksLeft, style);
     this.addChild(this.clicksLeftText);
   }
 
