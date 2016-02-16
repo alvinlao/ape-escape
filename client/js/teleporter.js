@@ -1,4 +1,4 @@
-var spritesheets = require('./spritesheets.js');
+var spritesheets = require('./util/spritesheets.js');
 
 class Teleporter extends Phaser.Sprite {
   constructor(game, x, y) {

@@ -1,5 +1,5 @@
-var spritesheets = require('./spritesheets.js');
-var config = require('./config.js');
+var spritesheets = require('./util/spritesheets.js');
+var config = require('./util/config.js');
 
 var ApeHUD = require('./apehud.js');
 

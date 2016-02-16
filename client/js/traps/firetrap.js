@@ -1,5 +1,6 @@
+var config = require('../util/config.js');
+
 var Trap = require('./trap.js');
-var config = require('../config.js');
 
 var FIRE_DURATION = config.TRAPS.FIRE.DURATION;
 
