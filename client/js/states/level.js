@@ -110,7 +110,12 @@ class LevelState extends Phaser.State {
 
     // SPIKES!
     game.physics.arcade.collide(this.ape, this.map.createdLayers['spikes'], function(){
-      this.ape.die();
+      this.ape.die(config.APE.DEATH.SPIKES);
+    }, null, this);
+
+    // Water
+    game.physics.arcade.collide(this.ape, this.map.createdLayers['water'], function(){
+      this.ape.die(config.APE.DEATH.WATER);
     }, null, this);
 
     // Powerups
@@ -141,7 +146,7 @@ class LevelState extends Phaser.State {
 
     // Active Traps
     game.physics.arcade.overlap(this.ape, this.activeTraps, function(ape, trap) {
-      this.ape.die();
+      this.ape.die(trap.getDeathMessage());
     }, null, this);
 
     this.ape.update();
@@ -150,7 +155,7 @@ class LevelState extends Phaser.State {
     if (this.ape.isDead && this.gameover === null) {
       var currentLevel = this.currentLevelId;
       var totalLevels = game.levelOrder.length;
-      this.gameover = new GameOver(game, currentLevel, totalLevels);
+      this.gameover = new GameOver(game, currentLevel, totalLevels, this.ape.causeOfDeath);
     }
   }
 }

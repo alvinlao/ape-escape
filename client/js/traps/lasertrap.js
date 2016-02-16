@@ -159,6 +159,10 @@ class LaserTrap extends Trap {
 
     return orientation;
   }
+
+  getDeathMessage() {
+    return config.APE.DEATH.LASER;
+  }
 }
 
 module.exports = LaserTrap;

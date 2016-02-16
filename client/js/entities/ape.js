@@ -215,12 +215,13 @@ class Ape extends Phaser.Sprite {
         );
   }
 
-  die() {
+  die(causeOfDeath) {
     if (!this.isInvincible()) {
       this.body.velocity.x = 0;
       this.animations.play('jump');
       this.rotation = 1.5;
       this.isDead = true;
+      this.causeOfDeath = causeOfDeath;
     }
   }
 

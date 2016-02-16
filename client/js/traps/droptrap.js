@@ -1,3 +1,5 @@
+var config = require('../util/config.js');
+
 var Trap = require('./trap.js');
 
 class DropTrap extends Trap {
@@ -27,6 +29,10 @@ class DropTrap extends Trap {
     this.events.onOutOfBounds.add(function() {
       this.deactivate();
     }, this);
+  }
+
+  getDeathMessage() {
+    return config.APE.DEATH.DROP;
   }
 }
 
