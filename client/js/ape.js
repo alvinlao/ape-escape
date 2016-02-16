@@ -4,8 +4,8 @@ var config = require('./config.js');
 var SPEED = config.APE.SPEED;
 var JUMP_SPEED = config.APE.JUMP_SPEED;
 var POWERUPS = [
-  {name: 'blink', frameNumber: 3, buttonFrameNumber: 0},
-  {name: 'shield', frameNumber: 2, buttonFrameNumber: 2}
+  {name: 'blink', frameNumber: 3, buttonFrameNumber: 0, quantity: 3},
+  {name: 'shield', frameNumber: 2, buttonFrameNumber: 2, quantity: 1}
 ];
 
 var POWERUP  = {
@@ -246,7 +246,7 @@ class Ape extends Phaser.Sprite {
     var newPowerup = POWERUP[powerupName];
     if(newPowerup === POWERUP.NONE) return;
 
-    this.powerupCollection[newPowerup] += 1;
+    this.powerupCollection[newPowerup] += POWERUPS[newPowerup].quantity;
     this.updatePowerupLegend(newPowerup);
 
     //this.currentPowerup = newPowerup;
