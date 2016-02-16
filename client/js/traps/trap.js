@@ -6,15 +6,18 @@ class Trap extends Phaser.Sprite {
     game.add.existing(this);
     game.physics.enable(this, Phaser.Physics.ARCADE);
 
+    this.visible = false;
+
     this.body.allowGravity = false;
   }
 
   activate() {
+    this.visible = true;
     this.game.getActiveTraps().add(this);
   }
 
   deactivate() {
-    this.game.getActiveTraps().remove(this);
+    this.game.getActiveTraps().remove(this, true);
   }
 }
 

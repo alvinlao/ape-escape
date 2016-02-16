@@ -71,7 +71,7 @@ class Ape extends Phaser.Sprite {
   stop() {
     this.body.velocity.x = 0;
 
-    if (this.body.onFloor()) {
+    if (this.body.onFloor() || this.body.touching.down) {
       this.frame = 3;
       this.animations.stop();
     } else {
@@ -81,9 +81,14 @@ class Ape extends Phaser.Sprite {
 
   jump() {
     this.animations.play('jump');
-    if (this.body.onFloor()) {
+
+    if (this.body.onFloor() || this.body.touching.down) {
       this.body.velocity.y = -JUMP_SPEED;
     }
+  }
+
+  isInvincible() {
+    return this.powerupActive && this.currentPowerup === POWERUP.SHIELD;
   }
 
   powerup() {
@@ -129,6 +134,7 @@ class Ape extends Phaser.Sprite {
         blinkRay.start.set(this.x, this.y);
         blinkRay.end.set(this.x + BLINK_DISTANCE*this.scale.x, this.y);
         var collidedTiles = gameMap.createdLayers['main'].getRayCastTiles(blinkRay, 4, true);
+        //collidedTiles.append(gameMap.createdLayers['colli'])
         if(collidedTiles.length){
           if(this.scale.x === 1){
             this.x = collidedTiles[0].worldX - this.width/2;
@@ -155,9 +161,12 @@ class Ape extends Phaser.Sprite {
   }
 
   die() {
-    this.body.velocity.x = 0;
-    this.rotation = 1.5;
-    this.isDead = true;
+    if (!this.isInvincible()) {
+      this.body.velocity.x = 0;
+      this.animations.play('jump');
+      this.rotation = 1.5;
+      this.isDead = true;
+    }
   }
 
   update(cursors) {

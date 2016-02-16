@@ -20,7 +20,7 @@ class TrapActivator extends Phaser.Sprite {
 
     // Activation draw
     var style = { font: "14px Arial", fill: "#562e03" };
-    this.clicksLeftText = game.add.text(0, 8, this.clicksLeft, style);
+    this.clicksLeftText = game.add.text(4, 6, this.clicksLeft, style);
     this.addChild(this.clicksLeftText);
   }
 
@@ -33,14 +33,13 @@ class TrapActivator extends Phaser.Sprite {
 
     if (this.clicksLeft === 0) {
       this.activate();
-      this.clicksLeft--;
-      this.alpha = 0.4;
     }
   }
 
   // Override
   activate() {
-    throw "Not implemented";
+    this.clicksLeft--;
+    this.alpha = 0.4;
   }
 
   // Override
