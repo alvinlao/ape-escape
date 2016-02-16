@@ -27,6 +27,10 @@ var joinLobby = function(socket){
 	emitLobby();
 }
 
+var leaveLobby = function(){
+	emitLobby();
+}
+
 var startGame = function(){
 	game.start();
 }
@@ -45,3 +49,4 @@ var emitLobby = function(){
 }
 
 exports.joinLobby = joinLobby;
+exports.leaveLobby = leaveLobby;

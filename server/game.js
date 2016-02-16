@@ -30,7 +30,7 @@ var attachApe = function(socket){
 	});
 	//powerup
 	//death
-	//teleporter
+	//teleporter --> state.currentLevel++
 }
 
 var attachJailer = function(socket){
@@ -46,9 +46,10 @@ var attachJailer = function(socket){
 
 var stopGame = function(){
 	for(var i=0;i<state.sockets;i++){
-		io.removeAllListeners("");
+		io.removeAllListeners("move");
 	}
 	state.currentState = GAME_STATE.LOBBY;
+	io.emit("state", state.currentState);
 }
 
 exports.startGame = startGame;
