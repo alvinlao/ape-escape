@@ -137,7 +137,8 @@ function update() {
   game.physics.arcade.overlap(ape, map.createdLayers['teleporters'], function(sprite, tile){
     if(tile.index===-1 || loadingLevel) return;
 
-    // TODO Change teleporter color
+    // Change teleporter color
+    tile.teleporter.go();
 
     loadingLevel = true;
     game.time.events.add((Phaser.Timer.SECOND * 1), function() {
