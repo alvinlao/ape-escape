@@ -22,11 +22,26 @@ var startGame = function(){
 }
 
 var attachApe = function(socket){
-	
+	socket.on("move", function(){
+		socket.broadcast.emit("ape:move", {
+			x: socket.game.x,
+			y: socket.game.y
+		});
+	});
+	//powerup
+	//death
+	//teleporter
 }
 
 var attachJailer = function(socket){
-
+	socket.on("move", function(){
+		socket.broadcast.emit("jailer:move", {
+			id: socket.lobby.id,
+			x: socket.game.x,
+			y: socket.game.y
+		});
+	});
+	//click
 }
 
 var stopGame = function(){
