@@ -11,10 +11,8 @@ var attachIO = function(io){
 		state.sockets.push(socket);
 
 		console.log("User connected");
+		lobby.joinLobby(socket);
 
-		if(state.currentGameState == GAME_STATE.LOBBY){
-			lobby.joinLobby(socket);
-		}
 		socket.on("disconnect", function(){
 
 			//Remove it from the array
