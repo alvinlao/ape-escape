@@ -26,5 +26,9 @@ module.exports = {
   buttons: {
     name: 'buttons',
     file: 'assets/buttons.png'
+  },
+  spacebar: {
+    name: 'spacebar',
+    file: 'assets/spacebar.png'
   }
 }

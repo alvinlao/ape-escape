@@ -28,6 +28,10 @@ class FireTrap extends Trap {
         },
         this);
   }
+
+  getDeathMessage() {
+    return config.APE.DEATH.FIRE;
+  }
 }
 
 module.exports = FireTrap;

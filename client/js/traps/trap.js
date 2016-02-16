@@ -19,6 +19,10 @@ class Trap extends Phaser.Sprite {
   deactivate() {
     this.game.getActiveTraps().remove(this, true);
   }
+
+  getDeathMessage() {
+    return "You are dead";
+  }
 }
 
 module.exports = Trap;

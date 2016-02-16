@@ -11,8 +11,6 @@ class TrapActivator extends Phaser.Sprite {
     // Enable input
     this.inputEnabled = true;
     this.input.useHandCursor = true;
-
-    // Faster clicking
     this.events.onInputDown.add(this.click, this);
 
     // Activation
@@ -29,7 +27,7 @@ class TrapActivator extends Phaser.Sprite {
     if (this.clicksLeft > 0) {
       this.clicksLeft--;
       this.clicksLeftText.text = this.clicksLeft;
-    } 
+    }
 
     if (this.clicksLeft === 0) {
       this.activate();

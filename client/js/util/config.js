@@ -53,6 +53,14 @@ module.exports = {
         BUTTON: Phaser.KeyCode.X,
         FRAMENUMBER: 2
       }
+    },
+
+    DEATH: {
+      SPIKES: "You were impaled!",
+      WATER: "You drowned!",
+      FIRE: "You were ignited!",
+      LASER: "You were vaporized!",
+      DROP: "You were flattened!"
     }
   },
 
