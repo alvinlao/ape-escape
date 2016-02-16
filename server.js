@@ -1,10 +1,22 @@
 var express = require("express");
+var socket_io = require("socket.io");
+var http = require("http");
+
 var config = require("./server/config");
+var socketHandler = require("./server/socketHandler");
+
 
 var apeApp = express();
+var apeServer = http.createServer(apeApp);
 
+//Serve static files
 apeApp.use(express.static("public"));
 
+//Start socket.io
+var io = socket_io().attach(apeServer);
+socketHandler.attachIO(io);
+
+//Start the server
 apeApp.listen(config.PORT, function(){
     console.log(""
         +"     _                 _____                            " + "____  \n"

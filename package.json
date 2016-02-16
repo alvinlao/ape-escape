@@ -33,6 +33,7 @@
     "webpack-stream": "^3.1.0"
   },
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
   }
 }
