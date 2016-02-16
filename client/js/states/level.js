@@ -10,7 +10,6 @@ class LevelState extends Phaser.State {
   init() {
     this.ape = null;
     this.map = null;
-    this.layer = null;
 
     this.activeTraps = null;
     this.dropTraps = null;
@@ -18,6 +17,29 @@ class LevelState extends Phaser.State {
     this.loadingLevel = false;
     this.currentLevelId = -1;
     this.gameover = null;
+  }
+
+  shutdown() {
+    this.ape.destroy();
+
+    // Clean up map
+    if(this.map){
+      //Destroy the previous level
+      for(var level in this.map.createdLayers){
+        this.map.createdLayers[level].destroy();
+      }
+      this.map.destroy();
+
+      // Clean up all the objects
+      this.game.world.children.forEach(function(child) {
+          child.destroy();
+      });
+      this.game.world.removeAll();
+    }
+
+    this.activeTraps.forEach(function(trap) { trap.destroy() });
+    this.dropTraps.forEach(function(trap) { trap.destroy() });
+    this.gameover.destroy();
   }
 
   create() {
