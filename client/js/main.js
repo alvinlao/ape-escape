@@ -136,6 +136,9 @@ function update() {
   //Load next level!
   game.physics.arcade.overlap(ape, map.createdLayers['teleporters'], function(sprite, tile){
     if(tile.index===-1 || loadingLevel) return;
+
+    // TODO Change teleporter color
+
     loadingLevel = true;
     game.time.events.add((Phaser.Timer.SECOND * 1), function() {
       //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
