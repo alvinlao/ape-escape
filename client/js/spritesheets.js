@@ -18,5 +18,13 @@ module.exports = {
   shield: {
     name: 'shield',
     file: 'assets/shield.png'
+  },
+  blink: {
+    name: 'blink',
+    file: 'assets/run_icon.png'
+  },
+  buttons: {
+    name: 'buttons',
+    file: 'assets/buttons.png'
   }
 }

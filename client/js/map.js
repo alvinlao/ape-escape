@@ -2,6 +2,7 @@ var FireTrapActivator = require('./traps/firetrapactivator.js');
 var DropTrapActivator = require('./traps/droptrapactivator.js');
 var LaserTrapActivator = require('./traps/lasertrapactivator.js');
 
+var Teleporter = require('./teleporter.js');
 
 // TODO: Remove this
 var numJailers = 1;
@@ -46,6 +47,14 @@ class Map extends Phaser.Tilemap {
       // Trap activator layer
       if (name === 'trap_activators') {
         this.buildTraps(layer);
+      }
+
+      // Teleporter
+      if (name === 'teleporters') {
+        mapTile(layer, function(tile, x, y) {
+          tile.alpha = 0;
+          tile.teleporter = new Teleporter(this.game, tile.worldX, tile.worldY);
+        }, this);
       }
     }, this);
   }

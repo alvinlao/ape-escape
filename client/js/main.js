@@ -24,6 +24,9 @@ var levelOrder = ["test","level2"];
 function preload() {
   game.load.spritesheet(spritesheets.ape.name, spritesheets.ape.file, 50, 50);
   game.load.image(spritesheets.shield.name, spritesheets.shield.file);
+  game.load.image(spritesheets.blink.name, spritesheets.blink.file);
+
+  game.load.spritesheet(spritesheets.buttons.name, spritesheets.buttons.file, 64, 64);
 
   for (var i = 0; i < levelOrder.length; i++) {
     var levelName = levelOrder[i]
@@ -49,7 +52,7 @@ function create() {
 
   // Input
   cursors = game.input.keyboard.createCursorKeys();
-  game.input.keyboard.addKeyCapture([Phaser.Keyboard.Z]);
+  game.input.keyboard.addKeyCapture([Phaser.KeyCode.Z, Phaser.KeyCode.X]);
 
   // Active Traps
   activeTraps = game.add.group();
@@ -101,6 +104,7 @@ function create() {
       ape.y = 50;
 
       game.world.add(ape);
+      ape.createPowerupLegend();
     }
     loadingLevel = false;
   }
@@ -136,6 +140,10 @@ function update() {
   //Load next level!
   game.physics.arcade.overlap(ape, map.createdLayers['teleporters'], function(sprite, tile){
     if(tile.index===-1 || loadingLevel) return;
+
+    // Change teleporter color
+    tile.teleporter.go();
+
     loadingLevel = true;
     game.time.events.add((Phaser.Timer.SECOND * 1), function() {
       //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
