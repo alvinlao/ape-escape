@@ -46,6 +46,9 @@ class GameOver extends Phaser.Group {
     var progress = game.add.text(x, y + progressYOffset, currentLevel + "/" + totalLevels + " levels", style);
     progress.anchor.set(0.5);
     this.addChild(progress);
+
+    this.alpha = 0;
+    var tween = this.game.add.tween(this).to({ alpha: 1 }, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
   }
 }
 

@@ -6,7 +6,6 @@ var LoadState = require('./states/load.js');
 var TitleState = require('./states/title.js');
 var LobbyState = require('./states/lobby.js');
 var LevelState = require('./states/level.js');
-var GameOverState = require('./states/gameover.js');
 
 // Phaser game
 //var game = new Phaser.Game(config.CANVAS_WIDTH, config.CANVAS_HEIGHT, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
@@ -20,6 +19,5 @@ game.state.add('load', new LoadState());
 game.state.add('title', new TitleState());
 game.state.add('lobby', new LobbyState());
 game.state.add('level', new LevelState());
-game.state.add('gameover', new GameOverState());
 
 game.state.start('boot');
