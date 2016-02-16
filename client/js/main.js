@@ -133,7 +133,8 @@ function update() {
   game.physics.arcade.overlap(ape, map.createdLayers['powerups'], function(sprite, tile){
     //TODO why does it call this all the time?
     if(tile.index===-1) return;
-    ape.grabPowerup(tile.properties.powerup);
+
+    ape.grabPowerup(tile.properties.powerup, parseInt(tile.properties.quantity));
     map.removeTile(tile.x,tile.y, map.createdLayers['powerups']);
   },null,this);
 

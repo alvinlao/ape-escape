@@ -242,11 +242,11 @@ class Ape extends Phaser.Sprite {
     }
   }
 
-  grabPowerup(powerupName){
+  grabPowerup(powerupName, quantity){
     var newPowerup = POWERUP[powerupName];
     if(newPowerup === POWERUP.NONE) return;
 
-    this.powerupCollection[newPowerup] += POWERUPS[newPowerup].quantity;
+    this.powerupCollection[newPowerup] += quantity;
     this.updatePowerupLegend(newPowerup);
 
     //this.currentPowerup = newPowerup;
