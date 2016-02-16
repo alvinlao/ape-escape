@@ -1,7 +1,7 @@
-var spritesheets = require('./util/spritesheets.js');
-var config = require('./util/config.js');
+var spritesheets = require('../util/spritesheets.js');
+var config = require('../util/config.js');
 
-var ApeHUD = require('./entities/apehud.js');
+var ApeHUD = require('./apehud.js');
 
 var SPEED = config.APE.SPEED;
 var JUMP_SPEED = config.APE.JUMP_SPEED;

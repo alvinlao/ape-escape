@@ -2,7 +2,7 @@ var FireTrapActivator = require('./traps/firetrapactivator.js');
 var DropTrapActivator = require('./traps/droptrapactivator.js');
 var LaserTrapActivator = require('./traps/lasertrapactivator.js');
 
-var Teleporter = require('./teleporter.js');
+var Teleporter = require('./entities/teleporter.js');
 
 // TODO: Remove this
 var numJailers = 1;

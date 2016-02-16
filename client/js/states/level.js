@@ -1,7 +1,7 @@
 var config = require('../util/config.js');
 var spritesheets = require('../util/spritesheets.js');
 
-var Ape = require('../ape.js');
+var Ape = require('../entities/ape.js');
 var Map = require('../map.js');
 
 var ape;
