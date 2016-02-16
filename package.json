@@ -31,5 +31,9 @@
     "main-bower-files": "^2.11.1",
     "webpack": "^1.12.13",
     "webpack-stream": "^3.1.0"
+  },
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
   }
 }

@@ -3,10 +3,15 @@ var config = require('./config.js');
 
 var SPEED = config.APE.SPEED;
 var JUMP_SPEED = config.APE.JUMP_SPEED;
+var POWERUPS = [
+  {name: 'blink', frameNumber: 3, buttonFrameNumber: 0, quantity: 3},
+  {name: 'shield', frameNumber: 2, buttonFrameNumber: 2, quantity: 1}
+];
+
 var POWERUP  = {
-  NONE: 0,
+  NONE: -1,
+  BLINK: 0,
   SHIELD: 1,
-  BLINK: 2
 };
 var BLINK_DISTANCE = config.APE.BLINK_DISTANCE;
 
@@ -35,9 +40,17 @@ class Ape extends Phaser.Sprite {
 
     this.body.collideWorldBounds = true;
 
-    //Input
-    var zButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-    zButton.onDown.add(this.powerup, this);
+    // Input
+    // NOTE: Need to add to key capture in "main.js"
+    var zButton = game.input.keyboard.addKey(Phaser.KeyCode.Z);
+    var xButton = game.input.keyboard.addKey(Phaser.KeyCode.X);
+    zButton.onDown.add(this.powerup, this, 0, POWERUP.BLINK);
+    xButton.onDown.add(this.powerup, this, 0, POWERUP.SHIELD);
+
+    zButton.onDown.add(this.buttonDown, this, 0, POWERUP.BLINK);
+    xButton.onDown.add(this.buttonDown, this, 0, POWERUP.SHIELD);
+    zButton.onUp.add(this.buttonUp, this, 0, POWERUP.BLINK);
+    xButton.onUp.add(this.buttonUp, this, 0, POWERUP.SHIELD);
 
     // Name tag
     var style = { font: "18px Arial", fill: "#000", align: "center" }
@@ -46,12 +59,67 @@ class Ape extends Phaser.Sprite {
 
     this.addChild(this.nametag);
 
-    //Powerups
+    // Powerups
     this.powerupActive = false;
-    this.currentPowerup = POWERUP.SHIELD;
+    //this.currentPowerup = POWERUP.SHIELD;
+    this.powerupCollection = [];
+    for (var i = 0; i < POWERUPS.length; i++) {
+      this.powerupCollection.push(0);
+    }
+
+    // Power up icons
+    this.createPowerupLegend();
 
     //Life
     this.isDead = false;
+  }
+
+  createPowerupLegend() {
+    var margin = 20;
+    var offset = 2;
+    var scale = 0.7;
+    var x = margin;
+    var y = config.CANVAS_HEIGHT - (config.TILE_SIZE * scale) - margin;
+    var delta = (config.TILE_SIZE * scale) + offset;
+
+    this.powerupLegend = {};
+
+    // TODO Make power ups more general
+    for (var i = 0; i < POWERUPS.length; i++) {
+      var powerup = {};
+
+      // Group together
+      var powerupGroup = this.game.add.group();
+      powerupGroup.fixedToCamera = true;
+      powerup.group = powerupGroup;
+
+      this.powerupLegend[i] = powerup;
+
+      // Button icon
+      powerup.button = this.game.add.sprite(x, y, spritesheets.buttons.name, POWERUPS[i].buttonFrameNumber);
+      powerup.button.scale.x = scale;
+      powerup.button.scale.y = scale;
+      powerupGroup.add(powerup.button);
+
+      // Power up icon
+      x += delta;
+      powerup.icon = this.game.add.sprite(x, y, spritesheets.misc.name, POWERUPS[i].frameNumber);
+      powerup.icon.scale.x = scale;
+      powerup.icon.scale.y = scale;
+      powerupGroup.add(powerup.icon);
+
+      // Text Counter
+      var style = { font: "28px Arial", fill: "#253659", boundsAlignV: "middle" };
+      x += delta;
+      powerup.text = this.game.add.text(x, y, "", style);
+      this.updatePowerupLegend(i);
+      powerup.text.setTextBounds(0, 0, config.TILE_SIZE, config.TILE_SIZE);
+      powerup.text.scale.x = scale;
+      powerup.text.scale.y = scale;
+      powerupGroup.add(powerup.text);
+
+      x += delta + (2 * offset);
+    }
   }
 
   moveLeft() {
@@ -88,16 +156,32 @@ class Ape extends Phaser.Sprite {
   }
 
   isInvincible() {
-    return this.powerupActive && this.currentPowerup === POWERUP.SHIELD;
+    return this.powerupActive && this.powerupShield;
   }
 
-  powerup() {
+  buttonDown(key, powerup) {
+    var powerupInfo = POWERUPS[powerup];
+    this.powerupLegend[powerup].button.frame = powerupInfo.buttonFrameNumber + 1;
+  }
+
+  buttonUp(key, powerup) {
+    var powerupInfo = POWERUPS[powerup];
+    this.powerupLegend[powerup].button.frame = powerupInfo.buttonFrameNumber;
+  }
+
+  // @param requestedPowerup (POWERUP enum)
+  powerup(key, requestedPowerup) {
     if (this.isDead) return;
 
-    switch(this.currentPowerup){
+    switch(requestedPowerup){
       case POWERUP.SHIELD:
-        if (!this.powerupActive) {
+
+        if (!this.powerupActive && this.powerupCollection[POWERUP.SHIELD] > 0) {
+          this.powerupCollection[POWERUP.SHIELD]--;
+          this.updatePowerupLegend(POWERUP.SHIELD);
+
           this.powerupActive = true;
+          this.powerupShield = true;
 
           var shieldImage = this.addChild(this.game.add.image(-32,-32, 'shield')); //TODO magic #
           this.game.time.events.add((Phaser.Timer.SECOND * SHIELD_TIME) - Phaser.Timer.HALF, function() {
@@ -107,46 +191,51 @@ class Ape extends Phaser.Sprite {
             tween.onComplete.add(function() {
               shieldImage.destroy();
               this.powerupActive = false;
+              this.powerupShield = false;
             }, this);
           }, this);
         }
         break;
       case POWERUP.BLINK:
-        //Poof!
-        var littlePoof = this.game.add.sprite(this.x - 32, this.y - 32, 'misc_spritesheet');
-        littlePoof.frame = 12;
-        var bigPoof = this.game.add.sprite(this.x - 32, this.y - 32,'misc_spritesheet');
-        bigPoof.frame = 13;
+        if (this.powerupCollection[POWERUP.BLINK] > 0) {
+          this.powerupCollection[POWERUP.BLINK]--;
+          this.updatePowerupLegend(POWERUP.BLINK);
+          //Poof!
+          var littlePoof = this.game.add.sprite(this.x - 32, this.y - 32, 'misc_spritesheet');
+          littlePoof.frame = 12;
+          var bigPoof = this.game.add.sprite(this.x - 32, this.y - 32,'misc_spritesheet');
+          bigPoof.frame = 13;
 
-        var bigPoofTween = this.game.add.tween(bigPoof).to({alpha: 0}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,false, 0, 0, false);
-        var littlePoofTween = this.game.add.tween(littlePoof).to({alpha:0}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,true, 0, 0, false);
-        this.game.time.events.add((Phaser.Timer.SECOND * POOF_TIME/2), function() {
-          bigPoofTween.start();
-          bigPoofTween.onComplete.add(function(){
-            bigPoof.destroy();
-            littlePoof.destroy();
+          var bigPoofTween = this.game.add.tween(bigPoof).to({alpha: 0}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,false, 0, 0, false);
+          var littlePoofTween = this.game.add.tween(littlePoof).to({alpha:0}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,true, 0, 0, false);
+          this.game.time.events.add((Phaser.Timer.SECOND * POOF_TIME/2), function() {
+            bigPoofTween.start();
+            bigPoofTween.onComplete.add(function(){
+              bigPoof.destroy();
+              littlePoof.destroy();
+            });
           });
-        });
 
-        //Raycast and determine future location
-        var gameMap = this.game.getMap();
-        var blinkRay = new Phaser.Line();
-        blinkRay.start.set(this.x, this.y);
-        blinkRay.end.set(this.x + BLINK_DISTANCE*this.scale.x, this.y);
-        var collidedTiles = gameMap.createdLayers['main'].getRayCastTiles(blinkRay, 4, true);
-        //collidedTiles.append(gameMap.createdLayers['colli'])
-        if(collidedTiles.length){
-          if(this.scale.x === 1){
-            this.x = collidedTiles[0].worldX - this.width/2;
+          //Raycast and determine future location
+          var gameMap = this.game.getMap();
+          var blinkRay = new Phaser.Line();
+          blinkRay.start.set(this.x, this.y);
+          blinkRay.end.set(this.x + BLINK_DISTANCE*this.scale.x, this.y);
+          var collidedTiles = gameMap.createdLayers['main'].getRayCastTiles(blinkRay, 4, true);
+          //collidedTiles.append(gameMap.createdLayers['colli'])
+          if(collidedTiles.length){
+            if(this.scale.x === 1){
+              this.x = collidedTiles[0].worldX - this.width/2;
+            } else {
+              this.x = collidedTiles[collidedTiles.length-1].worldX + collidedTiles[collidedTiles.length-1].width - this.width/2;
+            }
           } else {
-            this.x = collidedTiles[collidedTiles.length-1].worldX + collidedTiles[collidedTiles.length-1].width - this.width/2;
+            this.x += BLINK_DISTANCE * this.scale.x;
           }
-        } else {
-          this.x += BLINK_DISTANCE * this.scale.x;
-        }
 
-        //Move the big poof
-        bigPoof.x = (this.x-32 + bigPoof.x)/2;
+          //Move the big poof
+          bigPoof.x = (this.x-32 + bigPoof.x)/2;
+        }
         break;
       default:
         break;
@@ -155,9 +244,27 @@ class Ape extends Phaser.Sprite {
 
   grabPowerup(powerupName){
     var newPowerup = POWERUP[powerupName];
-    if(!newPowerup) return;
+    if(newPowerup === POWERUP.NONE) return;
 
-    this.currentPowerup = newPowerup;
+    this.powerupCollection[newPowerup] += POWERUPS[newPowerup].quantity;
+    this.updatePowerupLegend(newPowerup);
+
+    //this.currentPowerup = newPowerup;
+  }
+
+  updatePowerupLegend(powerupEnum) {
+    var numAvailable = this.powerupCollection[powerupEnum];
+    var legend = this.powerupLegend[powerupEnum];
+    legend.text.setText("x" + numAvailable);
+
+    var fade = 0.5;
+    if (numAvailable <= 0) {
+      legend.icon.alpha = fade;
+      legend.text.alpha = fade;
+    } else {
+      legend.icon.alpha = 1;
+      legend.text.alpha = 1;
+    }
   }
 
   die() {

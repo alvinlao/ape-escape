@@ -17,6 +17,12 @@
     "tests"
   ],
   "dependencies": {
-    "phaser": "~2.4.4"
+    "phaser": "~2.4.4",
+    "socket.io-client": "^1.4.5"
+  },
+  "overrides": {
+    "socket.io-client": {
+      "main": "socket.io.js"
+    }
   }
 }
