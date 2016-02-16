@@ -104,6 +104,7 @@ function create() {
       ape.y = 50;
 
       game.world.add(ape);
+      ape.createPowerupLegend();
     }
     loadingLevel = false;
   }
