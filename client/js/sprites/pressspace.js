@@ -19,6 +19,12 @@ class PressSpace extends Phaser.Sprite {
 
     this.spacebar.onDown.add(this.down, this, 0);
     this.spacebar.onUp.add(this.up, this, 0);
+
+    // Mouse press
+    this.inputEnabled = true;
+    this.input.useHandCursor = true;
+    this.events.onInputDown.add(this.down, this);
+    this.events.onInputUp.add(this.up, this);
   }
 
   down() {
