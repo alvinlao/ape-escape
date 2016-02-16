@@ -51,8 +51,14 @@ function create() {
   game.time.desiredFps = 60;
 
   // Input
+  var controls = config.APE.CONTROLS;
+  var keys = [];
+  for (var control in controls) {
+    var action = controls[control];
+    keys.push(action.BUTTON);
+  }
   cursors = game.input.keyboard.createCursorKeys();
-  game.input.keyboard.addKeyCapture([Phaser.KeyCode.Z, Phaser.KeyCode.X]);
+  game.input.keyboard.addKeyCapture(keys);
 
   // Active Traps
   activeTraps = game.add.group();
@@ -104,7 +110,7 @@ function create() {
       ape.y = 50;
 
       game.world.add(ape);
-      ape.createPowerupLegend();
+      ape.refresh();
     }
     loadingLevel = false;
   }

@@ -18,7 +18,42 @@ module.exports = {
   APE: {
     SPEED: 350,
     JUMP_SPEED: 850,
-    BLINK_DISTANCE: 100
+    BLINK_DISTANCE: 100,
+    SHIELD_TIME: 1.5,     // In seconds
+
+    POWERUPS: {
+      BLINK: {
+        INITIAL_QUANTITY: 0,
+        FRAMENUMBER: 3
+      },
+      SHIELD: {
+        INITIAL_QUANTITY: 0,
+        FRAMENUMBER: 2
+      }
+    },
+
+    CONTROLS: {
+      JUMP: {
+        BUTTON: Phaser.KeyCode.UP,
+        FRAMENUMBER: 4
+      },
+      LEFT: {
+        BUTTON: Phaser.KeyCode.LEFT,
+        FRAMENUMBER: 8
+      },
+      RIGHT: {
+        BUTTON: Phaser.KeyCode.RIGHT,
+        FRAMENUMBER: 6
+      },
+      BLINK: {
+        BUTTON: Phaser.KeyCode.Z,
+        FRAMENUMBER: 0
+      },
+      SHIELD: {
+        BUTTON: Phaser.KeyCode.X,
+        FRAMENUMBER: 2
+      }
+    }
   },
 
   TELEPORTER_TIME: 3
