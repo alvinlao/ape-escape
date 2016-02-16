@@ -33,13 +33,13 @@ module.exports = {
     },
 
     CONTROLS: {
-      JUMP: {
-        BUTTON: Phaser.KeyCode.UP,
-        FRAMENUMBER: 4
-      },
       LEFT: {
         BUTTON: Phaser.KeyCode.LEFT,
         FRAMENUMBER: 8
+      },
+      JUMP: {
+        BUTTON: Phaser.KeyCode.UP,
+        FRAMENUMBER: 4
       },
       RIGHT: {
         BUTTON: Phaser.KeyCode.RIGHT,

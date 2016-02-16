@@ -4,7 +4,8 @@ var config = require('./config.js');
 var POWERUPS = config.APE.POWERUPS;
 var CONTROLS = config.APE.CONTROLS;
 
-var MARGIN = 20;    // distance from edge of screen
+var MARGINX = 100;   // distance from edge of screen (x)
+var MARGINY = 20;   // distance from edge of screen (y)
 var OFFSET = 2;     // distance from each element
 var SCALE = 0.7;    // scale images
 
@@ -15,14 +16,16 @@ class ApeHUD extends Phaser.Group {
     super(game);
     game.add.existing(this);
 
+    this.buttons = buttons;
+
     this.createPowerupLegend(powerupInventory);
     this.createMovementLegend();
-    this.bindButtons(buttons);
+    this.bindButtons();
   }
 
   createPowerupLegend(powerupInventory) {
-    var x = MARGIN;
-    var y = config.CANVAS_HEIGHT - (config.TILE_SIZE * SCALE) - MARGIN;
+    var x = MARGINX;
+    var y = config.CANVAS_HEIGHT - (config.TILE_SIZE * SCALE) - MARGINY;
     var delta = (config.TILE_SIZE * SCALE) + OFFSET;
 
     this.powerupLegend = {};
@@ -67,6 +70,38 @@ class ApeHUD extends Phaser.Group {
   }
 
   createMovementLegend() {
+    this.movementLegend = {};
+
+    // Group everything together
+    var movementGroup = new Phaser.Group(this.game, this);
+    movementGroup.fixedToCamera = true;
+    this.movementLegend.group = movementGroup;
+
+    // Draw key
+    function drawKey(x, y, frameNumber, button) {
+      var buttonSprite = this.game.add.sprite(x, y, spritesheets.buttons.name, frameNumber);
+      this.movementLegend[button] = {
+        button: buttonSprite
+      };
+      movementGroup.add(buttonSprite);
+
+      buttonSprite.scale.x = SCALE;
+      buttonSprite.scale.y = SCALE;
+    }
+
+    // Draw positions
+    var x = config.CANVAS_WIDTH - (config.TILE_SIZE * SCALE) - MARGINX;
+    var y = config.CANVAS_HEIGHT - (config.TILE_SIZE * SCALE) - MARGINY;
+    var delta = (config.TILE_SIZE * SCALE) + OFFSET;
+
+    // Determines draw order (right to left)
+    var keys = ['RIGHT', 'JUMP', 'LEFT'];
+    for (var i = 0; i < keys.length; ++i) {
+      var key = keys[i];
+      drawKey.call(this, x, y, CONTROLS[key].FRAMENUMBER, key);
+
+      x -= delta;
+    }
   }
 
   // @param powerupName (POWERUPS._.NAME)
@@ -84,18 +119,9 @@ class ApeHUD extends Phaser.Group {
     }
   }
 
-  destroy() {
-    super.destroy();
-
-    // Remove key bindings
-    this.unbindButtons();
-  }
-
-  bindButtons(buttons) {
-    this.buttons = buttons;
-
-    for (var button in buttons) {
-      var key = buttons[button];
+  bindButtons() {
+    for (var button in this.buttons) {
+      var key = this.buttons[button];
 
       key.onDown.add(this.buttonDown, this, 0, button);
       key.onUp.add(this.buttonUp, this, 0, button);
@@ -115,19 +141,29 @@ class ApeHUD extends Phaser.Group {
     var context;
     if (control in POWERUPS) {
       context = this.powerupLegend[control];
-      context.button.frame = CONTROLS[control].FRAMENUMBER + 1;
     } else {
+      context = this.movementLegend[control];
     }
 
+    context.button.frame = CONTROLS[control].FRAMENUMBER + 1;
   }
 
   buttonUp(key, control) {
     var context;
     if (control in POWERUPS) {
       context = this.powerupLegend[control];
-      context.button.frame = CONTROLS[control].FRAMENUMBER;
     } else {
+      context = this.movementLegend[control];
     }
+
+    context.button.frame = CONTROLS[control].FRAMENUMBER;
+  }
+
+  destroy() {
+    super.destroy();
+
+    // Remove key bindings
+    this.unbindButtons();
   }
 }
 
