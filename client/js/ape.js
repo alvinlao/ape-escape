@@ -1,23 +1,19 @@
-var spritesheets = require('./spritesheets.js');
-var config = require('./config.js');
+var spritesheets = require('./util/spritesheets.js');
+var config = require('./util/config.js');
+
+var ApeHUD = require('./apehud.js');
 
 var SPEED = config.APE.SPEED;
 var JUMP_SPEED = config.APE.JUMP_SPEED;
-var POWERUPS = [
-  {name: 'blink', frameNumber: 3, buttonFrameNumber: 0, quantity: 3},
-  {name: 'shield', frameNumber: 2, buttonFrameNumber: 2, quantity: 1}
-];
 
-var POWERUP  = {
-  NONE: -1,
-  BLINK: 0,
-  SHIELD: 1,
-};
+var POWERUPS = config.APE.POWERUPS;
+var POWERUP = config.APE.POWERUP;
+
 var BLINK_DISTANCE = config.APE.BLINK_DISTANCE;
 
 // In seconds
 // NOTE: Last half second of the shield will start fading out
-var SHIELD_TIME = 2;
+var SHIELD_TIME = config.APE.SHIELD_TIME;
 
 //Entire duration of poof (in seconds)
 var POOF_TIME = 0.35;
@@ -27,6 +23,7 @@ class Ape extends Phaser.Sprite {
     super(game, x, y, spritesheets.ape.name);
     game.add.existing(this);
 
+    // Sprite
     this.anchor.setTo(0.5, 0.5);
     this.animations.add('walk', [0, 1], 10, true);
     this.animations.add('jump', [4, 5], 10, true);
@@ -41,16 +38,23 @@ class Ape extends Phaser.Sprite {
     this.body.collideWorldBounds = true;
 
     // Input
-    // NOTE: Need to add to key capture in "main.js"
-    var zButton = game.input.keyboard.addKey(Phaser.KeyCode.Z);
-    var xButton = game.input.keyboard.addKey(Phaser.KeyCode.X);
-    zButton.onDown.add(this.powerup, this, 0, POWERUP.BLINK);
-    xButton.onDown.add(this.powerup, this, 0, POWERUP.SHIELD);
+    this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
+    this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
+    this.rightKey = game.input.keyboard.addKey(config.APE.CONTROLS.RIGHT.BUTTON);
+    this.blinkKey = game.input.keyboard.addKey(config.APE.CONTROLS.BLINK.BUTTON);
+    this.shieldKey = game.input.keyboard.addKey(config.APE.CONTROLS.SHIELD.BUTTON);
 
-    zButton.onDown.add(this.buttonDown, this, 0, POWERUP.BLINK);
-    xButton.onDown.add(this.buttonDown, this, 0, POWERUP.SHIELD);
-    zButton.onUp.add(this.buttonUp, this, 0, POWERUP.BLINK);
-    xButton.onUp.add(this.buttonUp, this, 0, POWERUP.SHIELD);
+    this.buttons = {
+      'JUMP': this.jumpKey,
+      'LEFT': this.leftKey,
+      'RIGHT': this.rightKey,
+      'BLINK': this.blinkKey,
+      'SHIELD': this.shieldKey
+    }
+
+    // Bind powerup keys
+    this.blinkKey.onDown.add(this.powerup, this, 0, 'BLINK');
+    this.shieldKey.onDown.add(this.powerup, this, 0, 'SHIELD');
 
     // Name tag
     var style = { font: "18px Arial", fill: "#000", align: "center" }
@@ -60,66 +64,23 @@ class Ape extends Phaser.Sprite {
     this.addChild(this.nametag);
 
     // Powerups
-    this.powerupActive = false;
-    //this.currentPowerup = POWERUP.SHIELD;
-    this.powerupCollection = [];
-    for (var i = 0; i < POWERUPS.length; i++) {
-      this.powerupCollection.push(0);
-    }
+    this.shieldActive = false;
 
-    // Power up icons
-    this.createPowerupLegend();
+    this.powerupInventory = {};
+    for (var key in POWERUPS) {
+      var powerup = POWERUPS[key];
+      this.powerupInventory[key] = powerup.INITIAL_QUANTITY;
+    }
 
     //Life
     this.isDead = false;
+
+    this.refresh();
   }
 
-  createPowerupLegend() {
-    var margin = 20;
-    var offset = 2;
-    var scale = 0.7;
-    var x = margin;
-    var y = config.CANVAS_HEIGHT - (config.TILE_SIZE * scale) - margin;
-    var delta = (config.TILE_SIZE * scale) + offset;
-
-    this.powerupLegend = {};
-
-    // TODO Make power ups more general
-    for (var i = 0; i < POWERUPS.length; i++) {
-      var powerup = {};
-
-      // Group together
-      var powerupGroup = this.game.add.group();
-      powerupGroup.fixedToCamera = true;
-      powerup.group = powerupGroup;
-
-      this.powerupLegend[i] = powerup;
-
-      // Button icon
-      powerup.button = this.game.add.sprite(x, y, spritesheets.buttons.name, POWERUPS[i].buttonFrameNumber);
-      powerup.button.scale.x = scale;
-      powerup.button.scale.y = scale;
-      powerupGroup.add(powerup.button);
-
-      // Power up icon
-      x += delta;
-      powerup.icon = this.game.add.sprite(x, y, spritesheets.misc.name, POWERUPS[i].frameNumber);
-      powerup.icon.scale.x = scale;
-      powerup.icon.scale.y = scale;
-      powerupGroup.add(powerup.icon);
-
-      // Text Counter
-      var style = { font: "28px Arial", fill: "#253659", boundsAlignV: "middle" };
-      x += delta;
-      powerup.text = this.game.add.text(x, y, "", style);
-      this.updatePowerupLegend(i);
-      powerup.text.setTextBounds(0, 0, config.TILE_SIZE, config.TILE_SIZE);
-      powerup.text.scale.x = scale;
-      powerup.text.scale.y = scale;
-      powerupGroup.add(powerup.text);
-
-      x += delta + (2 * offset);
-    }
+  // Rebuild after world clear
+  refresh() {
+    this.hud = new ApeHUD(this.game, this.powerupInventory, this.buttons);
   }
 
   moveLeft() {
@@ -156,17 +117,7 @@ class Ape extends Phaser.Sprite {
   }
 
   isInvincible() {
-    return this.powerupActive && this.powerupShield;
-  }
-
-  buttonDown(key, powerup) {
-    var powerupInfo = POWERUPS[powerup];
-    this.powerupLegend[powerup].button.frame = powerupInfo.buttonFrameNumber + 1;
-  }
-
-  buttonUp(key, powerup) {
-    var powerupInfo = POWERUPS[powerup];
-    this.powerupLegend[powerup].button.frame = powerupInfo.buttonFrameNumber;
+    return this.shieldActive;
   }
 
   // @param requestedPowerup (POWERUP enum)
@@ -174,32 +125,41 @@ class Ape extends Phaser.Sprite {
     if (this.isDead) return;
 
     switch(requestedPowerup){
-      case POWERUP.SHIELD:
+      case 'SHIELD':
 
-        if (!this.powerupActive && this.powerupCollection[POWERUP.SHIELD] > 0) {
-          this.powerupCollection[POWERUP.SHIELD]--;
-          this.updatePowerupLegend(POWERUP.SHIELD);
+        if (!this.shieldActive && this.powerupInventory.SHIELD > 0) {
+          // Use a shield
+          this.hud.updatePowerupLegend(
+              'SHIELD',
+              --this.powerupInventory.SHIELD
+              );
 
-          this.powerupActive = true;
-          this.powerupShield = true;
+          // Flag
+          this.shieldActive = true;
 
+          // Display bubble
           var shieldImage = this.addChild(this.game.add.image(-32,-32, 'shield')); //TODO magic #
+
+          // Remove bubble
           this.game.time.events.add((Phaser.Timer.SECOND * SHIELD_TIME) - Phaser.Timer.HALF, function() {
             // Make the shield fade out during last half second
             var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
 
             tween.onComplete.add(function() {
               shieldImage.destroy();
-              this.powerupActive = false;
-              this.powerupShield = false;
+              this.shieldActive = false;
             }, this);
           }, this);
         }
         break;
-      case POWERUP.BLINK:
-        if (this.powerupCollection[POWERUP.BLINK] > 0) {
-          this.powerupCollection[POWERUP.BLINK]--;
-          this.updatePowerupLegend(POWERUP.BLINK);
+      case 'BLINK':
+        if (this.powerupInventory.BLINK > 0) {
+          // Use a blink
+          this.hud.updatePowerupLegend(
+              'BLINK',
+              --this.powerupInventory.BLINK
+              );
+
           //Poof!
           var littlePoof = this.game.add.sprite(this.x - 32, this.y - 32, 'misc_spritesheet');
           littlePoof.frame = 12;
@@ -242,29 +202,17 @@ class Ape extends Phaser.Sprite {
     }
   }
 
-  grabPowerup(powerupName){
-    var newPowerup = POWERUP[powerupName];
-    if(newPowerup === POWERUP.NONE) return;
-
-    this.powerupCollection[newPowerup] += POWERUPS[newPowerup].quantity;
-    this.updatePowerupLegend(newPowerup);
-
-    //this.currentPowerup = newPowerup;
-  }
-
-  updatePowerupLegend(powerupEnum) {
-    var numAvailable = this.powerupCollection[powerupEnum];
-    var legend = this.powerupLegend[powerupEnum];
-    legend.text.setText("x" + numAvailable);
-
-    var fade = 0.5;
-    if (numAvailable <= 0) {
-      legend.icon.alpha = fade;
-      legend.text.alpha = fade;
-    } else {
-      legend.icon.alpha = 1;
-      legend.text.alpha = 1;
+  grabPowerup(powerupName, quantity){
+    if (!(powerupName in POWERUPS)) {
+      console.warn("Invalid powerup name: " + powerupName);
+      return;
     }
+
+    this.powerupInventory[powerupName] += quantity
+    this.hud.updatePowerupLegend(
+        powerupName,
+        this.powerupInventory[powerupName]
+        );
   }
 
   die() {
@@ -276,25 +224,23 @@ class Ape extends Phaser.Sprite {
     }
   }
 
-  update(cursors) {
-    if (!cursors) return;
-
+  update() {
     //Do nothing if dead
     if(this.isDead) return;
 
-    if (!cursors.left.isDown) {
+    if (!this.leftKey.isDown) {
       this.leftDownTime = -1;
     }
 
-    if (!cursors.right.isDown) {
+    if (!this.rightKey.isDown) {
       this.rightDownTime = -1;
     }
 
-    if (cursors.left.isDown && this.leftDownTime === -1) {
+    if (this.leftKey.isDown && this.leftDownTime === -1) {
       this.leftDownTime = this.rightDownTime + 1;
     }
 
-    if (cursors.right.isDown && this.rightDownTime === -1) {
+    if (this.rightKey.isDown && this.rightDownTime === -1) {
       this.rightDownTime = this.leftDownTime + 1;
     }
 
@@ -308,7 +254,7 @@ class Ape extends Phaser.Sprite {
       this.stop();
     }
 
-    if (cursors.up.isDown) {
+    if (this.jumpKey.isDown) {
       this.jump();
     }
   }

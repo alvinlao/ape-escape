@@ -1,5 +1,5 @@
-var config = require('./config.js');
-var spritesheets = require('./spritesheets.js');
+var config = require('./util/config.js');
+var spritesheets = require('./util/spritesheets.js');
 
 var Ape = require('./ape.js');
 var Map = require('./map.js');
@@ -51,8 +51,14 @@ function create() {
   game.time.desiredFps = 60;
 
   // Input
+  var controls = config.APE.CONTROLS;
+  var keys = [];
+  for (var control in controls) {
+    var action = controls[control];
+    keys.push(action.BUTTON);
+  }
   cursors = game.input.keyboard.createCursorKeys();
-  game.input.keyboard.addKeyCapture([Phaser.KeyCode.Z, Phaser.KeyCode.X]);
+  game.input.keyboard.addKeyCapture(keys);
 
   // Active Traps
   activeTraps = game.add.group();
@@ -104,7 +110,7 @@ function create() {
       ape.y = 50;
 
       game.world.add(ape);
-      ape.createPowerupLegend();
+      ape.refresh();
     }
     loadingLevel = false;
   }
@@ -133,7 +139,8 @@ function update() {
   game.physics.arcade.overlap(ape, map.createdLayers['powerups'], function(sprite, tile){
     //TODO why does it call this all the time?
     if(tile.index===-1) return;
-    ape.grabPowerup(tile.properties.powerup);
+
+    ape.grabPowerup(tile.properties.powerup, parseInt(tile.properties.quantity));
     map.removeTile(tile.x,tile.y, map.createdLayers['powerups']);
   },null,this);
 

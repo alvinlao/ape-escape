@@ -158,11 +158,13 @@
             {
              "2":
                 {
-                 "powerup":"SHIELD"
+                 "powerup":"SHIELD",
+                 "quantity":"1"
                 },
              "3":
                 {
-                 "powerup":"BLINK"
+                 "powerup":"BLINK",
+                 "quantity":"3"
                 }
             },
          "tilewidth":64

@@ -42,11 +42,13 @@
   <tile id="2">
    <properties>
     <property name="powerup" value="SHIELD"/>
+    <property name="quantity" value="1"/>
    </properties>
   </tile>
   <tile id="3">
    <properties>
     <property name="powerup" value="BLINK"/>
+    <property name="quantity" value="3"/>
    </properties>
   </tile>
  </tileset>
