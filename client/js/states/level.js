@@ -4,15 +4,22 @@ var spritesheets = require('../util/spritesheets.js');
 var Ape = require('../entities/ape.js');
 var Map = require('../map.js');
 
-var ape;
-
-var map, layer;
-var activeTraps, dropTraps;
-
-var loadingLevel = false;
-var currentLevelId = -1; //No level
+var GameOver = require('../sprites/gameover.js');
 
 class LevelState extends Phaser.State {
+  init() {
+    this.ape = null;
+    this.map = null;
+    this.layer = null;
+
+    this.activeTraps = null;
+    this.dropTraps = null;
+
+    this.loadingLevel = false;
+    this.currentLevelId = -1;
+    this.gameover = null;
+  }
+
   create() {
     super.create();
 
@@ -28,72 +35,72 @@ class LevelState extends Phaser.State {
     game.input.keyboard.addKeyCapture(keys);
 
     // Active Traps
-    activeTraps = game.add.group();
+    this.activeTraps = game.add.group();
 
     // Drop traps
-    dropTraps = game.add.group();
+    this.dropTraps = game.add.group();
 
     // Needed for raycasting so that objects can query
-    game.getMap = function() {
-      return map;
-    }
+    game.getMap = (function() {
+      return this.map;
+    }).bind(this);
 
     // Needed for adding and removing traps
-    game.getActiveTraps = function() {
-      return activeTraps;
-    }
+    game.getActiveTraps = (function() {
+      return this.activeTraps;
+    }).bind(this);
 
-    game.getDropTraps = function() {
-      return dropTraps;
-    }
+    game.getDropTraps = (function() {
+      return this.dropTraps;
+    }).bind(this);
 
     // Swap maps
-    game.loadLevel = function(levelName) {
-      if(map){
+    game.loadLevel = (function(levelName) {
+      if(this.map){
         //Destroy the previous level
-        for(var level in map.createdLayers){
-          map.createdLayers[level].destroy();
+        for(var level in this.map.createdLayers){
+          this.map.createdLayers[level].destroy();
         }
-        map.destroy();
+        this.map.destroy();
 
         // Clean up all the objects
         game.world.children.forEach(function(child) {
-          if (child !== ape) {
+          if (child !== this.ape) {
             child.destroy();
           }
-        });
+        }, this);
         game.world.removeAll();
       }
 
-      map = new Map(game, levelName,
+      this.map = new Map(game, levelName,
           [
             spritesheets.tiles.name,
             spritesheets.misc.name,
             spritesheets.traps.name
           ], 2);
 
-      if(ape){
-        ape.x = 100;
-        ape.y = 50;
+      if(this.ape){
+        this.ape.x = 100;
+        this.ape.y = 50;
 
-        game.world.add(ape);
-        ape.refresh();
+        game.world.add(this.ape);
+        this.ape.refresh();
       }
-      loadingLevel = false;
-    }
+      this.loadingLevel = false;
+    }).bind(this);
 
-    game.loadNextLevel = function(){
-      game.loadLevel(game.levelOrder[++currentLevelId]);
-    }
+    game.loadNextLevel = (function(){
+      game.loadLevel(game.levelOrder[++this.currentLevelId]);
+    }).bind(this);
 
     //Load the first level
     game.loadNextLevel();
 
     // Entities
-    ape = new Ape(game, 100, 50, "Mr. Ape");
+    this.ape = new Ape(game, 100, 50, "Mr. Ape");
 
-    game.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    game.camera.follow(ape);
+    game.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    game.camera.follow(this.ape);
   }
 
   update() {
@@ -102,42 +109,49 @@ class LevelState extends Phaser.State {
     var game = this.game;
 
     // SPIKES!
-    game.physics.arcade.collide(ape, map.createdLayers['spikes'], function(){
-      ape.die();
-    });
+    game.physics.arcade.collide(this.ape, this.map.createdLayers['spikes'], function(){
+      this.ape.die();
+    }, null, this);
 
     // Powerups
-    game.physics.arcade.overlap(ape, map.createdLayers['powerups'], function(sprite, tile){
+    game.physics.arcade.overlap(this.ape, this.map.createdLayers['powerups'], function(sprite, tile){
       //TODO why does it call this all the time?
       if(tile.index===-1) return;
 
-      ape.grabPowerup(tile.properties.powerup, parseInt(tile.properties.quantity));
-      map.removeTile(tile.x,tile.y, map.createdLayers['powerups']);
-    },null,this);
+      this.ape.grabPowerup(tile.properties.powerup, parseInt(tile.properties.quantity));
+      this.map.removeTile(tile.x,tile.y, this.map.createdLayers['powerups']);
+    }, null, this);
 
     //Load next level!
-    game.physics.arcade.overlap(ape, map.createdLayers['teleporters'], function(sprite, tile){
-      if(tile.index===-1 || loadingLevel) return;
+    game.physics.arcade.overlap(this.ape, this.map.createdLayers['teleporters'], function(sprite, tile){
+      if(tile.index===-1 || this.loadingLevel) return;
 
       // Change teleporter color
       tile.teleporter.go();
 
-      loadingLevel = true;
+      this.loadingLevel = true;
       game.time.events.add((Phaser.Timer.SECOND * 1), function() {
         //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
         game.loadNextLevel();
       });
-    });
+    }, null, this);
 
     // Blocks
-    game.physics.arcade.collide(ape, [map.createdLayers['main'], dropTraps]);
+    game.physics.arcade.collide(this.ape, [this.map.createdLayers['main'], this.dropTraps]);
 
     // Active Traps
-    game.physics.arcade.overlap(ape, activeTraps, function(ape, trap) {
-      ape.die();
-    });
+    game.physics.arcade.overlap(this.ape, this.activeTraps, function(ape, trap) {
+      this.ape.die();
+    }, null, this);
 
-    ape.update();
+    this.ape.update();
+
+    // Game over screen
+    if (this.ape.isDead && this.gameover === null) {
+      var currentLevel = this.currentLevelId;
+      var totalLevels = game.levelOrder.length;
+      this.gameover = new GameOver(game, currentLevel, totalLevels);
+    }
   }
 }
 

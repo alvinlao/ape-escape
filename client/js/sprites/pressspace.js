@@ -2,17 +2,16 @@ var spritesheets = require('../util/spritesheets.js');
 
 class PressSpace extends Phaser.Sprite {
   constructor(game, x, y, callback, callbackContext) {
-    super(game, x, y);
+    super(game, x, y, spritesheets.spacebar.name);
     game.add.existing(this);
 
     this.callback = callback;
     this.callbackContext = callbackContext;
 
     // Animated space bar
-    this.spacebarSprite = game.add.sprite(x, y, spritesheets.spacebar.name);
-    this.spacebarSprite.anchor.setTo(0.5);
-    this.spacebarSprite.animations.add('tap', [0, 1], 2, true);
-    this.spacebarSprite.animations.play('tap');
+    this.anchor.setTo(0.5);
+    this.animations.add('tap', [0, 1], 2, true);
+    this.animations.play('tap');
 
     // Listen for input
     game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR);
@@ -23,15 +22,15 @@ class PressSpace extends Phaser.Sprite {
   }
 
   down() {
-    this.spacebarSprite.animations.stop();
-    this.spacebarSprite.frame = 1;
+    this.animations.stop();
+    this.frame = 1;
 
     // Unbind
     this.spacebar.onDown.remove(this.down, this);
   }
 
   up() {
-    this.spacebarSprite.frame = 0;
+    this.frame = 0;
     this.spacebar.onUp.remove(this.up, this);
 
     this.game.time.events.add(Phaser.Timer.HALF, function() {

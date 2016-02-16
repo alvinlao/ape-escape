@@ -1,7 +1,7 @@
 var spritesheets = require('../util/spritesheets.js');
 var config = require('../util/config.js');
 
-var PressSpace = require('../entities/pressspace.js');
+var PressSpace = require('../sprites/pressspace.js');
 
 class TitleState extends Phaser.State {
   create() {
