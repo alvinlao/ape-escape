@@ -163,8 +163,7 @@ class LevelState extends Phaser.State {
         this.ape,
         this.activeTraps,
         function(ape, trap) {
-          trap.killedPlayer = true;
-          this.ape.die(trap.getDeathMessage());
+          trap.killedPlayer = this.ape.die(trap.getDeathMessage());
         },
         function(ape, trap) {
           // Give the ape a margin of error

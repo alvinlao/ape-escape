@@ -24,7 +24,7 @@ class LobbyState extends Phaser.State {
 
     // Lobby
     var style = { font: "72px Arial", fill: "#253659", align: "center" };
-    var title = game.add.text(config.CANVAS_WIDTH / 2, config.CANVAS_HEIGHT / 2 + titleYOffset, "Lobby", style);
+    var title = game.add.text(config.CANVAS_WIDTH / 2 + 0.5, config.CANVAS_HEIGHT / 2 + titleYOffset, "Lobby", style);
     title.anchor.set(0.5);
 
     // Buttons

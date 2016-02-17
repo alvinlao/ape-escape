@@ -27,18 +27,6 @@ module.exports = {
     name: 'buttons',
     file: 'assets/buttons.png'
   },
-  spacebar: {
-    name: 'spacebar',
-    file: 'assets/spacebar.png'
-  },
-  apeButton: {
-    name: 'apebutton',
-    file: 'assets/ape_button.png'
-  },
-  zookeeperButton: {
-    name: 'zookeeperbutton',
-    file: 'assets/zookeeper_button.png'
-  },
   bluebutton2: {
     name: 'bluebutton2',
     file: 'assets/button_2_blue_spritesheet.png'

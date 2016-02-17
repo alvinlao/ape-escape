@@ -10,8 +10,8 @@ class TitleState extends Phaser.State {
 
     var game = this.game;
 
-    var x = config.CANVAS_WIDTH / 2;
-    var y = config.CANVAS_HEIGHT / 2;
+    var x = Math.floor(config.CANVAS_WIDTH / 2) + 0.5;
+    var y = Math.floor(config.CANVAS_HEIGHT / 2);
     var titleYOffset = -50;
     var spaceYOffset = 80;
 

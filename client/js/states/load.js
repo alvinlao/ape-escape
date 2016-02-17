@@ -16,10 +16,6 @@ class LoadState extends Phaser.State {
     game.load.spritesheet(spritesheets.redbutton2.name, spritesheets.redbutton2.file, 128, 64);
     game.load.spritesheet(spritesheets.redbutton4.name, spritesheets.redbutton4.file, 256, 64);
 
-    game.load.spritesheet(spritesheets.spacebar.name, spritesheets.spacebar.file, 256, 64);
-    game.load.spritesheet(spritesheets.apeButton.name, spritesheets.apeButton.file, 128, 64);
-    game.load.spritesheet(spritesheets.zookeeperButton.name, spritesheets.zookeeperButton.file, 256, 64);
-
     for (var i = 0; i < game.levelOrder.length; i++) {
       var levelName = game.levelOrder[i]
       game.load.tilemap(levelName, 'assets/maps/' + levelName + '.json', null, Phaser.Tilemap.TILED_JSON);

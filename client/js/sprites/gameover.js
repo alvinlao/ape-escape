@@ -30,7 +30,7 @@ class GameOver extends Phaser.Group {
 
     // Text
     var style = { font: "72px Arial", fill: "#ffffff", align: "center" };
-    var text = game.add.text(x, y + titleYOffset, causeOfDeath, style);
+    var text = game.add.text(x + 0.5, y + titleYOffset, causeOfDeath, style);
     text.anchor.set(0.5);
 
     this.addChild(text);
@@ -47,7 +47,8 @@ class GameOver extends Phaser.Group {
         function() {
           this.game.state.start('lobby');
         },
-        this
+        this,
+        true
       );
 
     this.addChild(pressspace);

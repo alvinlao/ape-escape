@@ -222,6 +222,9 @@ class Ape extends Phaser.Sprite {
       this.rotation = 1.5;
       this.isDead = true;
       this.causeOfDeath = causeOfDeath;
+      return true;
+    } else {
+      return false;
     }
   }
 

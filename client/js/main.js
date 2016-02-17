@@ -8,8 +8,14 @@ var LobbyState = require('./states/lobby.js');
 var LevelState = require('./states/level.js');
 
 // Phaser game
-//var game = new Phaser.Game(config.CANVAS_WIDTH, config.CANVAS_HEIGHT, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
-var game = new Phaser.Game(config.CANVAS_WIDTH, config.CANVAS_HEIGHT, Phaser.CANVAS, '');
+var gameConfig = {
+  width: config.CANVAS_WIDTH,
+  height: config.CANVAS_HEIGHT,
+  renderer: Phaser.CANVAS,
+  //resolution: window.devicePixelRatio
+}
+
+var game = new Phaser.Game(gameConfig);
 
 // Levels
 game.levelOrder = ["test", "level2"];
