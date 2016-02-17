@@ -35,6 +35,10 @@ var attachApe = function(socket){
 		//socket.game.y = position.y;
 		socket.broadcast.emit("ape:move", position);
 	});
+	socket.on("powerup", function(type){
+		console.log("powerup used: " + type);
+		socket.broadcast.emit("powerup", type);
+	});
 	//powerup
 	//death
 	//teleporter --> state.currentLevel++
