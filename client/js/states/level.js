@@ -15,6 +15,7 @@ class LevelState extends Phaser.State {
     this.dropTraps = null;
 
     this.loadingLevel = false;
+    this.loadedLevel = false;
     this.currentLevelId = -1;
     this.gameover = null;
   }
@@ -108,7 +109,7 @@ class LevelState extends Phaser.State {
         game.world.add(this.ape);
         this.ape.refresh();
       }
-      this.loadingLevel = false;
+      this.loadedLevel = true;
     }).bind(this);
 
     game.loadNextLevel = (function(){
@@ -196,6 +197,11 @@ class LevelState extends Phaser.State {
       var currentLevel = this.currentLevelId;
       var totalLevels = game.levelOrder.length;
       this.gameover = new GameOver(game, currentLevel, totalLevels, this.ape.causeOfDeath);
+    }
+
+    if (this.loadedLevel) {
+      this.loadedLevel = false;
+      this.loadingLevel = false;
     }
   }
 }

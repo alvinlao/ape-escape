@@ -4,6 +4,8 @@ module.exports = {
 
   TILE_SIZE: 64,
 
+  LEVELS: ["test", "level2", "level3"],
+
   PLAYER: {
     DEFAULT_NAME: "Mr. Ape"
   },
