@@ -2,6 +2,7 @@ var config = require('../util/config.js');
 var spritesheets = require('../util/spritesheets.js');
 var buttonconfig = require('../util/buttonconfig.js');
 var STATE = require('../util/state.js');
+var ROLE = require('../util/role.js');
 
 var TextButton = require('../sprites/textbutton.js');
 var Button = require('../sprites/button.js');
@@ -65,7 +66,11 @@ class LobbyState extends Phaser.State {
     });
 
     this.game.socket.on("start_game", function(numGuards){
-        game.state.start("level", true, false, numGuards);
+      if (game.role === ROLE.APE) {
+        game.state.start("apelevel", true, false, numGuards);
+      } else {
+        game.state.start("guardlevel", true, false, numGuards);
+      }
     });
   }
 }

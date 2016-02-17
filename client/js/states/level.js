@@ -16,7 +16,6 @@ class LevelState extends Phaser.State {
     this.ape = null;
     this.map = null;
 
-    this.activeTraps = null;
     this.dropTraps = null;
 
     this.loadingLevel = false;
@@ -43,7 +42,6 @@ class LevelState extends Phaser.State {
       this.game.world.removeAll();
     }
 
-    this.activeTraps.forEach(function(trap) { trap.destroy() });
     this.dropTraps.forEach(function(trap) { trap.destroy() });
     this.gameover.destroy();
   }
@@ -53,20 +51,12 @@ class LevelState extends Phaser.State {
 
     var game = this.game;
 
-    // Active Traps
-    this.activeTraps = [];
-
     // Drop traps
     this.dropTraps = [];
 
     // Needed for raycasting so that objects can query
     game.getMap = (function() {
       return this.map;
-    }).bind(this);
-
-    // Needed for adding and removing traps
-    game.getActiveTraps = (function() {
-      return this.activeTraps;
     }).bind(this);
 
     game.getDropTraps = (function() {
@@ -155,21 +145,6 @@ class LevelState extends Phaser.State {
       });
     }, null, this);
 
-    // Active Traps
-    game.physics.arcade.overlap(
-        this.ape,
-        this.activeTraps,
-        function(ape, trap) {
-          trap.killedPlayer = this.ape.die(trap.getDeathMessage());
-        },
-        function(ape, trap) {
-          // Give the ape a margin of error
-          return !(ape.bottom - trap.top >= 0 &&
-              ape.bottom - trap.top <= 1);
-        },
-        this
-      );
-
     // Blocks
     game.physics.arcade.collide(this.ape, this.map.createdLayers['main']);
 
@@ -180,11 +155,6 @@ class LevelState extends Phaser.State {
     game.physics.arcade.collide(this.ape, this.dropTraps, null, function(ape, trap) {
       return !trap.killedPlayer && !trap.active;
     });
-
-    // SPIKES!
-    game.physics.arcade.collide(this.ape, this.map.createdLayers['spikes'], function(){
-      this.ape.die(config.APE.DEATH.SPIKES);
-    }, null, this);
 
     if(game.role === ROLE.APE){
       this.ape.update();
