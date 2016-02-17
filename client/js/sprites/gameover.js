@@ -35,8 +35,7 @@ class GameOver extends Phaser.Group {
 
     // Press space
     var pressspace = new PressSpace(game, x, y + spaceYOffset, function() {
-      // TODO Move to lobby
-      this.game.state.start('title');
+      this.game.state.start('lobby');
     }, this);
 
     this.addChild(pressspace);

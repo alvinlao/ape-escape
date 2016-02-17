@@ -12,6 +12,8 @@ class LoadState extends Phaser.State {
 
     game.load.spritesheet(spritesheets.buttons.name, spritesheets.buttons.file, 64, 64);
     game.load.spritesheet(spritesheets.spacebar.name, spritesheets.spacebar.file, 256, 64);
+    game.load.spritesheet(spritesheets.apeButton.name, spritesheets.apeButton.file, 128, 64);
+    game.load.spritesheet(spritesheets.zookeeperButton.name, spritesheets.zookeeperButton.file, 256, 64);
 
     for (var i = 0; i < game.levelOrder.length; i++) {
       var levelName = game.levelOrder[i]

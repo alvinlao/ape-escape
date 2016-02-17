@@ -1,0 +1,28 @@
+body {
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+canvas {
+  margin: 0 auto;
+}
+
+#name {
+  display: none;
+
+  box-sizing: border-box;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  width: 400px;
+  top: 320px;
+
+  text-align: center;
+  padding: 8px;
+  font-size: 20px;
+  border-radius: 6px;
+  border: solid 1px #253659;
+}
