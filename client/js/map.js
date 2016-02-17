@@ -1,4 +1,4 @@
-var player = require('./util/player.js');
+var ROLE = require('./util/role.js');
 
 var FireTrap = require('./traps/firetrap.js');
 var DropTrap = require('./traps/droptrap.js');
@@ -74,25 +74,25 @@ class Map extends Phaser.Tilemap {
             var x = tile.x;
             var y = tile.y;
 
-            if (this.game.player === player.APE) {
+            if (this.game.role === ROLE.APE) {
               trap = new DropTrap(this.game, tile.worldX, tile.worldY);
-            } else if (this.game.player === player.GUARD) {
+            } else if (this.game.role === ROLE.GUARD) {
               trap = new DropTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards);
             }
             break;
           case "fire":
-            if (this.game.player === player.APE) {
+            if (this.game.role === ROLE.APE) {
               trap = new FireTrap(this.game, tile.worldX, tile.worldY);
-            } else if (this.game.player === player.GUARD) {
+            } else if (this.game.role === ROLE.GUARD) {
               trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards);
             }
             break;
           case "laser":
             var direction = tile.properties.direction;
 
-            if (this.game.player === player.APE) {
+            if (this.game.role === ROLE.APE) {
               trap = new LaserTrap(this.game, tile.worldX, tile.worldY);
-            } else if (this.game.player === player.GUARD) {
+            } else if (this.game.role === ROLE.GUARD) {
               trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards, direction, 3);
             }
             break;

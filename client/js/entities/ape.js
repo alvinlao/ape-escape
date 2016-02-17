@@ -1,6 +1,6 @@
 var spritesheets = require('../util/spritesheets.js');
 var config = require('../util/config.js');
-var ROLE = require('../util/player.js');
+var ROLE = require('../util/role.js');
 
 var ApeHUD = require('./apehud.js');
 
@@ -39,7 +39,7 @@ class Ape extends Phaser.Sprite {
     this.body.collideWorldBounds = true;
 
     //Controls
-    if(game.player === ROLE.APE){
+    if(game.role === ROLE.APE){
       this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
       this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
       this.rightKey = game.input.keyboard.addKey(config.APE.CONTROLS.RIGHT.BUTTON);
@@ -263,7 +263,7 @@ class Ape extends Phaser.Sprite {
 
   update() {
     //If we're the ape, update
-    if(this.game.player === ROLE.APE){
+    if(this.game.role === ROLE.APE){
       this.broadcastKeys();
     }
 

@@ -1,6 +1,6 @@
 var config = require('../util/config.js');
 var spritesheets = require('../util/spritesheets.js');
-var player = require('../util/player.js');
+var ROLE = require('../util/role.js');
 
 var Ape = require('../entities/ape.js');
 var Map = require('../map.js');
@@ -9,9 +9,8 @@ var TrapManager = require('../traps/trapmanager.js');
 var GameOver = require('../sprites/gameover.js');
 
 class LevelState extends Phaser.State {
-  init(info) {
-    this.game.player = info.player;
-    this.game.numGuards = info.numGuards;
+  init(numGuards) {
+    this.game.numGuards = numGuards;
     this.game.traps = new TrapManager();
 
     this.ape = null;
@@ -196,7 +195,7 @@ class LevelState extends Phaser.State {
       this.ape.die(config.APE.DEATH.SPIKES);
     }, null, this);
 
-    if(game.player === player.APE){
+    if(game.role === ROLE.APE){
       this.ape.update();
     }
 

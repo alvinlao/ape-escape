@@ -1,5 +1,4 @@
 var config = require('../util/config.js');
-var player = require('../util/player.js');
 var spritesheets = require('../util/spritesheets.js');
 var buttonconfig = require('../util/buttonconfig.js');
 var STATE = require('../util/state.js');
@@ -62,11 +61,11 @@ class LobbyState extends Phaser.State {
 
     this.game.socket.on("role", function(newRole){
         console.log("Role selected: " + newRole);
-        game.player = newRole;
+        game.role = newRole;
     });
 
     this.game.socket.on("start_game", function(numGuards){
-        game.state.start("level", true, false, { player: game.player, numGuards: numGuards });
+        game.state.start("level", true, false, numGuards);
     });
   }
 }
