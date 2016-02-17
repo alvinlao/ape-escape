@@ -230,7 +230,7 @@ class Ape extends Phaser.Sprite {
   }
 
   broadcastPosition(){
-    io.emit("move",{
+    this.game.socket.emit("move",{
       x: this.x,
       y: this.y
     });
@@ -239,7 +239,7 @@ class Ape extends Phaser.Sprite {
   update() {
     //If we're the ape, update
     if(this.game.player === ROLE.APE){
-      broadcastPosition();
+      this.broadcastPosition();
     }
 
     //Do nothing if dead

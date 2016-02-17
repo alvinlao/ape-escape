@@ -1,5 +1,6 @@
 var state = require("./state");
-var GAME_STATE = require("./models/GAME_STATE")
+var GAME_STATE = require("./models/GAME_STATE");
+var ROLE = require("./models/ROLE");
 
 var io;
 exports.attachIO = function(newio){
@@ -7,19 +8,22 @@ exports.attachIO = function(newio){
 }
 
 var startGame = function(){
+	console.log("Starting game...");
 	state.currentState = GAME_STATE.GAME;
-	io.emit("state", state.currentState);
 
 	var ape = Math.floor(Math.random()*(state.sockets.length-1));
 
 	//TODO there might be a better way to attach all this jazz
-	for(var i=0;i<state.sockets;i++){
+	for(var i=0;i<state.sockets.length;i++){
 		if(i==ape){
 			attachApe(state.sockets[i]);
+			state.sockets[i].emit("role", ROLE.APE);
 		} else {
 			attachJailer(state.sockets[i]);
+			state.sockets[i].emit("role", ROLE.JAILER);
 		}
 	}
+	io.emit("state", state.currentState);
 }
 
 var attachApe = function(socket){

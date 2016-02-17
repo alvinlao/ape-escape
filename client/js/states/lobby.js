@@ -2,6 +2,7 @@ var config = require('../util/config.js');
 var player = require('../util/player.js');
 var spritesheets = require('../util/spritesheets.js');
 var buttonconfig = require('../util/buttonconfig.js');
+var STATE = require('../util/state.js');
 
 var TextButton = require('../sprites/textbutton.js');
 var Button = require('../sprites/button.js');
@@ -38,7 +39,8 @@ class LobbyState extends Phaser.State {
         buttonconfig.BLUE_STYLE,
         Phaser.KeyCode.Z,
         function() {
-          this.game.state.start('level', true, false, player.APE);
+            this.game.socket.emit("player_ready");
+          //this.game.state.start('level', true, false, player.APE);
         },
         this
       );
@@ -54,10 +56,22 @@ class LobbyState extends Phaser.State {
         buttonconfig.RED_STYLE,
         Phaser.KeyCode.X,
         function() {
-          this.game.state.start('level', true, false, player.ZOOKEEPER);
+            this.game.socket.emit("player_ready");
+          //this.game.state.start('level', true, false, player.ZOOKEEPER);
         },
         this
       );
+
+    this.game.socket.on("role", function(newRole){
+        console.log("Role selected: " + newRole);
+        game.player = newRole;
+    });
+
+    this.game.socket.on("state", function(state){
+        if(state === STATE.GAME){
+            game.state.start("level", true, false, game.player);
+        }
+    });
   }
 }
 
