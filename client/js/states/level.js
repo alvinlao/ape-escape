@@ -194,7 +194,9 @@ class LevelState extends Phaser.State {
       this.ape.die(config.APE.DEATH.SPIKES);
     }, null, this);
 
-    this.ape.update();
+    if(game.player === player.APE){
+      this.ape.update();
+    }
 
     // Game over screen
     if (this.ape.isDead && this.gameover === null) {

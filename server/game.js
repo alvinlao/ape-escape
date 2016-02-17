@@ -31,12 +31,9 @@ var startGame = function(){
 var attachApe = function(socket){
 	socket.game = new Ape();
 	socket.on("move", function(position){
-		socket.game.x = position.x;
-		socket.game.y = position.y;
-		socket.broadcast.emit("ape:move", {
-			x: socket.game.x,
-			y: socket.game.y
-		});
+		//socket.game.x = position.x;
+		//socket.game.y = position.y;
+		socket.broadcast.emit("ape:move", position);
 	});
 	//powerup
 	//death

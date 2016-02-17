@@ -4,6 +4,7 @@ class BootState extends Phaser.State {
 
     var game = this.game;
     game.stage.backgroundColor = "#FFFFFF";
+    game.stage.disableVisibilityChange = true;
 
     // Physics
     game.physics.startSystem(Phaser.Physics.ARCADE);
