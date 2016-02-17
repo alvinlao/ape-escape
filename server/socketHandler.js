@@ -14,7 +14,7 @@ var attachIO = function(io){
 		lobby.joinLobby(socket);
 
 		socket.on("disconnect", function(){
-
+			console.log("User disconnected");
 			//Remove it from the array
 			state.sockets.splice(state.sockets.indexOf(socket), 1);
 		});

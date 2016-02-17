@@ -13,12 +13,20 @@ var joinLobby = function(socket){
 
 	//Lobby Handlers
 	var playerReady = function(){
-		newMember.ready = true;
-		console.log("Player " + newMember.name + " is ready.");
-		io.emit("lobby", lobby);
+		socket.lobby.ready = true;
+		console.log("Player " + socket.lobby.name + " is ready.");
+		
+		emitLobby();
 
 		//Start the game if we're ready
-		if(isReady(lobby)) startGame();
+		if(isReady()) startGame();
+	}
+
+	var setName = function(newName){
+		console.log("Player " + socket.lobby.name + " has changed their name to " + newName);
+		socket.lobby.name = newName;
+
+		emitLobby();
 	}
 
 	//Attach the lobby handlers
@@ -35,7 +43,7 @@ var startGame = function(){
 	game.start();
 }
 
-var isReady = function(lobby){
+var isReady = function(){
 	for(var i=0;i<state.sockets.length;i++){
 		if(!state.sockets.lobby.ready){
 			return false;

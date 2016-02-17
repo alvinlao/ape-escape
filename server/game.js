@@ -22,7 +22,9 @@ var startGame = function(){
 }
 
 var attachApe = function(socket){
-	socket.on("move", function(){
+	socket.on("move", function(position){
+		socket.game.x = position.x;
+		socket.game.y = position.y;
 		socket.broadcast.emit("ape:move", {
 			x: socket.game.x,
 			y: socket.game.y
@@ -34,7 +36,9 @@ var attachApe = function(socket){
 }
 
 var attachJailer = function(socket){
-	socket.on("move", function(){
+	socket.on("move", function(position){
+		socket.game.x = position.x;
+		socket.game.y = position.y;
 		socket.broadcast.emit("jailer:move", {
 			id: socket.lobby.id,
 			x: socket.game.x,

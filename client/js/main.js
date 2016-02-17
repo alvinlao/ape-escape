@@ -27,3 +27,6 @@ game.state.add('lobby', new LobbyState());
 game.state.add('level', new LevelState());
 
 game.state.start('boot');
+
+//Set up io
+game.socket = io(config.URL, config.SOCKET_SETTINGS);
