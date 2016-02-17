@@ -3,6 +3,7 @@ var spritesheets = require('../util/spritesheets.js');
 
 var Ape = require('../entities/ape.js');
 var Map = require('../map.js');
+var TrapManager = require('../traps/trapmanager.js');
 
 var GameOver = require('../sprites/gameover.js');
 
@@ -13,6 +14,7 @@ class LevelState extends Phaser.State {
 
     this.ape = null;
     this.map = null;
+    this.trapManager = new TrapManager();
 
     this.activeTraps = null;
     this.dropTraps = null;
@@ -103,7 +105,7 @@ class LevelState extends Phaser.State {
             spritesheets.tiles.name,
             spritesheets.misc.name,
             spritesheets.traps.name
-          ], 2);
+          ], this.trapManager);
 
       if(this.ape){
         this.ape.x = 100;

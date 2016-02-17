@@ -27,8 +27,11 @@ class TrapActivator extends Phaser.Sprite {
     if (this.clicksLeft > 0) {
       this.clicksLeft--;
       this.clicksLeftText.text = this.clicksLeft;
+
+      this.game.getMap().traps.onTrapClick.dispatch(this.id);
     }
 
+    // TODO REMOVE THIS
     if (this.clicksLeft === 0) {
       this.activate();
     }
