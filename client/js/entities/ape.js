@@ -1,5 +1,6 @@
 var spritesheets = require('../util/spritesheets.js');
 var config = require('../util/config.js');
+var ROLE = require('../util/player.js');
 
 var ApeHUD = require('./apehud.js');
 
@@ -228,7 +229,19 @@ class Ape extends Phaser.Sprite {
     }
   }
 
+  broadcastPosition(){
+    this.game.socket.emit("move",{
+      x: this.x,
+      y: this.y
+    });
+  }
+
   update() {
+    //If we're the ape, update
+    if(this.game.player === ROLE.APE){
+      this.broadcastPosition();
+    }
+
     //Do nothing if dead
     if(this.isDead) return;
 

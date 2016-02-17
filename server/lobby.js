@@ -10,6 +10,7 @@ exports.attachIO = function(newio){
 
 var joinLobby = function(socket){
 	socket.lobby = new LobbyMember(socket);
+	console.log(socket.lobby);
 
 	//Lobby Handlers
 	var playerReady = function(){
@@ -19,7 +20,12 @@ var joinLobby = function(socket){
 		emitLobby();
 
 		//Start the game if we're ready
-		if(isReady()) startGame();
+		if(isReady()){
+			console.log("ready!");
+			startGame();
+		} else {
+			console.log("not ready!");
+		}
 	}
 
 	var setName = function(newName){
@@ -31,6 +37,7 @@ var joinLobby = function(socket){
 
 	//Attach the lobby handlers
 	socket.on("player_ready", playerReady);
+	socket.on("player_name", setName);
 
 	emitLobby();
 }
@@ -40,12 +47,12 @@ var leaveLobby = function(){
 }
 
 var startGame = function(){
-	game.start();
+	game.startGame();
 }
 
 var isReady = function(){
 	for(var i=0;i<state.sockets.length;i++){
-		if(!state.sockets.lobby.ready){
+		if(!state.sockets[i].lobby.ready){
 			return false;
 		}
 	}
