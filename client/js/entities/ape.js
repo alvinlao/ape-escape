@@ -38,6 +38,19 @@ class Ape extends Phaser.Sprite {
 
     this.body.collideWorldBounds = true;
 
+    if(game.player === ROLE.GUARD){
+      var follow = {
+        x: this.x,
+        y: this.y
+      }
+      this.follow = follow;
+      game.socket.on("ape:move", function(position){
+        console.log("Follow: " + position.x + ","+ position.y);
+        follow.x = position.x;
+        follow.y = position.y;
+      });
+    }
+
     // Input
     this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
     this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
@@ -240,6 +253,9 @@ class Ape extends Phaser.Sprite {
     //If we're the ape, update
     if(this.game.player === ROLE.APE){
       this.broadcastPosition();
+    } else {
+      //Move towards this.follow{x,y}
+      return;
     }
 
     //Do nothing if dead

@@ -1,5 +1,6 @@
 var config = require('../util/config.js');
 var spritesheets = require('../util/spritesheets.js');
+var player = require('../util/player.js');
 
 var Ape = require('../entities/ape.js');
 var Map = require('../map.js');
