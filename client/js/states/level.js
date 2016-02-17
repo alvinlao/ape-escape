@@ -11,10 +11,10 @@ class LevelState extends Phaser.State {
   init(info) {
     this.game.player = info.player;
     this.game.numGuards = info.numGuards;
+    this.game.traps = new TrapManager();
 
     this.ape = null;
     this.map = null;
-    this.trapManager = new TrapManager();
 
     this.activeTraps = null;
     this.dropTraps = null;
@@ -105,7 +105,7 @@ class LevelState extends Phaser.State {
             spritesheets.tiles.name,
             spritesheets.misc.name,
             spritesheets.traps.name
-          ], this.trapManager);
+          ]);
 
       if(this.ape){
         this.ape.x = 100;

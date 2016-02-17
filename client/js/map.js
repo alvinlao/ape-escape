@@ -11,10 +11,8 @@ var LaserTrapActivator = require('./traps/lasertrapactivator.js');
 var Teleporter = require('./entities/teleporter.js');
 
 class Map extends Phaser.Tilemap {
-  constructor(game, mapName, tilesetNames, trapManager) {
+  constructor(game, mapName, tilesetNames) {
     super(game, mapName);
-
-    this.traps = trapManager;
 
     for (var i = 0; i < tilesetNames.length; i++) {
       this.addTilesetImage(tilesetNames[i]);
@@ -49,7 +47,7 @@ class Map extends Phaser.Tilemap {
 
       // Trap activator layer
       if (name === 'trap_activators') {
-        this.traps.add(this.buildTraps(layer));
+        this.game.traps.add(this.buildTraps(layer));
       }
 
       // Teleporter

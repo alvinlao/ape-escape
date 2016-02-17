@@ -10,9 +10,10 @@ class TrapManager {
     // @param { trapid: count }
     this.onTrapActivatorsCreate = new Phaser.Signal();
 
-    this.onTrapActivatorsCreate.add(function(traps) {
-      console.log(traps)
-    });
+    // Send when a trap's clicks left needs to be updated
+    // @param trapid
+    // @param clicksLeft
+    this.onTrapUpdate = new Phaser.Signal();
   }
 
   add(traps) {
