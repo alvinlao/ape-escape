@@ -1,6 +1,8 @@
 var state = require("./state");
 var GAME_STATE = require("./models/GAME_STATE");
 var ROLE = require("./models/ROLE");
+var Jailer = require("./models/Jailer");
+var Ape = require("./models/Ape");
 
 var io;
 exports.attachIO = function(newio){
@@ -27,14 +29,11 @@ var startGame = function(){
 }
 
 var attachApe = function(socket){
+	socket.game = new Ape();
 	socket.on("move", function(position){
-		console.log("ape moving");
-		socket.game.x = position.x;
-		socket.game.y = position.y;
-		socket.broadcast.emit("ape:move", {
-			x: socket.game.x,
-			y: socket.game.y
-		});
+		//socket.game.x = position.x;
+		//socket.game.y = position.y;
+		socket.broadcast.emit("ape:move", position);
 	});
 	//powerup
 	//death
@@ -42,6 +41,7 @@ var attachApe = function(socket){
 }
 
 var attachJailer = function(socket){
+	socket.game = new Jailer();
 	socket.on("move", function(position){
 		socket.game.x = position.x;
 		socket.game.y = position.y;

@@ -1,4 +1,5 @@
 module.exports = {
-  APE: 0,
-  GUARD: 1
+    NONE: 0,
+    APE: 1,
+    GUARD: 2
 }

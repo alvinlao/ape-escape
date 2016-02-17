@@ -38,12 +38,36 @@ class Ape extends Phaser.Sprite {
 
     this.body.collideWorldBounds = true;
 
-    // Input
-    this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
-    this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
-    this.rightKey = game.input.keyboard.addKey(config.APE.CONTROLS.RIGHT.BUTTON);
-    this.blinkKey = game.input.keyboard.addKey(config.APE.CONTROLS.BLINK.BUTTON);
-    this.shieldKey = game.input.keyboard.addKey(config.APE.CONTROLS.SHIELD.BUTTON);
+    //Controls
+    if(game.player === ROLE.APE){
+      this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
+      this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
+      this.rightKey = game.input.keyboard.addKey(config.APE.CONTROLS.RIGHT.BUTTON);
+      this.blinkKey = game.input.keyboard.addKey(config.APE.CONTROLS.BLINK.BUTTON);
+      this.shieldKey = game.input.keyboard.addKey(config.APE.CONTROLS.SHIELD.BUTTON);
+
+      // Bind powerup keys
+      this.blinkKey.onDown.add(this.powerup, this, 0, 'BLINK');
+      this.shieldKey.onDown.add(this.powerup, this, 0, 'SHIELD');
+
+    } else {
+      //TODO: re-do all this server connection code,there's a better way
+      this.jumpKey = {isDown: false};
+      this.leftKey = {isDown: false};
+      this.rightKey = {isDown: false};
+      this.blinkKey = {isDown: false};
+      this.shieldKey = {isDown: false};
+
+      var self = this;
+      game.socket.on("ape:move", function(keys){
+        self.jumpKey.isDown = keys.jumpKey;
+        self.leftKey.isDown = keys.leftKey;
+        self.rightKey.isDown = keys.rightKey;
+        self.blinkKey.isDown = keys.blinkKey;
+        self.shieldKey.isDown = keys.shieldKey;
+        self.update();
+      });
+    }
 
     this.buttons = {
       'JUMP': this.jumpKey,
@@ -53,9 +77,7 @@ class Ape extends Phaser.Sprite {
       'SHIELD': this.shieldKey
     }
 
-    // Bind powerup keys
-    this.blinkKey.onDown.add(this.powerup, this, 0, 'BLINK');
-    this.shieldKey.onDown.add(this.powerup, this, 0, 'SHIELD');
+    // Input
 
     // Name tag
     var style = { font: "18px Arial", fill: "#000", align: "center" }
@@ -229,17 +251,20 @@ class Ape extends Phaser.Sprite {
     }
   }
 
-  broadcastPosition(){
+  broadcastKeys(){
     this.game.socket.emit("move",{
-      x: this.x,
-      y: this.y
+      jumpKey: this.jumpKey.isDown,
+      leftKey: this.leftKey.isDown,
+      rightKey: this.rightKey.isDown,
+      blinkKey: this.blinkKey.isDown,
+      shieldKey: this.shieldKey.isDown
     });
   }
 
   update() {
     //If we're the ape, update
     if(this.game.player === ROLE.APE){
-      this.broadcastPosition();
+      this.broadcastKeys();
     }
 
     //Do nothing if dead

@@ -123,8 +123,8 @@ class ApeHUD extends Phaser.Group {
     for (var button in this.buttons) {
       var key = this.buttons[button];
 
-      key.onDown.add(this.buttonDown, this, 0, button);
-      key.onUp.add(this.buttonUp, this, 0, button);
+      if(key.onDown) key.onDown.add(this.buttonDown, this, 0, button);
+      if(key.onUp) key.onUp.add(this.buttonUp, this, 0, button);
     }
   }
 
@@ -132,8 +132,8 @@ class ApeHUD extends Phaser.Group {
     for (var button in this.buttons) {
       var key = this.buttons[button];
 
-      key.onDown.remove(this.buttonDown, this);
-      key.onUp.remove(this.buttonUp, this);
+      if(key.onDown) key.onDown.remove(this.buttonDown, this);
+      if(key.onUp) key.onUp.remove(this.buttonUp, this);
     }
   }
 
