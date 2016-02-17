@@ -31,6 +31,7 @@ var joinLobby = function(socket){
 
 	//Attach the lobby handlers
 	socket.on("player_ready", playerReady);
+	socket.on("player_name", setName);
 
 	emitLobby();
 }

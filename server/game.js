@@ -24,6 +24,7 @@ var startGame = function(){
 
 var attachApe = function(socket){
 	socket.on("move", function(position){
+		console.log("ape moving");
 		socket.game.x = position.x;
 		socket.game.y = position.y;
 		socket.broadcast.emit("ape:move", {
