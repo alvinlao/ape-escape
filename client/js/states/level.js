@@ -57,10 +57,10 @@ class LevelState extends Phaser.State {
     game.input.keyboard.addKeyCapture(keys);
 
     // Active Traps
-    this.activeTraps = game.add.group();
+    this.activeTraps = [];
 
     // Drop traps
-    this.dropTraps = game.add.group();
+    this.dropTraps = [];
 
     // Needed for raycasting so that objects can query
     game.getMap = (function() {
@@ -130,11 +130,6 @@ class LevelState extends Phaser.State {
 
     var game = this.game;
 
-    // SPIKES!
-    game.physics.arcade.collide(this.ape, this.map.createdLayers['spikes'], function(){
-      this.ape.die(config.APE.DEATH.SPIKES);
-    }, null, this);
-
     // Water
     game.physics.arcade.collide(this.ape, this.map.createdLayers['water'], function(){
       this.ape.die(config.APE.DEATH.WATER);
@@ -163,12 +158,36 @@ class LevelState extends Phaser.State {
       });
     }, null, this);
 
-    // Blocks
-    game.physics.arcade.collide(this.ape, [this.map.createdLayers['main'], this.dropTraps]);
-
     // Active Traps
-    game.physics.arcade.overlap(this.ape, this.activeTraps, function(ape, trap) {
-      this.ape.die(trap.getDeathMessage());
+    game.physics.arcade.overlap(
+        this.ape,
+        this.activeTraps,
+        function(ape, trap) {
+          trap.killedPlayer = true;
+          this.ape.die(trap.getDeathMessage());
+        },
+        function(ape, trap) {
+          // Give the ape a margin of error
+          return !(ape.bottom - trap.top >= 0 && 
+              ape.bottom - trap.top <= 1);
+        },
+        this
+      );
+
+    // Blocks
+    game.physics.arcade.collide(this.ape, this.map.createdLayers['main']);
+
+    game.physics.arcade.collide(this.dropTraps, [this.map.createdLayers['main'], this.map.createdLayers['spikes']], function(trap, tile) {
+      trap.deactivate();
+    });
+
+    game.physics.arcade.collide(this.ape, this.dropTraps, null, function(ape, trap) {
+      return !trap.killedPlayer && !trap.active;
+    });
+
+    // SPIKES!
+    game.physics.arcade.collide(this.ape, this.map.createdLayers['spikes'], function(){
+      this.ape.die(config.APE.DEATH.SPIKES);
     }, null, this);
 
     this.ape.update();

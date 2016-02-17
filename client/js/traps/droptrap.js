@@ -9,26 +9,31 @@ class DropTrap extends Trap {
     this.visible = true;
     this.frame = 15;
 
-    this.body.checkCollision.up = true;
-    this.body.checkCollision.down = true;
-    this.body.checkCollision.left = true;
-    this.body.checkCollision.right = true;
     this.body.immovable = true;
+    this.body.collideWorldBounds = true;
+    this.checkWorldBounds = true;
 
-    game.getDropTraps().add(this);
+    game.getDropTraps().push(this);
+
+    this.active = false;
   }
 
   activate() {
     super.activate();
 
-    this.body.checkCollision.up = false;
+    this.active = true;
     this.body.allowGravity = true;
 
-    // Remove drop trap from the game
-    this.checkWorldBounds = true;
     this.events.onOutOfBounds.add(function() {
       this.deactivate();
     }, this);
+  }
+
+  deactivate() {
+    if (!this.active) return;
+
+    this.active = false;
+    super.deactivate(false);
   }
 
   getDeathMessage() {
