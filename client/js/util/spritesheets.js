@@ -30,5 +30,13 @@ module.exports = {
   spacebar: {
     name: 'spacebar',
     file: 'assets/spacebar.png'
+  },
+  apeButton: {
+    name: 'apebutton',
+    file: 'assets/ape_button.png'
+  },
+  zookeeperButton: {
+    name: 'zookeeperbutton',
+    file: 'assets/zookeeper_button.png'
   }
 }

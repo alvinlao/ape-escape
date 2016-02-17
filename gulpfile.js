@@ -25,6 +25,16 @@ gulp.task('watch-html', function() {
   gulp.watch('client/index.html', ['html'])
 });
 
+// Copy CSS files
+gulp.task('css', function() {
+  return gulp.src('client/css/*.css')
+    .pipe(gulp.dest(config.outputDir + '/css'));
+});
+
+gulp.task('watch-css', function() {
+  gulp.watch('client/css/*.css', ['css'])
+});
+
 // Copy bower files
 gulp.task('bower-files', function() {
   return gulp.src(mainBowerFiles())
@@ -62,6 +72,6 @@ gulp.task('clean', function() {
     .pipe(clean());
 });
 
-gulp.task('build', ['html', 'bower-files', 'js', 'assets']);
-gulp.task('watch', ['watch-bower-files', 'watch-html', 'watch-js', 'watch-assets']);
+gulp.task('build', ['html', 'css', 'bower-files', 'js', 'assets']);
+gulp.task('watch', ['watch-bower-files', 'watch-html', 'watch-css', 'watch-js', 'watch-assets']);
 gulp.task('default', ['bower', 'clean']);

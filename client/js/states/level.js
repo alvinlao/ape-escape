@@ -119,7 +119,7 @@ class LevelState extends Phaser.State {
     game.loadNextLevel();
 
     // Entities
-    this.ape = new Ape(game, 100, 50, "Mr. Ape");
+    this.ape = new Ape(game, 100, 50, game.playerName);
 
     game.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
     game.camera.follow(this.ape);
