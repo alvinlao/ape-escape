@@ -1,6 +1,8 @@
 var config = require('../util/config.js');
+var spritesheets = require('../util/spritesheets.js');
+var buttonconfig = require('../util/buttonconfig.js');
 
-var PressSpace = require('./pressspace.js');
+var TextButton = require('./textbutton.js');
 
 class GameOver extends Phaser.Group {
   constructor(game, currentLevel, totalLevels, causeOfDeath) {
@@ -12,7 +14,7 @@ class GameOver extends Phaser.Group {
 
     this.fixedToCamera = true;
 
-    // Dim 
+    // Dim
     // NOTE: Not part of the group
     var overlay = game.add.graphics(0, 0);
     overlay.beginFill(0x000000);
@@ -34,9 +36,19 @@ class GameOver extends Phaser.Group {
     this.addChild(text);
 
     // Press space
-    var pressspace = new PressSpace(game, x, y + spaceYOffset, function() {
-      this.game.state.start('lobby');
-    }, this);
+    var pressspace = new TextButton(
+        game,
+        x,
+        y + spaceYOffset,
+        spritesheets.bluebutton4.name,
+        'space',
+        buttonconfig.BLUE_STYLE,
+        [Phaser.KeyCode.SPACEBAR, Phaser.KeyCode.ENTER],
+        function() {
+          this.game.state.start('lobby');
+        },
+        this
+      );
 
     this.addChild(pressspace);
 

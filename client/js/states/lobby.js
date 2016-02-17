@@ -1,6 +1,8 @@
 var config = require('../util/config.js');
 var spritesheets = require('../util/spritesheets.js');
+var buttonconfig = require('../util/buttonconfig.js');
 
+var TextButton = require('../sprites/textbutton.js');
 var Button = require('../sprites/button.js');
 
 class LobbyState extends Phaser.State {
@@ -16,10 +18,9 @@ class LobbyState extends Phaser.State {
     var buttonYOffset = 50;
 
     var width = apebuttonwidth + zookeepberbuttonwidth + gutter;
-    var height = 64;
 
-    var x = config.CANVAS_WIDTH / 2 - (width / 2);
-    var y = config.CANVAS_HEIGHT / 2 - (height / 2) + buttonYOffset;
+    var x = config.CANVAS_WIDTH / 2 - (width / 2) + (apebuttonwidth / 2);
+    var y = config.CANVAS_HEIGHT / 2 + buttonYOffset;
 
     // Lobby
     var style = { font: "72px Arial", fill: "#253659", align: "center" };
@@ -27,15 +28,35 @@ class LobbyState extends Phaser.State {
     title.anchor.set(0.5);
 
     // Buttons
-    var apeButton = new Button(game, x, y, spritesheets.apeButton.name, Phaser.KeyCode.Z, function() {
-      this.game.state.start('level');
-    }, this);
+    var apeButton = new TextButton(
+        game,
+        x,
+        y,
+        spritesheets.bluebutton2.name,
+        'ape',
+        buttonconfig.BLUE_STYLE,
+        Phaser.KeyCode.Z,
+        function() {
+          this.game.state.start('level');
+        },
+        this
+      );
 
-    x += apebuttonwidth + gutter;
+    x += (apebuttonwidth / 2) + gutter + (zookeepberbuttonwidth / 2);
 
-    var zooKeeperButton = new Button(game, x, y, spritesheets.zookeeperButton.name, Phaser.KeyCode.X, function() {
-      this.game.state.start('level');
-    }, this);
+    var zooKeeperButton = new TextButton(
+        game,
+        x,
+        y,
+        spritesheets.redbutton4.name,
+        'zoo keeper',
+        buttonconfig.RED_STYLE,
+        Phaser.KeyCode.X,
+        function() {
+          this.game.state.start('level');
+        },
+        this
+      );
   }
 }
 

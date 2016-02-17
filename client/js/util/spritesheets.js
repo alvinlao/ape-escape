@@ -38,5 +38,21 @@ module.exports = {
   zookeeperButton: {
     name: 'zookeeperbutton',
     file: 'assets/zookeeper_button.png'
+  },
+  bluebutton2: {
+    name: 'bluebutton2',
+    file: 'assets/button_2_blue_spritesheet.png'
+  },
+  bluebutton4: {
+    name: 'bluebutton4',
+    file: 'assets/button_4_blue_spritesheet.png'
+  },
+  redbutton2: {
+    name: 'redbutton2',
+    file: 'assets/button_2_red_spritesheet.png'
+  },
+  redbutton4:{
+    name: 'redbutton4',
+    file: 'assets/button_4_red_spritesheet.png'
   }
 }

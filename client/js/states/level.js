@@ -168,7 +168,7 @@ class LevelState extends Phaser.State {
         },
         function(ape, trap) {
           // Give the ape a margin of error
-          return !(ape.bottom - trap.top >= 0 && 
+          return !(ape.bottom - trap.top >= 0 &&
               ape.bottom - trap.top <= 1);
         },
         this
