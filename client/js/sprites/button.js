@@ -30,7 +30,10 @@ class Button extends Phaser.Sprite {
 
   up() {
     this.frame = 0;
-    this.callback.call(this.callbackContext);
+
+    this.game.time.events.add(Phaser.Timer.HALF, function() {
+      this.callback.call(this.callbackContext);
+    }, this);
   }
 
   destroy() {
