@@ -49,6 +49,8 @@ class TrapActivator extends Phaser.Sprite {
   activate() {
     this.clicksLeft--;
     this.alpha = 0.4;
+
+    this.trap.activate(true);
   }
 
   // Override

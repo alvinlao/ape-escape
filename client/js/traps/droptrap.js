@@ -17,8 +17,8 @@ class DropTrap extends Trap {
     this.active = false;
   }
 
-  activate() {
-    super.activate();
+  activate(remote) {
+    super.activate(remote);
 
     this.active = true;
     this.body.allowGravity = true;

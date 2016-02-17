@@ -16,8 +16,7 @@ class LaserTrap extends Trap {
     this.sections = [];
   }
 
-  activate() {
-
+  activate(remote) {
     var orientation;
     switch (this.direction) {
       case 'left':
@@ -63,12 +62,12 @@ class LaserTrap extends Trap {
 
       // Add section
       this.sections.push(section);
-      this.game.getActiveTraps().push(section);
+      if (remote) this.game.getActiveTraps().push(section);
     }
 
     this.head.activate();
 
-    super.activate();
+    super.activate(remote);
     this.visible = false;
 
     // Deactivate timer

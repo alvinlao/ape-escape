@@ -9,14 +9,13 @@ class DropTrapActivator extends TrapActivator {
 
     super(game, x, y, 5, numPlayers);
 
-    this.droptrap = droptrap;
+    this.trap = droptrap;
   }
 
   activate() {
     super.activate();
 
     this.visible = false;
-    this.droptrap.activate();
   }
 }
 

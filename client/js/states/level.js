@@ -53,15 +53,6 @@ class LevelState extends Phaser.State {
 
     var game = this.game;
 
-    // Input
-    var controls = config.APE.CONTROLS;
-    var keys = [];
-    for (var control in controls) {
-      var action = controls[control];
-      keys.push(action.BUTTON);
-    }
-    game.input.keyboard.addKeyCapture(keys);
-
     // Active Traps
     this.activeTraps = [];
 
