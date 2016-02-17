@@ -18,7 +18,7 @@ var gameConfig = {
 var game = new Phaser.Game(gameConfig);
 
 // Levels
-game.levelOrder = ["test", "level2"];
+game.levelOrder = config.LEVELS;
 
 game.state.add('boot', new BootState());
 game.state.add('load', new LoadState());
