@@ -27,8 +27,16 @@ class TitleState extends Phaser.State {
     // Press Space
     this.pressspace = new PressSpace(game, x, y + spaceYOffset, function() {
       this.game.time.events.add(Phaser.Timer.HALF, function() {
+        // Hide input
         this.nameInput.style.display = 'none';
-        this.game.playerName = this.nameInput.value;
+
+        var name = this.nameInput.value;
+
+        if (name === '') {
+          name = config.PLAYER.DEFAULT_NAME;
+        }
+
+        this.game.playerName = name;
         this.game.state.start('lobby');
       }, this);
     }, this);

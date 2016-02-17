@@ -4,6 +4,10 @@ module.exports = {
 
   TILE_SIZE: 64,
 
+  PLAYER: {
+    DEFAULT_NAME: "Mr. Ape"
+  },
+
   TRAPS: {
     FIRE: {
       // In seconds
