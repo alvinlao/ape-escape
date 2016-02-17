@@ -67,6 +67,10 @@ class Ape extends Phaser.Sprite {
         self.shieldKey.isDown = keys.shieldKey;
         self.update();
       });
+
+      game.socket.on("powerup", function(type){
+        self.powerup(null, type);
+      });
     }
 
     this.buttons = {
@@ -145,6 +149,9 @@ class Ape extends Phaser.Sprite {
 
   // @param requestedPowerup (POWERUP enum)
   powerup(key, requestedPowerup) {
+    if(this.game.player === ROLE.APE){
+      this.game.socket.emit("powerup",requestedPowerup);
+    }
     if (this.isDead) return;
 
     switch(requestedPowerup){
