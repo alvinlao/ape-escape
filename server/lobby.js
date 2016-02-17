@@ -40,7 +40,7 @@ var leaveLobby = function(){
 }
 
 var startGame = function(){
-	game.start();
+	game.startGame();
 }
 
 var isReady = function(){

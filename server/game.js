@@ -8,6 +8,7 @@ exports.attachIO = function(newio){
 
 var startGame = function(){
 	state.currentState = GAME_STATE.GAME;
+	io.emit("state", state.currentState);
 
 	var ape = Math.floor(Math.random()*(state.sockets.length-1));
 
