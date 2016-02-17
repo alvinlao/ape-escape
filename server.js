@@ -17,7 +17,7 @@ var io = socket_io().attach(apeServer);
 socketHandler.attachIO(io);
 
 //Start the server
-apeApp.listen(config.PORT, function(){
+apeServer.listen(config.PORT, function(){
     console.log(""
         +"     _                 _____                            " + "____  \n"
         +"    / \\   _ __   ___  | ____|___  ___ __ _ _ __   ___  " + "|___ \\ \n"
