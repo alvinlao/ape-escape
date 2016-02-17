@@ -7,8 +7,9 @@ var Map = require('../map.js');
 var GameOver = require('../sprites/gameover.js');
 
 class LevelState extends Phaser.State {
-  init(player) {
-    this.game.player = player;
+  init(info) {
+    this.game.player = info.player;
+    this.game.numGuards = info.numGuards;
 
     this.ape = null;
     this.map = null;

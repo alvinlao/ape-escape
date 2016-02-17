@@ -13,7 +13,7 @@ class LobbyState extends Phaser.State {
     var game = this.game;
 
     var apebuttonwidth = 128;
-    var zookeepberbuttonwidth = 256;
+    var zookeepberbuttonwidth = 128;
     var gutter = 10;
     var titleYOffset = -50;
     var buttonYOffset = 50;
@@ -38,7 +38,7 @@ class LobbyState extends Phaser.State {
         buttonconfig.BLUE_STYLE,
         Phaser.KeyCode.Z,
         function() {
-          this.game.state.start('level', true, false, player.APE);
+          this.game.state.start('level', true, false, { player: player.APE, numGuards: 3 });
         },
         this
       );
@@ -49,12 +49,12 @@ class LobbyState extends Phaser.State {
         game,
         x,
         y,
-        spritesheets.redbutton4.name,
-        'zoo keeper',
+        spritesheets.redbutton2.name,
+        'guard',
         buttonconfig.RED_STYLE,
         Phaser.KeyCode.X,
         function() {
-          this.game.state.start('level', true, false, player.ZOOKEEPER);
+          this.game.state.start('level', true, false, { player: player.GUARD, numGuards: 3 });
         },
         this
       );
