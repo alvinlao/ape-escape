@@ -1,11 +1,14 @@
+var player = require('./util/player.js');
+
+var FireTrap = require('./traps/firetrap.js');
+var DropTrap = require('./traps/droptrap.js');
+var LaserTrap = require('./traps/lasertrap.js');
+
 var FireTrapActivator = require('./traps/firetrapactivator.js');
 var DropTrapActivator = require('./traps/droptrapactivator.js');
 var LaserTrapActivator = require('./traps/lasertrapactivator.js');
 
 var Teleporter = require('./entities/teleporter.js');
-
-// TODO: Remove this
-var numJailers = 1;
 
 class Map extends Phaser.Tilemap {
   constructor(game, mapName, tilesetNames, numPlayers) {
@@ -73,14 +76,27 @@ class Map extends Phaser.Tilemap {
             var x = tile.x;
             var y = tile.y;
 
-            trap = new DropTrapActivator(this.game, tile.worldX, tile.worldY, numJailers);
+            if (this.game.player === player.APE) {
+              trap = new DropTrap(this.game, tile.worldX, tile.worldY);
+            } else if (this.game.player === player.GUARD) {
+              trap = new DropTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards);
+            }
             break;
           case "fire":
-            trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY, numJailers);
+            if (this.game.player === player.APE) {
+              trap = new FireTrap(this.game, tile.worldX, tile.worldY);
+            } else if (this.game.player === player.GUARD) {
+              trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards);
+            }
             break;
           case "laser":
             var direction = tile.properties.direction;
-            trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, numJailers, direction, 3);
+
+            if (this.game.player === player.APE) {
+              trap = new LaserTrap(this.game, tile.worldX, tile.worldY);
+            } else if (this.game.player === player.GUARD) {
+              trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards, direction, 3);
+            }
             break;
           default:
             console.warn("Invalid trap activator type: " + type);

@@ -23,7 +23,7 @@ var startGame = function(){
 			state.sockets[i].emit("role", ROLE.JAILER);
 		}
 	}
-	io.emit("state", state.currentState);
+	io.emit("start_game", state.sockets.length);
 }
 
 var attachApe = function(socket){
@@ -59,7 +59,7 @@ var stopGame = function(){
 		io.removeAllListeners("move");
 	}
 	state.currentState = GAME_STATE.LOBBY;
-	io.emit("state", state.currentState);
+	io.emit("end_game", state.currentState);
 }
 
 exports.startGame = startGame;
