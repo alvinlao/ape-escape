@@ -7,6 +7,8 @@ class ApeLevelState extends LevelState {
   init(numGuards) {
     super.init(numGuards);
 
+    this.loadingLevel = false;
+    this.loadedLevel = false;
     this.activeTraps = null;
   }
 
@@ -31,6 +33,7 @@ class ApeLevelState extends LevelState {
     // Active Traps
     this.activeTraps = [];
 
+    // Create our friendly neighbourhood ape
     this.ape = new Ape(this.game, config.APE.SPAWN_X, config.APE.SPAWN_Y, this.game.playerName);
     this.game.camera.follow(this.ape);
   }
@@ -38,11 +41,34 @@ class ApeLevelState extends LevelState {
   update() {
     super.update();
 
-    // Water
-    this.game.physics.arcade.collide(this.ape, this.map.createdLayers['water'], function(){
-      this.ape.die(config.APE.DEATH.WATER);
+    //Load next level!
+    this.game.physics.arcade.overlap(this.ape, this.map.createdLayers['teleporters'], function(sprite, tile){
+      if(tile.index===-1 || this.loadingLevel) return;
+
+      // Change teleporter color
+      tile.teleporter.go();
+
+      this.loadingLevel = true;
+      this.game.time.events.add((Phaser.Timer.SECOND * 1), function() {
+        //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
+        this.loadNextLevel();
+      }, this);
     }, null, this);
 
+    // NOTE: This MUST be after teleport code
+    if (this.loadedLevel) {
+      this.loadedLevel = false;
+      this.loadingLevel = false;
+    }
+
+    // Powerups
+    this.game.physics.arcade.overlap(this.ape, this.map.createdLayers['powerups'], function(sprite, tile){
+      //TODO why does it call this all the time?
+      if(tile.index===-1) return;
+
+      this.ape.grabPowerup(tile.properties.powerup, parseInt(tile.properties.quantity));
+      this.map.removeTile(tile.x,tile.y, this.map.createdLayers['powerups']);
+    }, null, this);
 
     // Active Traps
     this.game.physics.arcade.overlap(
@@ -59,11 +85,22 @@ class ApeLevelState extends LevelState {
         this
       );
 
-    // SPIKES!
+    // Pointy spikes
     this.game.physics.arcade.collide(this.ape, this.map.createdLayers['spikes'], function(){
       this.ape.die(config.APE.DEATH.SPIKES);
     }, null, this);
 
+    // Watery water
+    this.game.physics.arcade.collide(this.ape, this.map.createdLayers['water'], function(){
+      this.ape.die(config.APE.DEATH.WATER);
+    }, null, this);
+
+    this.ape.update();
+  }
+
+  loadLevel(levelName) {
+    super.loadLevel(levelName);
+    this.loadedLevel = true;
   }
 }
 

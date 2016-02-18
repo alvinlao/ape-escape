@@ -18,8 +18,6 @@ class LevelState extends Phaser.State {
 
     this.dropTraps = null;
 
-    this.loadingLevel = false;
-    this.loadedLevel = false;
     this.currentLevelId = -1;
     this.gameover = null;
   }
@@ -75,54 +73,24 @@ class LevelState extends Phaser.State {
 
     var game = this.game;
 
-    // Powerups
-    game.physics.arcade.overlap(this.ape, this.map.createdLayers['powerups'], function(sprite, tile){
-      //TODO why does it call this all the time?
-      if(tile.index===-1) return;
-
-      this.ape.grabPowerup(tile.properties.powerup, parseInt(tile.properties.quantity));
-      this.map.removeTile(tile.x,tile.y, this.map.createdLayers['powerups']);
-    }, null, this);
-
-    //Load next level!
-    game.physics.arcade.overlap(this.ape, this.map.createdLayers['teleporters'], function(sprite, tile){
-      if(tile.index===-1 || this.loadingLevel) return;
-
-      // Change teleporter color
-      tile.teleporter.go();
-
-      this.loadingLevel = true;
-      game.time.events.add((Phaser.Timer.SECOND * 1), function() {
-        //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
-        this.loadNextLevel();
-      }, this);
-    }, null, this);
-
-    // Blocks
+    // Ape to ground collision
     game.physics.arcade.collide(this.ape, this.map.createdLayers['main']);
 
+    // Drop trap to ground and spikes collision
     game.physics.arcade.collide(this.dropTraps, [this.map.createdLayers['main'], this.map.createdLayers['spikes']], function(trap, tile) {
       trap.deactivate();
     });
 
+    // Ape to drop traps collision
     game.physics.arcade.collide(this.ape, this.dropTraps, null, function(ape, trap) {
       return !trap.killedPlayer && !trap.active;
     });
-
-    if(game.role === ROLE.APE){
-      this.ape.update();
-    }
 
     // Game over screen
     if (this.ape.isDead && this.gameover === null) {
       var currentLevel = this.currentLevelId;
       var totalLevels = game.levelOrder.length;
       this.gameover = new GameOver(game, currentLevel, totalLevels, this.ape.causeOfDeath);
-    }
-
-    if (this.loadedLevel) {
-      this.loadedLevel = false;
-      this.loadingLevel = false;
     }
   }
 
@@ -161,7 +129,6 @@ class LevelState extends Phaser.State {
       this.game.world.add(this.ape);
       this.ape.refresh();
     }
-    this.loadedLevel = true;
   }
 
   loadNextLevel() {
