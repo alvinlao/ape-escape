@@ -1,5 +1,6 @@
 var config = require('../util/config.js');
 
+var Ape = require('../entities/ape.js');
 var LevelState = require('./level.js');
 
 class ApeLevelState extends LevelState {
@@ -29,10 +30,19 @@ class ApeLevelState extends LevelState {
 
     // Active Traps
     this.activeTraps = [];
+
+    this.ape = new Ape(this.game, config.APE.SPAWN_X, config.APE.SPAWN_Y, this.game.playerName);
+    this.game.camera.follow(this.ape);
   }
 
   update() {
     super.update();
+
+    // Water
+    this.game.physics.arcade.collide(this.ape, this.map.createdLayers['water'], function(){
+      this.ape.die(config.APE.DEATH.WATER);
+    }, null, this);
+
 
     // Active Traps
     this.game.physics.arcade.overlap(

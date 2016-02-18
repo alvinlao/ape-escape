@@ -67,21 +67,13 @@ class LevelState extends Phaser.State {
     this.loadNextLevel();
 
     // Entities
-    this.ape = new Ape(game, 100, 50, game.playerName);
-
     game.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-    game.camera.follow(this.ape);
   }
 
   update() {
     super.update();
 
     var game = this.game;
-
-    // Water
-    game.physics.arcade.collide(this.ape, this.map.createdLayers['water'], function(){
-      this.ape.die(config.APE.DEATH.WATER);
-    }, null, this);
 
     // Powerups
     game.physics.arcade.overlap(this.ape, this.map.createdLayers['powerups'], function(sprite, tile){
