@@ -38,7 +38,7 @@ class Ape extends Phaser.Sprite {
 
     this.body.collideWorldBounds = true;
 
-    //Controls
+    // Controls
     if(game.role === ROLE.APE){
       this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
       this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
@@ -52,6 +52,7 @@ class Ape extends Phaser.Sprite {
 
     } else {
       //TODO: re-do all this server connection code,there's a better way
+      // TODO: Move code to remote ape
       this.jumpKey = {isDown: false};
       this.leftKey = {isDown: false};
       this.rightKey = {isDown: false};
