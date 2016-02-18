@@ -12,9 +12,18 @@ class Trap extends Phaser.Sprite {
     this.killedPlayer = false;
   }
 
-  activate() {
+  // @param remote (boolean)
+  activate(remote) {
     this.visible = true;
-    this.game.getActiveTraps().push(this);
+    if (typeof remote === 'undefined') {
+      this.remote = false;
+    } else {
+      this.remote = remote;
+    }
+
+    if (!this.remote) {
+      this.game.getActiveTraps().push(this);
+    }
   }
 
   deactivate(destroy) {
@@ -22,9 +31,11 @@ class Trap extends Phaser.Sprite {
       destroy = true;
     }
 
-    var activeTraps = this.game.getActiveTraps();
-    var i = activeTraps.indexOf(this);
-    activeTraps.splice(i, 1);
+    if (!this.remote) {
+      var activeTraps = this.game.getActiveTraps();
+      var i = activeTraps.indexOf(this);
+      activeTraps.splice(i, 1);
+    }
 
     if (destroy) {
       this.destroy();

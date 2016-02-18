@@ -27,16 +27,20 @@ module.exports = {
     name: 'buttons',
     file: 'assets/buttons.png'
   },
-  spacebar: {
-    name: 'spacebar',
-    file: 'assets/spacebar.png'
+  bluebutton2: {
+    name: 'bluebutton2',
+    file: 'assets/button_2_blue_spritesheet.png'
   },
-  apeButton: {
-    name: 'apebutton',
-    file: 'assets/ape_button.png'
+  bluebutton4: {
+    name: 'bluebutton4',
+    file: 'assets/button_4_blue_spritesheet.png'
   },
-  zookeeperButton: {
-    name: 'zookeeperbutton',
-    file: 'assets/zookeeper_button.png'
+  redbutton2: {
+    name: 'redbutton2',
+    file: 'assets/button_2_red_spritesheet.png'
+  },
+  redbutton4:{
+    name: 'redbutton4',
+    file: 'assets/button_4_red_spritesheet.png'
   }
 }

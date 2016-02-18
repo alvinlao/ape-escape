@@ -10,7 +10,6 @@ class DropTrap extends Trap {
     this.frame = 15;
 
     this.body.immovable = true;
-    this.body.collideWorldBounds = true;
     this.checkWorldBounds = true;
 
     game.getDropTraps().push(this);
@@ -18,8 +17,8 @@ class DropTrap extends Trap {
     this.active = false;
   }
 
-  activate() {
-    super.activate();
+  activate(remote) {
+    super.activate(remote);
 
     this.active = true;
     this.body.allowGravity = true;

@@ -4,6 +4,8 @@ module.exports = {
 
   TILE_SIZE: 64,
 
+  LEVELS: ["test", "level2", "level3"],
+
   PLAYER: {
     DEFAULT_NAME: "Mr. Ape"
   },
@@ -20,6 +22,8 @@ module.exports = {
   },
 
   APE: {
+    SPAWN_X: 100,
+    SPAWN_Y: 50,
     SPEED: 350,
     JUMP_SPEED: 850,
     BLINK_DISTANCE: 100,

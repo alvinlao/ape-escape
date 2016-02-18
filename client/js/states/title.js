@@ -1,21 +1,17 @@
 var spritesheets = require('../util/spritesheets.js');
 var config = require('../util/config.js');
+var buttonconfig = require('../util/buttonconfig.js');
 
-var PressSpace = require('../sprites/pressspace.js');
+var TextButton = require('../sprites/textbutton.js');
 
 class TitleState extends Phaser.State {
-  shutdown() {
-    this.nameInput.removeEventListener('focus', this.disableSpace);
-    this.nameInput.removeEventListener('blur', this.enableSpace);
-  }
-
   create() {
     super.create();
 
     var game = this.game;
 
-    var x = config.CANVAS_WIDTH / 2;
-    var y = config.CANVAS_HEIGHT / 2;
+    var x = Math.floor(config.CANVAS_WIDTH / 2) + 0.5;
+    var y = Math.floor(config.CANVAS_HEIGHT / 2);
     var titleYOffset = -50;
     var spaceYOffset = 80;
 
@@ -24,38 +20,36 @@ class TitleState extends Phaser.State {
     var title = game.add.text(x, y + titleYOffset, "Ape Escape", style);
     title.anchor.set(0.5);
 
-    // Press Space
-    this.pressspace = new PressSpace(game, x, y + spaceYOffset, function() {
-      // Hide input
-      this.nameInput.style.display = 'none';
+    // Start game
+    this.startGameButton = new TextButton(
+        game,
+        x,
+        y + spaceYOffset,
+        spritesheets.bluebutton4.name,
+        'enter',
+        buttonconfig.BLUE_STYLE,
+        Phaser.KeyCode.ENTER,
+        function() {
+          // Hide input
+          this.nameInput.style.display = 'none';
 
-      var name = this.nameInput.value;
+          var name = this.nameInput.value;
 
-      if (name === '') {
-        name = config.PLAYER.DEFAULT_NAME;
-      }
+          if (name === '') {
+            name = config.PLAYER.DEFAULT_NAME;
+          }
 
-      this.game.playerName = name;
-      this.game.state.start('lobby');
-    }, this);
+          this.game.playerName = name;
+          this.game.socket.emit("player_name",name);
+
+          this.game.state.start('lobby');
+        },
+        this
+      );
 
     // Input
     this.nameInput = document.getElementById('name');
     this.nameInput.style.display = 'block';
-
-    // Don't capture SPACEBAR when focused on input
-    this.enableSpace = (function(e) {
-      this.enableKeyboard();
-    }).bind(this.pressspace);
-
-    this.disableSpace = (function(e) {
-      this.disableSpaceOnly();
-    }).bind(this.pressspace);
-
-
-    this.nameInput.addEventListener('focus', this.disableSpace);
-    this.nameInput.addEventListener('blur', this.enableSpace);
-
     this.nameInput.focus();
   }
 }

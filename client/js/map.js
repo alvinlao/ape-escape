@@ -1,17 +1,18 @@
+var ROLE = require('./util/role.js');
+
+var FireTrap = require('./traps/firetrap.js');
+var DropTrap = require('./traps/droptrap.js');
+var LaserTrap = require('./traps/lasertrap.js');
+
 var FireTrapActivator = require('./traps/firetrapactivator.js');
 var DropTrapActivator = require('./traps/droptrapactivator.js');
 var LaserTrapActivator = require('./traps/lasertrapactivator.js');
 
 var Teleporter = require('./entities/teleporter.js');
 
-// TODO: Remove this
-var numJailers = 1;
-
 class Map extends Phaser.Tilemap {
-  constructor(game, mapName, tilesetNames, numPlayers) {
+  constructor(game, mapName, tilesetNames) {
     super(game, mapName);
-
-    this.numPlayers = numPlayers;
 
     for (var i = 0; i < tilesetNames.length; i++) {
       this.addTilesetImage(tilesetNames[i]);
@@ -44,9 +45,19 @@ class Map extends Phaser.Tilemap {
         this.setCollision(collisionTiles, true, layer.name);
       }
 
+      // Powerups
+      if (name === 'powerups') {
+        var powerups = [];
+        mapTile(layer, function(tile, x, y) {
+          powerups.push(tile);
+        }, this);
+
+        this.game.powerups.add(powerups);
+      }
+
       // Trap activator layer
       if (name === 'trap_activators') {
-        this.buildTraps(layer);
+        this.game.traps.add(this.buildTraps(layer));
       }
 
       // Teleporter
@@ -57,6 +68,9 @@ class Map extends Phaser.Tilemap {
         }, this);
       }
     }, this);
+
+    // Remove powerup sprite from the map
+    this.game.powerups.onGrab.add(this.removePowerup, this);
   }
 
   buildTraps(layer) {
@@ -73,14 +87,27 @@ class Map extends Phaser.Tilemap {
             var x = tile.x;
             var y = tile.y;
 
-            trap = new DropTrapActivator(this.game, tile.worldX, tile.worldY, numJailers);
+            if (this.game.role === ROLE.APE) {
+              trap = new DropTrap(this.game, tile.worldX, tile.worldY);
+            } else if (this.game.role === ROLE.GUARD) {
+              trap = new DropTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards);
+            }
             break;
           case "fire":
-            trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY, numJailers);
+            if (this.game.role === ROLE.APE) {
+              trap = new FireTrap(this.game, tile.worldX, tile.worldY);
+            } else if (this.game.role === ROLE.GUARD) {
+              trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards);
+            }
             break;
           case "laser":
             var direction = tile.properties.direction;
-            trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, numJailers, direction, 3);
+
+            if (this.game.role === ROLE.APE) {
+              trap = new LaserTrap(this.game, tile.worldX, tile.worldY);
+            } else if (this.game.role === ROLE.GUARD) {
+              trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards, direction, 3);
+            }
             break;
           default:
             console.warn("Invalid trap activator type: " + type);
@@ -94,6 +121,21 @@ class Map extends Phaser.Tilemap {
     }, this);
 
     return traps;
+  }
+
+  destroy() {
+    this.game.powerups.onGrab.remove(this.removePowerup, this);
+    super.destroy();
+  }
+
+  removePowerup(powerupid) {
+    if (!(powerupid in this.game.powerups.powerups)) {
+      console.warn("Unable grab powerup [" + powerupid + "]");
+      return;
+    }
+
+    var powerup = this.game.powerups.powerups[powerupid];
+    this.removeTile(powerup.x, powerup.y, this.createdLayers['powerups']);
   }
 }
 

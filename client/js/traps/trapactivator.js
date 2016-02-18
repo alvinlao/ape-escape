@@ -20,6 +20,14 @@ class TrapActivator extends Phaser.Sprite {
     var style = { font: "14px Arial", fill: "#562e03" };
     this.clicksLeftText = game.add.text(4, 6, this.clicksLeft, style);
     this.addChild(this.clicksLeftText);
+
+    // Listen to trap manager
+    this.game.traps.onTrapUpdate.add(function(id, clicksLeft) {
+      if (this.id === id) {
+        this.clicksLeft = clicksLeft;
+        this.clicksLeftText.text = this.clicksLeft;
+      }
+    }, this);
   }
 
   // TODO: Send to server and let it decide
@@ -27,8 +35,11 @@ class TrapActivator extends Phaser.Sprite {
     if (this.clicksLeft > 0) {
       this.clicksLeft--;
       this.clicksLeftText.text = this.clicksLeft;
+
+      this.game.traps.onTrapClick.dispatch(this.id);
     }
 
+    // TODO REMOVE THIS
     if (this.clicksLeft === 0) {
       this.activate();
     }
@@ -38,6 +49,8 @@ class TrapActivator extends Phaser.Sprite {
   activate() {
     this.clicksLeft--;
     this.alpha = 0.4;
+
+    this.trap.activate(true);
   }
 
   // Override

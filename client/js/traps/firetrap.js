@@ -11,13 +11,10 @@ class FireTrap extends Trap {
     this.animations.add('fire', [8, 9, 10, 11], 10, true);
   }
 
-  // @param forever (bool) = keep fire alive forever
-  activate(forever) {
-    super.activate();
+  activate(remote) {
+    super.activate(remote);
 
     this.animations.play('fire');
-
-    if (typeof forever !== 'undefined' && forever) return;
 
     this.game.time.events.add(
         Phaser.Timer.SECOND * FIRE_DURATION,

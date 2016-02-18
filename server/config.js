@@ -1,3 +1,7 @@
 module.exports = {
-	PORT: 8080
+	URL: "http://localhost:8080/",
+	SOCKET_SETTINGS: {
+		"reconnection": false
+	},
+	PORT: 8080,
 }

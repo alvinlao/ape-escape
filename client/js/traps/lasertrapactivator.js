@@ -27,13 +27,9 @@ class LaserTrapActivator extends TrapActivator {
 
     super(game, x, y, spriteIndex, numPlayers);
 
-    this.lasertrap = new LaserTrap(game, x + (config.TILE_SIZE / 2), y + (config.TILE_SIZE / 2), direction, length);
+    this.trap = new LaserTrap(game, x + (config.TILE_SIZE / 2), y + (config.TILE_SIZE / 2), direction, length);
   }
 
-  activate() {
-    super.activate();
-    this.lasertrap.activate();
-  }
 }
 
 module.exports = LaserTrapActivator;

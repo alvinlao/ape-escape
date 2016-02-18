@@ -22,10 +22,12 @@ class Button extends Phaser.Sprite {
     this.input.useHandCursor = true;
     this.events.onInputDown.add(this.down, this);
     this.events.onInputUp.add(this.up, this);
+    this.events.onInputOver.add(this.over, this);
+    this.events.onInputOut.add(this.out, this);
   }
 
   down() {
-    this.frame = 1;
+    this.frame = 2;
   }
 
   up() {
@@ -34,6 +36,14 @@ class Button extends Phaser.Sprite {
     this.game.time.events.add(Phaser.Timer.HALF, function() {
       this.callback.call(this.callbackContext);
     }, this);
+  }
+
+  over() {
+    this.frame = 1;
+  }
+
+  out() {
+    this.frame = 0;
   }
 
   destroy() {
