@@ -21,6 +21,20 @@ class ApeLevelState extends LevelState {
   create() {
     super.create();
 
+    // TODO: Create client
+    // The client should send & receive game events
+    //
+    // RECEIVE
+    // Activate a trap
+    // this.game.traps.onTrapActivate.dispatch( trapid );
+    //
+    // SEND
+    // Grab powerup
+    // this.game.powerups.onGrab.add( listener );
+    //
+    // SEND (in progress?)
+    // Send ape movement
+
     // Input
     var controls = config.APE.CONTROLS;
     var keys = [];
@@ -67,7 +81,7 @@ class ApeLevelState extends LevelState {
       if(tile.index===-1) return;
 
       this.ape.grabPowerup(tile.properties.powerup, parseInt(tile.properties.quantity));
-      this.map.removeTile(tile.x,tile.y, this.map.createdLayers['powerups']);
+      this.game.powerups.onGrab.dispatch(tile.id);
     }, null, this);
 
     // Active Traps

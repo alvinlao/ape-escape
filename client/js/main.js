@@ -5,7 +5,6 @@ var BootState = require('./states/boot.js');
 var LoadState = require('./states/load.js');
 var TitleState = require('./states/title.js');
 var LobbyState = require('./states/lobby.js');
-var LevelState = require('./states/level.js');
 var ApeLevelState = require('./states/apelevel.js');
 var GuardLevelState = require('./states/guardlevel.js');
 
@@ -26,7 +25,6 @@ game.state.add('boot', new BootState());
 game.state.add('load', new LoadState());
 game.state.add('title', new TitleState());
 game.state.add('lobby', new LobbyState());
-game.state.add('level', new LevelState());
 game.state.add('apelevel', new ApeLevelState());
 game.state.add('guardlevel', new GuardLevelState());
 

@@ -5,6 +5,7 @@ var ROLE = require('../util/role.js');
 var Ape = require('../entities/ape.js');
 var Map = require('../map.js');
 var TrapManager = require('../traps/trapmanager.js');
+var PowerupManager = require('../entities/powerupmanager.js');
 
 var GameOver = require('../sprites/gameover.js');
 
@@ -12,6 +13,7 @@ class LevelState extends Phaser.State {
   init(numGuards) {
     this.game.numGuards = numGuards;
     this.game.traps = new TrapManager();
+    this.game.powerups = new PowerupManager();
 
     this.ape = null;
     this.map = null;
@@ -100,6 +102,7 @@ class LevelState extends Phaser.State {
       for(var level in this.map.createdLayers){
         this.map.createdLayers[level].destroy();
       }
+
       this.map.destroy();
 
       // Clean up all the objects
@@ -108,7 +111,13 @@ class LevelState extends Phaser.State {
           child.destroy();
         }
       }, this);
+
+      // Clear all sprites
       this.game.world.removeAll();
+
+      // Clean up managers
+      this.game.traps.removeAll();
+      this.game.powerups.removeAll();
     }
   }
 
@@ -122,9 +131,9 @@ class LevelState extends Phaser.State {
           spritesheets.traps.name
         ]);
 
-    if(this.ape){
-      this.ape.x = 100;
-      this.ape.y = 50;
+    if(this.ape) {
+      this.ape.x = config.APE.SPAWN_X;
+      this.ape.y = config.APE.SPAWN_Y;
 
       this.game.world.add(this.ape);
       this.ape.refresh();

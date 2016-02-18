@@ -45,6 +45,16 @@ class Map extends Phaser.Tilemap {
         this.setCollision(collisionTiles, true, layer.name);
       }
 
+      // Powerups
+      if (name === 'powerups') {
+        var powerups = [];
+        mapTile(layer, function(tile, x, y) {
+          powerups.push(tile);
+        }, this);
+
+        this.game.powerups.add(powerups);
+      }
+
       // Trap activator layer
       if (name === 'trap_activators') {
         this.game.traps.add(this.buildTraps(layer));
@@ -58,6 +68,9 @@ class Map extends Phaser.Tilemap {
         }, this);
       }
     }, this);
+
+    // Remove powerup sprite from the map
+    this.game.powerups.onGrab.add(this.removePowerup, this);
   }
 
   buildTraps(layer) {
@@ -108,6 +121,21 @@ class Map extends Phaser.Tilemap {
     }, this);
 
     return traps;
+  }
+
+  destroy() {
+    this.game.powerups.onGrab.remove(this.removePowerup, this);
+    super.destroy();
+  }
+
+  removePowerup(powerupid) {
+    if (!(powerupid in this.game.powerups.powerups)) {
+      console.warn("Unable grab powerup [" + powerupid + "]");
+      return;
+    }
+
+    var powerup = this.game.powerups.powerups[powerupid];
+    this.removeTile(powerup.x, powerup.y, this.createdLayers['powerups']);
   }
 }
 
