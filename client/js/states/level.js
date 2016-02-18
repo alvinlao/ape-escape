@@ -63,47 +63,8 @@ class LevelState extends Phaser.State {
       return this.dropTraps;
     }).bind(this);
 
-    // Swap maps
-    game.loadLevel = (function(levelName) {
-      if(this.map){
-        //Destroy the previous level
-        for(var level in this.map.createdLayers){
-          this.map.createdLayers[level].destroy();
-        }
-        this.map.destroy();
-
-        // Clean up all the objects
-        game.world.children.forEach(function(child) {
-          if (child !== this.ape) {
-            child.destroy();
-          }
-        }, this);
-        game.world.removeAll();
-      }
-
-      this.map = new Map(game, levelName,
-          [
-            spritesheets.tiles.name,
-            spritesheets.misc.name,
-            spritesheets.traps.name
-          ]);
-
-      if(this.ape){
-        this.ape.x = 100;
-        this.ape.y = 50;
-
-        game.world.add(this.ape);
-        this.ape.refresh();
-      }
-      this.loadedLevel = true;
-    }).bind(this);
-
-    game.loadNextLevel = (function(){
-      game.loadLevel(game.levelOrder[++this.currentLevelId]);
-    }).bind(this);
-
     //Load the first level
-    game.loadNextLevel();
+    this.loadNextLevel();
 
     // Entities
     this.ape = new Ape(game, 100, 50, game.playerName);
@@ -141,8 +102,8 @@ class LevelState extends Phaser.State {
       this.loadingLevel = true;
       game.time.events.add((Phaser.Timer.SECOND * 1), function() {
         //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
-        game.loadNextLevel();
-      });
+        this.loadNextLevel();
+      }, this);
     }, null, this);
 
     // Blocks
@@ -171,6 +132,48 @@ class LevelState extends Phaser.State {
       this.loadedLevel = false;
       this.loadingLevel = false;
     }
+  }
+
+  destroyLevel() {
+    if (this.map) {
+      //Destroy the previous level
+      for(var level in this.map.createdLayers){
+        this.map.createdLayers[level].destroy();
+      }
+      this.map.destroy();
+
+      // Clean up all the objects
+      this.game.world.children.forEach(function(child) {
+        if (child !== this.ape) {
+          child.destroy();
+        }
+      }, this);
+      this.game.world.removeAll();
+    }
+  }
+
+  loadLevel(levelName) {
+    this.destroyLevel();
+
+    this.map = new Map(this.game, levelName,
+        [
+          spritesheets.tiles.name,
+          spritesheets.misc.name,
+          spritesheets.traps.name
+        ]);
+
+    if(this.ape){
+      this.ape.x = 100;
+      this.ape.y = 50;
+
+      this.game.world.add(this.ape);
+      this.ape.refresh();
+    }
+    this.loadedLevel = true;
+  }
+
+  loadNextLevel() {
+    this.loadLevel(this.game.levelOrder[++this.currentLevelId]);
   }
 }
 
