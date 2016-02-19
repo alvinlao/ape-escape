@@ -17,7 +17,7 @@ class LobbyState extends Phaser.State {
     var zookeepberbuttonwidth = 128;
     var gutter = 10;
     var titleYOffset = -50;
-    var buttonYOffset = 50;
+    var buttonYOffset = 30;
 
     var width = apebuttonwidth + zookeepberbuttonwidth + gutter;
 
@@ -29,6 +29,11 @@ class LobbyState extends Phaser.State {
     var title = game.add.text(config.CANVAS_WIDTH / 2 + 0.5, config.CANVAS_HEIGHT / 2 + titleYOffset, "Lobby", style);
     title.anchor.set(0.5);
 
+    // Lobby players
+    var lobbyDiv = document.getElementById('lobby');
+    this.lobbyDiv = lobbyDiv;
+    this.lobbyDiv.style.display = 'block';
+
     // Buttons
     var apeButton = new TextButton(
         game,
@@ -39,7 +44,7 @@ class LobbyState extends Phaser.State {
         buttonconfig.BLUE_STYLE,
         Phaser.KeyCode.Z,
         function() {
-            this.game.socket.emit("player_ready");
+            this.game.socket.emit("player_ready", 'ape');
         },
         this
       );
@@ -55,7 +60,7 @@ class LobbyState extends Phaser.State {
         buttonconfig.RED_STYLE,
         Phaser.KeyCode.X,
         function() {
-            this.game.socket.emit("player_ready");
+            this.game.socket.emit("player_ready", 'guard');
         },
         this
       );
@@ -66,12 +71,52 @@ class LobbyState extends Phaser.State {
     });
 
     this.game.socket.on("start_game", function(numGuards){
+      lobbyDiv.style.display = "none";
       if (game.role === ROLE.APE) {
         game.state.start("apelevel", true, false, numGuards);
       } else {
         game.state.start("guardlevel", true, false, numGuards);
       }
     });
+
+    // Initialize lobby with me
+    this.drawLobby([{ name: this.game.playerName, ready: false, role: '' }]);
+
+    this.game.socket.on("lobby", this.drawLobby.bind(this));
+  }
+
+	// @param player { name: string, ready: bool, role: { 'ape' | 'guard' | '' } }
+  drawPlayer(player) {
+    var name = player.name;
+    var ready = player.ready;
+    var role = player.role;
+
+    if (!ready) role = '';
+
+    var playerDiv = `
+        <div class="player ${role}">
+          <div class="info">
+            <div class="status"></div>
+            <div class="name">${name}</div>
+          </div>
+        </div>
+    `
+
+    this.lobbyDiv.innerHTML += playerDiv;
+  }
+
+  // @param players (object)
+  drawLobby(players) {
+    console.log(players);
+    // Clear the div
+    while (this.lobbyDiv.firstChild) {
+      this.lobbyDiv.removeChild(this.lobbyDiv.firstChild);
+    }
+
+    // Add all players
+    players.forEach(function(player) {
+      this.drawPlayer(player);
+    }, this);
   }
 }
 

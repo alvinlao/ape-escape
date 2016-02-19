@@ -40,7 +40,7 @@ class TitleState extends Phaser.State {
           }
 
           this.game.playerName = name;
-          this.game.socket.emit("player_name",name);
+          this.game.socket.emit("player_name", name);
 
           this.game.state.start('lobby');
         },

@@ -44,7 +44,6 @@ class Ape extends BaseApe {
 
   // Rebuild after world clear
   refresh() {
-    console.log(this.buttons);
     this.hud = new ApeHUD(this.game, this.powerupInventory, this.buttons);
   }
 

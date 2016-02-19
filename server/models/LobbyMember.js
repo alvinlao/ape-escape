@@ -6,6 +6,7 @@ var LobbyMember = function(){
 	this.id = ++lobbyId;
 	this.name = Math.floor(Math.random()*100)+ "";
 	this.ready = false;
+  this.role = '';
 }
 
 module.exports = LobbyMember;

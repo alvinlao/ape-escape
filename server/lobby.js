@@ -13,9 +13,10 @@ var joinLobby = function(socket){
 	console.log(socket.lobby);
 
 	//Lobby Handlers
-	var playerReady = function(){
+	var playerReady = function(role){
 		socket.lobby.ready = true;
-		console.log("Player " + socket.lobby.name + " is ready.");
+    socket.lobby.role = role;
+		console.log("Player " + socket.lobby.name + " is ready (" + role + ").");
 		
 		emitLobby();
 

@@ -23,6 +23,10 @@ module.exports = {
     name: 'blink',
     file: 'assets/run_icon.png'
   },
+  guardpointer: {
+    name: 'guardpointer',
+    file: 'assets/guard_pointer.png'
+  },
   buttons: {
     name: 'buttons',
     file: 'assets/buttons.png'

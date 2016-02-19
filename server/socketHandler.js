@@ -17,6 +17,7 @@ var attachIO = function(io){
 			console.log("User disconnected");
 			//Remove it from the array
 			state.sockets.splice(state.sockets.indexOf(socket), 1);
+      lobby.leaveLobby();
 		});
 	});
 }
