@@ -38,8 +38,6 @@ class BaseApe extends Phaser.Sprite {
 
     //Life
     this.isDead = false;
-
-    this.refresh();
   }
 
   // Override

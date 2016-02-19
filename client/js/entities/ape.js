@@ -38,10 +38,13 @@ class Ape extends BaseApe {
       'BLINK': this.blinkKey,
       'SHIELD': this.shieldKey
     }
+
+    this.refresh();
   }
 
   // Rebuild after world clear
   refresh() {
+    console.log(this.buttons);
     this.hud = new ApeHUD(this.game, this.powerupInventory, this.buttons);
   }
 
