@@ -14,6 +14,8 @@
 ## Development
 
 1. Run `gulp watch`
-2. Run a http server in `/public`
 
-    For example: `python -m http.server`
+## Run
+
+1. `cd server`
+2. Run `node server.js`
