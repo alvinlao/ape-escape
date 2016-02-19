@@ -36,7 +36,8 @@ class TitleState extends Phaser.State {
           var name = this.nameInput.value;
 
           if (name === '') {
-            name = config.PLAYER.DEFAULT_NAME;
+            var names = config.PLAYER.DEFAULT_NAMES;
+            name = names[Math.floor(Math.random() * names.length)];
           }
 
           this.game.playerName = name;

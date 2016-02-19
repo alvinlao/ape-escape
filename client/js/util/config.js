@@ -7,7 +7,7 @@ module.exports = {
   LEVELS: ["test", "level2", "level3"],
 
   PLAYER: {
-    DEFAULT_NAME: "Mr. Ape"
+    DEFAULT_NAMES: ["Ape Jr.", "Mrs. Ape", "Mr. Ape", "Baby Ape", "McApe", "King Ape", "Queen Ape", "George", "Caeser", "Cornelius", "Rafiki", "Kong"]
   },
 
   TRAPS: {
