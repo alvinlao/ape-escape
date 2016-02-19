@@ -1,12 +1,8 @@
 var spritesheets = require('../util/spritesheets.js');
 var config = require('../util/config.js');
-var ROLE = require('../util/role.js');
 
 var BaseApe = require('./baseape.js');
 var ApeHUD = require('./apehud.js');
-
-var SPEED = config.APE.SPEED;
-var JUMP_SPEED = config.APE.JUMP_SPEED;
 
 var POWERUPS = config.APE.POWERUPS;
 var POWERUP = config.APE.POWERUP;
@@ -24,40 +20,16 @@ class Ape extends BaseApe {
   constructor(game, x, y, name) {
     super(game, x, y, name);
 
-    if(game.role === ROLE.APE){
-      this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
-      this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
-      this.rightKey = game.input.keyboard.addKey(config.APE.CONTROLS.RIGHT.BUTTON);
-      this.blinkKey = game.input.keyboard.addKey(config.APE.CONTROLS.BLINK.BUTTON);
-      this.shieldKey = game.input.keyboard.addKey(config.APE.CONTROLS.SHIELD.BUTTON);
+    // Input
+    this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
+    this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
+    this.rightKey = game.input.keyboard.addKey(config.APE.CONTROLS.RIGHT.BUTTON);
+    this.blinkKey = game.input.keyboard.addKey(config.APE.CONTROLS.BLINK.BUTTON);
+    this.shieldKey = game.input.keyboard.addKey(config.APE.CONTROLS.SHIELD.BUTTON);
 
-      // Bind powerup keys
-      this.blinkKey.onDown.add(this.powerup, this, 0, 'BLINK');
-      this.shieldKey.onDown.add(this.powerup, this, 0, 'SHIELD');
-
-    } else {
-      //TODO: re-do all this server connection code,there's a better way
-      // TODO: Move code to remote ape
-      this.jumpKey = {isDown: false};
-      this.leftKey = {isDown: false};
-      this.rightKey = {isDown: false};
-      this.blinkKey = {isDown: false};
-      this.shieldKey = {isDown: false};
-
-      var self = this;
-      game.socket.on("ape:move", function(keys){
-        self.jumpKey.isDown = keys.jumpKey;
-        self.leftKey.isDown = keys.leftKey;
-        self.rightKey.isDown = keys.rightKey;
-        self.blinkKey.isDown = keys.blinkKey;
-        self.shieldKey.isDown = keys.shieldKey;
-        self.update();
-      });
-
-      game.socket.on("powerup", function(type){
-        self.powerup(null, type);
-      });
-    }
+    // Bind powerup keys
+    this.blinkKey.onDown.add(this.powerup, this, 0, 'BLINK');
+    this.shieldKey.onDown.add(this.powerup, this, 0, 'SHIELD');
 
     this.buttons = {
       'JUMP': this.jumpKey,
@@ -79,10 +51,8 @@ class Ape extends BaseApe {
 
   // @param requestedPowerup (POWERUP enum)
   powerup(key, requestedPowerup) {
-    if(this.game.player === ROLE.APE){
-      this.game.socket.emit("powerup",requestedPowerup);
-    }
     if (this.isDead) return;
+    this.game.socket.emit("powerup",requestedPowerup);
 
     switch(requestedPowerup){
       case 'SHIELD':
@@ -186,43 +156,8 @@ class Ape extends BaseApe {
   }
 
   update() {
-    //If we're the ape, update
-    if(this.game.role === ROLE.APE){
-      this.broadcastKeys();
-    }
-
-    //Do nothing if dead
-    if(this.isDead) return;
-
-    if (!this.leftKey.isDown) {
-      this.leftDownTime = -1;
-    }
-
-    if (!this.rightKey.isDown) {
-      this.rightDownTime = -1;
-    }
-
-    if (this.leftKey.isDown && this.leftDownTime === -1) {
-      this.leftDownTime = this.rightDownTime + 1;
-    }
-
-    if (this.rightKey.isDown && this.rightDownTime === -1) {
-      this.rightDownTime = this.leftDownTime + 1;
-    }
-
-    if (this.leftDownTime != -1 || this.rightDownTime != -1) {
-      if (this.leftDownTime > this.rightDownTime) {
-        this.moveLeft();
-      } else {
-        this.moveRight();
-      }
-    } else {
-      this.stop();
-    }
-
-    if (this.jumpKey.isDown) {
-      this.jump();
-    }
+    this.broadcastKeys();
+    super.update();
   }
 }
 

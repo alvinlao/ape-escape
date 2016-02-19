@@ -1,6 +1,9 @@
 var config = require('../util/config.js');
 var spritesheets = require('../util/spritesheets.js');
 
+var SPEED = config.APE.SPEED;
+var JUMP_SPEED = config.APE.JUMP_SPEED;
+
 var POWERUPS = config.APE.POWERUPS;
 var POWERUP = config.APE.POWERUP;
 
@@ -87,6 +90,41 @@ class BaseApe extends Phaser.Sprite {
       return true;
     } else {
       return false;
+    }
+  }
+
+  update() {
+    //Do nothing if dead
+    if(this.isDead) return;
+
+    if (!this.leftKey.isDown) {
+      this.leftDownTime = -1;
+    }
+
+    if (!this.rightKey.isDown) {
+      this.rightDownTime = -1;
+    }
+
+    if (this.leftKey.isDown && this.leftDownTime === -1) {
+      this.leftDownTime = this.rightDownTime + 1;
+    }
+
+    if (this.rightKey.isDown && this.rightDownTime === -1) {
+      this.rightDownTime = this.leftDownTime + 1;
+    }
+
+    if (this.leftDownTime != -1 || this.rightDownTime != -1) {
+      if (this.leftDownTime > this.rightDownTime) {
+        this.moveLeft();
+      } else {
+        this.moveRight();
+      }
+    } else {
+      this.stop();
+    }
+
+    if (this.jumpKey.isDown) {
+      this.jump();
     }
   }
 }
