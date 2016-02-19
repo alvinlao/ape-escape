@@ -1,5 +1,7 @@
 var config = require('../util/config.js');
 
+var GuardHUD = require('./guardhud.js');
+
 class Guard {
   constructor(game) {
     this.game = game;
@@ -17,6 +19,15 @@ class Guard {
     this.downKey = game.input.keyboard.addKey(config.GUARD.CONTROLS.DOWN.BUTTON);
 
     this.speed = config.GUARD.CAMERA_MOVE_SPEED;
+
+    this.buttons = {
+      'LEFT': this.leftKey,
+      'RIGHT': this.rightKey,
+      'UP': this.upKey,
+      'DOWN': this.downKey
+    }
+
+    this.hud = new GuardHUD(this.game, this.buttons);
   }
 
   update() {

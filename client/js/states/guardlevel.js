@@ -41,6 +41,7 @@ class GuardLevelState extends LevelState {
   }
 
   update() {
+    super.update();
     this.guard.update();
   }
 }

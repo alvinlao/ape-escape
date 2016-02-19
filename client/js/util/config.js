@@ -25,16 +25,20 @@ module.exports = {
     CAMERA_MOVE_SPEED: 10,
     CONTROLS: {
       LEFT: {
-        BUTTON: Phaser.KeyCode.LEFT
+        BUTTON: Phaser.KeyCode.LEFT,
+        FRAMENUMBER: 8
       },
       RIGHT: {
-        BUTTON: Phaser.KeyCode.RIGHT
+        BUTTON: Phaser.KeyCode.RIGHT,
+        FRAMENUMBER: 6
       },
       UP: {
-        BUTTON: Phaser.KeyCode.UP
+        BUTTON: Phaser.KeyCode.UP,
+        FRAMENUMBER: 4
       },
       DOWN: {
-        BUTTON: Phaser.KeyCode.DOWN
+        BUTTON: Phaser.KeyCode.DOWN,
+        FRAMENUMBER: 10
       }
     }
   },
