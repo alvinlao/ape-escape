@@ -21,6 +21,28 @@ module.exports = {
     },
   },
 
+  GUARD: {
+    CAMERA_MOVE_SPEED: 10,
+    CONTROLS: {
+      LEFT: {
+        BUTTON: Phaser.KeyCode.LEFT,
+        FRAMENUMBER: 4
+      },
+      RIGHT: {
+        BUTTON: Phaser.KeyCode.RIGHT,
+        FRAMENUMBER: 2
+      },
+      UP: {
+        BUTTON: Phaser.KeyCode.UP,
+        FRAMENUMBER: 0
+      },
+      DOWN: {
+        BUTTON: Phaser.KeyCode.DOWN,
+        FRAMENUMBER: 6
+      }
+    }
+  },
+
   APE: {
     SPAWN_X: 100,
     SPAWN_Y: 50,

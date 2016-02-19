@@ -27,6 +27,10 @@ module.exports = {
     name: 'buttons',
     file: 'assets/buttons.png'
   },
+  guardbuttons: {
+    name: 'guardbuttons',
+    file: 'assets/guard_buttons.png'
+  },
   bluebutton2: {
     name: 'bluebutton2',
     file: 'assets/button_2_blue_spritesheet.png'

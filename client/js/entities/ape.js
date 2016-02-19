@@ -1,11 +1,8 @@
 var spritesheets = require('../util/spritesheets.js');
 var config = require('../util/config.js');
-var ROLE = require('../util/role.js');
 
+var BaseApe = require('./baseape.js');
 var ApeHUD = require('./apehud.js');
-
-var SPEED = config.APE.SPEED;
-var JUMP_SPEED = config.APE.JUMP_SPEED;
 
 var POWERUPS = config.APE.POWERUPS;
 var POWERUP = config.APE.POWERUP;
@@ -19,59 +16,20 @@ var SHIELD_TIME = config.APE.SHIELD_TIME;
 //Entire duration of poof (in seconds)
 var POOF_TIME = 0.35;
 
-class Ape extends Phaser.Sprite {
+class Ape extends BaseApe {
   constructor(game, x, y, name) {
-    super(game, x, y, spritesheets.ape.name);
-    game.add.existing(this);
+    super(game, x, y, name);
 
-    // Sprite
-    this.anchor.setTo(0.5, 0.5);
-    this.animations.add('walk', [0, 1], 10, true);
-    this.animations.add('jump', [4, 5], 10, true);
+    // Input
+    this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
+    this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
+    this.rightKey = game.input.keyboard.addKey(config.APE.CONTROLS.RIGHT.BUTTON);
+    this.blinkKey = game.input.keyboard.addKey(config.APE.CONTROLS.BLINK.BUTTON);
+    this.shieldKey = game.input.keyboard.addKey(config.APE.CONTROLS.SHIELD.BUTTON);
 
-    // Movement
-    this.leftDownTime = -1;
-    this.rightDownTime = -1;
-
-    // Physics
-    game.physics.enable(this, Phaser.Physics.ARCADE);
-
-    this.body.collideWorldBounds = true;
-
-    //Controls
-    if(game.role === ROLE.APE){
-      this.jumpKey = game.input.keyboard.addKey(config.APE.CONTROLS.JUMP.BUTTON);
-      this.leftKey = game.input.keyboard.addKey(config.APE.CONTROLS.LEFT.BUTTON);
-      this.rightKey = game.input.keyboard.addKey(config.APE.CONTROLS.RIGHT.BUTTON);
-      this.blinkKey = game.input.keyboard.addKey(config.APE.CONTROLS.BLINK.BUTTON);
-      this.shieldKey = game.input.keyboard.addKey(config.APE.CONTROLS.SHIELD.BUTTON);
-
-      // Bind powerup keys
-      this.blinkKey.onDown.add(this.powerup, this, 0, 'BLINK');
-      this.shieldKey.onDown.add(this.powerup, this, 0, 'SHIELD');
-
-    } else {
-      //TODO: re-do all this server connection code,there's a better way
-      this.jumpKey = {isDown: false};
-      this.leftKey = {isDown: false};
-      this.rightKey = {isDown: false};
-      this.blinkKey = {isDown: false};
-      this.shieldKey = {isDown: false};
-
-      var self = this;
-      game.socket.on("ape:move", function(keys){
-        self.jumpKey.isDown = keys.jumpKey;
-        self.leftKey.isDown = keys.leftKey;
-        self.rightKey.isDown = keys.rightKey;
-        self.blinkKey.isDown = keys.blinkKey;
-        self.shieldKey.isDown = keys.shieldKey;
-        self.update();
-      });
-
-      game.socket.on("powerup", function(type){
-        self.powerup(null, type);
-      });
-    }
+    // Bind powerup keys
+    this.blinkKey.onDown.add(this.powerup, this, 0, 'BLINK');
+    this.shieldKey.onDown.add(this.powerup, this, 0, 'SHIELD');
 
     this.buttons = {
       'JUMP': this.jumpKey,
@@ -80,67 +38,11 @@ class Ape extends Phaser.Sprite {
       'BLINK': this.blinkKey,
       'SHIELD': this.shieldKey
     }
-
-    // Input
-
-    // Name tag
-    var style = { font: "18px Arial", fill: "#000", align: "center" }
-    this.nametag = game.add.text(0, -40, name, style);
-    this.nametag.anchor.set(0.5);
-
-    this.addChild(this.nametag);
-
-    // Powerups
-    this.shieldActive = false;
-
-    this.powerupInventory = {};
-    for (var key in POWERUPS) {
-      var powerup = POWERUPS[key];
-      this.powerupInventory[key] = powerup.INITIAL_QUANTITY;
-    }
-
-    //Life
-    this.isDead = false;
-
-    this.refresh();
   }
 
   // Rebuild after world clear
   refresh() {
     this.hud = new ApeHUD(this.game, this.powerupInventory, this.buttons);
-  }
-
-  moveLeft() {
-    this.body.velocity.x = -SPEED;
-    this.scale.x = -1;
-    this.nametag.scale.x = -1;
-    this.animations.play('walk');
-  }
-
-  moveRight() {
-    this.body.velocity.x = SPEED;
-    this.scale.x = 1;
-    this.nametag.scale.x = 1;
-    this.animations.play('walk');
-  }
-
-  stop() {
-    this.body.velocity.x = 0;
-
-    if (this.body.onFloor() || this.body.touching.down) {
-      this.frame = 3;
-      this.animations.stop();
-    } else {
-      this.animations.play('jump');
-    }
-  }
-
-  jump() {
-    this.animations.play('jump');
-
-    if (this.body.onFloor() || this.body.touching.down) {
-      this.body.velocity.y = -JUMP_SPEED;
-    }
   }
 
   isInvincible() {
@@ -149,10 +51,8 @@ class Ape extends Phaser.Sprite {
 
   // @param requestedPowerup (POWERUP enum)
   powerup(key, requestedPowerup) {
-    if(this.game.player === ROLE.APE){
-      this.game.socket.emit("powerup",requestedPowerup);
-    }
     if (this.isDead) return;
+    this.game.socket.emit("powerup",requestedPowerup);
 
     switch(requestedPowerup){
       case 'SHIELD':
@@ -245,19 +145,6 @@ class Ape extends Phaser.Sprite {
         );
   }
 
-  die(causeOfDeath) {
-    if (!this.isInvincible()) {
-      this.body.velocity.x = 0;
-      this.animations.play('jump');
-      this.rotation = 1.5;
-      this.isDead = true;
-      this.causeOfDeath = causeOfDeath;
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   broadcastKeys(){
     this.game.socket.emit("move",{
       jumpKey: this.jumpKey.isDown,
@@ -269,43 +156,8 @@ class Ape extends Phaser.Sprite {
   }
 
   update() {
-    //If we're the ape, update
-    if(this.game.role === ROLE.APE){
-      this.broadcastKeys();
-    }
-
-    //Do nothing if dead
-    if(this.isDead) return;
-
-    if (!this.leftKey.isDown) {
-      this.leftDownTime = -1;
-    }
-
-    if (!this.rightKey.isDown) {
-      this.rightDownTime = -1;
-    }
-
-    if (this.leftKey.isDown && this.leftDownTime === -1) {
-      this.leftDownTime = this.rightDownTime + 1;
-    }
-
-    if (this.rightKey.isDown && this.rightDownTime === -1) {
-      this.rightDownTime = this.leftDownTime + 1;
-    }
-
-    if (this.leftDownTime != -1 || this.rightDownTime != -1) {
-      if (this.leftDownTime > this.rightDownTime) {
-        this.moveLeft();
-      } else {
-        this.moveRight();
-      }
-    } else {
-      this.stop();
-    }
-
-    if (this.jumpKey.isDown) {
-      this.jump();
-    }
+    this.broadcastKeys();
+    super.update();
   }
 }
 

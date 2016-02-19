@@ -160,10 +160,9 @@ class ApeHUD extends Phaser.Group {
   }
 
   destroy() {
-    super.destroy();
-
     // Remove key bindings
     this.unbindButtons();
+    super.destroy();
   }
 }
 

@@ -1,6 +1,7 @@
 var config = require('../util/config.js');
 
-var Ape = require('../entities/ape.js');
+var RemoteApe = require('../entities/remoteape.js');
+var Guard = require('../entities/guard.js');
 var LevelState = require('./level.js');
 
 class GuardLevelState extends LevelState {
@@ -8,7 +9,9 @@ class GuardLevelState extends LevelState {
     super.create();
 
     // TODO Remote ape
-    this.ape = new Ape(this.game, config.APE.SPAWN_X, config.SPAWN_Y, this.game.playerName);
+    this.ape = new RemoteApe(this.game, config.APE.SPAWN_X, config.SPAWN_Y, this.game.playerName);
+
+    this.guard = new Guard(this.game);
 
     // TODO Guard camera control
 
@@ -35,6 +38,11 @@ class GuardLevelState extends LevelState {
     //
     // Traps created for new level
     // this.game.traps.onTrapActivatorsCreate.add( listener )
+  }
+
+  update() {
+    super.update();
+    this.guard.update();
   }
 }
 
