@@ -28,7 +28,7 @@ class GuardHUD extends Phaser.Group {
 
     // Draw key
     function drawKey(x, y, frameNumber, button) {
-      var buttonSprite = this.game.add.sprite(x, y, spritesheets.buttons.name, frameNumber);
+      var buttonSprite = this.game.add.sprite(x, y, spritesheets.guardbuttons.name, frameNumber);
       this.movementLegend[button] = {
         button: buttonSprite
       };

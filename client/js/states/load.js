@@ -11,6 +11,8 @@ class LoadState extends Phaser.State {
     game.load.image(spritesheets.blink.name, spritesheets.blink.file);
 
     game.load.spritesheet(spritesheets.buttons.name, spritesheets.buttons.file, 64, 64);
+    game.load.spritesheet(spritesheets.guardbuttons.name, spritesheets.guardbuttons.file, 64, 64);
+
     game.load.spritesheet(spritesheets.bluebutton2.name, spritesheets.bluebutton2.file, 128, 64);
     game.load.spritesheet(spritesheets.bluebutton4.name, spritesheets.bluebutton4.file, 256, 64);
     game.load.spritesheet(spritesheets.redbutton2.name, spritesheets.redbutton2.file, 128, 64);

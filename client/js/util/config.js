@@ -26,19 +26,19 @@ module.exports = {
     CONTROLS: {
       LEFT: {
         BUTTON: Phaser.KeyCode.LEFT,
-        FRAMENUMBER: 8
+        FRAMENUMBER: 4
       },
       RIGHT: {
         BUTTON: Phaser.KeyCode.RIGHT,
-        FRAMENUMBER: 6
+        FRAMENUMBER: 2
       },
       UP: {
         BUTTON: Phaser.KeyCode.UP,
-        FRAMENUMBER: 4
+        FRAMENUMBER: 0
       },
       DOWN: {
         BUTTON: Phaser.KeyCode.DOWN,
-        FRAMENUMBER: 10
+        FRAMENUMBER: 6
       }
     }
   },
