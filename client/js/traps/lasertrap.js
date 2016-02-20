@@ -62,7 +62,7 @@ class LaserTrap extends Trap {
 
       // Add section
       this.sections.push(section);
-      if (remote) this.game.getActiveTraps().push(section);
+      if (!remote) this.game.getActiveTraps().push(section);
     }
 
     this.head.activate();
@@ -85,9 +85,11 @@ class LaserTrap extends Trap {
       var section = this.sections[i];
 
       section.visible = false;
-      var activeTraps = this.game.getActiveTraps();
-      var j = activeTraps.indexOf(section);
-      activeTraps.splice(j, 1);
+      if (!this.remote) {
+        var activeTraps = this.game.getActiveTraps();
+        var j = activeTraps.indexOf(section);
+        activeTraps.splice(j, 1);
+      }
 
       this.head.deactivate();
     }
