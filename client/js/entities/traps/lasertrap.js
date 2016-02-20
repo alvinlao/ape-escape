@@ -41,7 +41,7 @@ class LaserTrap extends Trap {
 
       // Create section
       var section = this.game.add.sprite(loc.x, loc.y, spritesheets.misc.name);
-
+      section.getDeathMessage = this.getDeathMessage;
 
       // Sprite setup
       if (i === orientation.loc.length - 1) {
