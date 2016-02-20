@@ -23,21 +23,27 @@ class GuardLevelState extends LevelState {
     // Ape death
     // this.ape.die()
     //
+    // Ape uses powerup
+    // this.ape.powerup( 
+    //    POWERUP enum { 'BLINK' | 'SHIELD },
+    //    arg1, arg2, ... , argN
+    //  )
+    //
     // Next level
     // this.loadNextLevel()
     //
     // Server sending trap clicksLeft update
-    // this.game.traps.onTrapUpdate.add( listener )
+    // this.game.traps.onUpdate.add( listener )
 
 
     // TODO Send trap events
     // TrapManager
     //
     // Guard clicked on a trap:
-    // this.game.traps.onTrapClick.add( listener )
+    // this.game.traps.onClick.add( listener )
     //
     // Traps created for new level
-    // this.game.traps.onTrapActivatorsCreate.add( listener )
+    // this.game.traps.onActivatorsCreate.add( listener )
   }
 
   update() {

@@ -22,7 +22,7 @@ class TrapActivator extends Phaser.Sprite {
     this.addChild(this.clicksLeftText);
 
     // Listen to trap manager
-    this.game.traps.onTrapUpdate.add(function(id, clicksLeft) {
+    this.game.traps.onUpdate.add(function(id, clicksLeft) {
       if (this.id === id) {
         this.clicksLeft = clicksLeft;
         this.clicksLeftText.text = this.clicksLeft;
@@ -36,7 +36,7 @@ class TrapActivator extends Phaser.Sprite {
       this.clicksLeft--;
       this.clicksLeftText.text = this.clicksLeft;
 
-      this.game.traps.onTrapClick.dispatch(this.id);
+      this.game.traps.onClick.dispatch(this.id);
     }
 
     // TODO REMOVE THIS

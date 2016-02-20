@@ -26,7 +26,7 @@ class ApeLevelState extends LevelState {
     //
     // RECEIVE
     // Activate a trap
-    // this.game.traps.onTrapActivate.dispatch( trapid );
+    // this.game.traps.onActivate.dispatch( trapid );
     //
     // SEND
     // Grab powerup

@@ -28,6 +28,22 @@ class RemoteApe extends BaseApe {
       self.powerup(null, type);
     });
   }
+
+  powerup(requestedPowerup) {
+    var args = arguments.splice(0, 1);
+
+    switch (requestedPowerup) {
+      case 'SHIELD':
+        this.shieldAnimation(args);
+        break;
+      case 'BLINK':
+        this.blinkAnimation(args);
+        break;
+      default:
+        console.warn("Invalid requested powerup: " + requestedPowerup);
+        break;
+    }
+  }
 }
 
 module.exports = RemoteApe;

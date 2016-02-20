@@ -4,8 +4,8 @@ var ROLE = require('../util/role.js');
 
 var Ape = require('../entities/ape.js');
 var Map = require('../map.js');
-var TrapManager = require('../traps/trapmanager.js');
-var PowerupManager = require('../entities/powerupmanager.js');
+var TrapManager = require('../managers/trapmanager.js');
+var PowerupManager = require('../managers/powerupmanager.js');
 
 var GameOver = require('../sprites/gameover.js');
 

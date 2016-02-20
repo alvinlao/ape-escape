@@ -133,12 +133,13 @@ class BaseApe extends Phaser.Sprite {
     }
   }
 
-  shieldAnimation(callback, callbackContext) {
+  // @param duration (int in s)
+  shieldAnimation(duration, callback, callbackContext) {
     // Display bubble
     var shieldImage = this.addChild(this.game.add.image(-32,-32, spritesheets.shield.name));
 
     // Remove bubble
-    this.game.time.events.add((Phaser.Timer.SECOND * SHIELD_TIME) - Phaser.Timer.HALF, function() {
+    this.game.time.events.add((Phaser.Timer.SECOND * duration) - Phaser.Timer.HALF, function() {
       // Make the shield fade out during last half second
       var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
 
@@ -156,12 +157,12 @@ class BaseApe extends Phaser.Sprite {
     }, this);
   }
 
-  blinkAnimation(oldX, newX) {
+  blinkAnimation(oldX, oldY, newX, newY) {
     //Poof!
     var littlePoof = this.game.add.sprite(oldX, this.y, spritesheets.misc.name);
     littlePoof.anchor.setTo(0.5);
     littlePoof.frame = 12;
-    var bigPoof = this.game.add.sprite(newX, this.y, spritesheets.misc.name);
+    var bigPoof = this.game.add.sprite((newX + oldX) / 2, this.y, spritesheets.misc.name);
     bigPoof.anchor.setTo(0.5);
     bigPoof.frame = 13;
 

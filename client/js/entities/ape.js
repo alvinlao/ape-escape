@@ -21,8 +21,12 @@ class Ape extends BaseApe {
     this.shieldKey = game.input.keyboard.addKey(config.APE.CONTROLS.SHIELD.BUTTON);
 
     // Bind powerup keys
-    this.blinkKey.onDown.add(this.powerup, this, 0, 'BLINK');
-    this.shieldKey.onDown.add(this.powerup, this, 0, 'SHIELD');
+    var poweruphandler = function(key, requestedPowerup) {
+      this.powerup(requestedPowerup);
+    }
+
+    this.blinkKey.onDown.add(poweruphandler, this, 0, 'BLINK');
+    this.shieldKey.onDown.add(poweruphandler, this, 0, 'SHIELD');
 
     this.buttons = {
       'JUMP': this.jumpKey,
@@ -45,14 +49,14 @@ class Ape extends BaseApe {
   }
 
   // @param requestedPowerup (POWERUP enum)
-  powerup(key, requestedPowerup) {
+  powerup(requestedPowerup) {
     if (this.isDead) return;
-    this.game.socket.emit("powerup",requestedPowerup);
+    this.game.socket.emit("powerup", requestedPowerup);
 
     switch(requestedPowerup){
       case 'SHIELD':
-
         if (!this.shieldActive && this.powerupInventory.SHIELD > 0) {
+
           // Use a shield
           this.hud.updatePowerupLegend(
               'SHIELD',
@@ -76,6 +80,7 @@ class Ape extends BaseApe {
 
           // Save for animation
           var oldX = this.x;
+          var oldY = this.y;
 
           //Raycast and determine future location
           var gameMap = this.game.getMap();
@@ -95,7 +100,7 @@ class Ape extends BaseApe {
           }
 
           // Animate
-          this.blinkAnimation(oldX, this.x);
+          this.blinkAnimation(oldX, oldY, this.x, this.y);
         }
         break;
       default:
