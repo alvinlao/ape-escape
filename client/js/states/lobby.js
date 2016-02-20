@@ -4,8 +4,8 @@ var buttonconfig = require('../util/buttonconfig.js');
 var STATE = require('../util/state.js');
 var ROLE = require('../util/role.js');
 
-var TextButton = require('../sprites/textbutton.js');
-var Button = require('../sprites/button.js');
+var TextButton = require('../components/textbutton.js');
+var Button = require('../components/button.js');
 
 class LobbyState extends Phaser.State {
   create() {

@@ -1,4 +1,4 @@
-var spritesheets = require('../util/spritesheets.js');
+var spritesheets = require('../../util/spritesheets.js');
 
 class LaserHead extends Phaser.Sprite {
   constructor(game, x, y, angle) {

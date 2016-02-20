@@ -7,7 +7,7 @@ var Map = require('../map.js');
 var TrapManager = require('../managers/trapmanager.js');
 var ApeManager = require('../managers/apemanager.js');
 
-var GameOver = require('../sprites/gameover.js');
+var GameOver = require('../components/gameover.js');
 
 class LevelState extends Phaser.State {
   init(numGuards) {

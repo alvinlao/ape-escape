@@ -1,4 +1,4 @@
-var spritesheets = require('../util/spritesheets.js');
+var spritesheets = require('../../util/spritesheets.js');
 var TrapActivator = require('./trapactivator.js');
 var DropTrap = require('./droptrap.js');
 

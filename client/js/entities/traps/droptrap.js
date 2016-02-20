@@ -1,4 +1,4 @@
-var config = require('../util/config.js');
+var config = require('../../util/config.js');
 
 var Trap = require('./trap.js');
 

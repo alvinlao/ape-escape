@@ -1,6 +1,6 @@
 var config = require('../util/config.js');
 
-var GuardHUD = require('./guardhud.js');
+var GuardHUD = require('../components/guardhud.js');
 
 class Guard {
   constructor(game) {

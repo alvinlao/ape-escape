@@ -1,12 +1,12 @@
 var ROLE = require('./util/role.js');
 
-var FireTrap = require('./traps/firetrap.js');
-var DropTrap = require('./traps/droptrap.js');
-var LaserTrap = require('./traps/lasertrap.js');
+var FireTrap = require('./entities/traps/firetrap.js');
+var DropTrap = require('./entities/traps/droptrap.js');
+var LaserTrap = require('./entities/traps/lasertrap.js');
 
-var FireTrapActivator = require('./traps/firetrapactivator.js');
-var DropTrapActivator = require('./traps/droptrapactivator.js');
-var LaserTrapActivator = require('./traps/lasertrapactivator.js');
+var FireTrapActivator = require('./entities/traps/firetrapactivator.js');
+var DropTrapActivator = require('./entities/traps/droptrapactivator.js');
+var LaserTrapActivator = require('./entities/traps/lasertrapactivator.js');
 
 var Teleporter = require('./entities/teleporter.js');
 

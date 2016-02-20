@@ -1,5 +1,5 @@
-var config = require('../util/config.js');
-var spritesheets = require('../util/spritesheets.js');
+var config = require('../../util/config.js');
+var spritesheets = require('../../util/spritesheets.js');
 
 var Trap = require('./trap.js');
 var LaserHead = require('./laserhead.js');

@@ -2,7 +2,7 @@ var spritesheets = require('../util/spritesheets.js');
 var config = require('../util/config.js');
 var buttonconfig = require('../util/buttonconfig.js');
 
-var TextButton = require('../sprites/textbutton.js');
+var TextButton = require('../components/textbutton.js');
 
 class TitleState extends Phaser.State {
   create() {

@@ -2,7 +2,7 @@ var spritesheets = require('../util/spritesheets.js');
 var config = require('../util/config.js');
 
 var BaseApe = require('./baseape.js');
-var ApeHUD = require('./apehud.js');
+var ApeHUD = require('../components/apehud.js');
 
 var POWERUPS = config.APE.POWERUPS;
 var POWERUP = config.APE.POWERUP;
