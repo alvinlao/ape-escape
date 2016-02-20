@@ -3,6 +3,8 @@ var config = require('../util/config.js');
 var Ape = require('../entities/ape.js');
 var LevelState = require('./level.js');
 
+var ApeClient = require('../apeclient.js');
+
 class ApeLevelState extends LevelState {
   init(numGuards) {
     super.init(numGuards);
@@ -10,6 +12,8 @@ class ApeLevelState extends LevelState {
     this.loadingLevel = false;
     this.loadedLevel = false;
     this.activeTraps = null;
+
+    this.client = new ApeClient(this.game);
   }
 
   shutdown() {

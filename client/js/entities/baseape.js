@@ -7,10 +7,6 @@ var JUMP_SPEED = config.APE.JUMP_SPEED;
 var POWERUPS = config.APE.POWERUPS;
 var POWERUP = config.APE.POWERUP;
 
-// In seconds
-// NOTE: Last half second of the shield will start fading out
-var SHIELD_TIME = config.APE.SHIELD_TIME;
-
 //Entire duration of poof (in seconds)
 var POOF_TIME = 0.35;
 
@@ -86,16 +82,14 @@ class BaseApe extends Phaser.Sprite {
   }
 
   die(causeOfDeath) {
-    if (!this.isInvincible()) {
+    if (!this.isDead) {
       this.body.velocity.x = 0;
       this.animations.play('jump');
       this.rotation = 1.5;
       this.isDead = true;
       this.causeOfDeath = causeOfDeath;
-      return true;
-    } else {
-      return false;
     }
+    return true;
   }
 
   update() {

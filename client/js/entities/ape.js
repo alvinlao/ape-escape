@@ -8,6 +8,7 @@ var POWERUPS = config.APE.POWERUPS;
 var POWERUP = config.APE.POWERUP;
 
 var BLINK_DISTANCE = config.APE.BLINK_DISTANCE;
+var SHIELD_TIME = config.APE.SHIELD_TIME;
 
 class Ape extends BaseApe {
   constructor(game, x, y, name) {
@@ -51,11 +52,11 @@ class Ape extends BaseApe {
   // @param requestedPowerup (POWERUP enum)
   powerup(requestedPowerup) {
     if (this.isDead) return;
-    this.game.socket.emit("powerup", requestedPowerup);
 
     switch(requestedPowerup){
       case 'SHIELD':
         if (!this.shieldActive && this.powerupInventory.SHIELD > 0) {
+          this.game.ape.onPowerup.dispatch(requestedPowerup);
 
           // Use a shield
           this.hud.updatePowerupLegend(
@@ -65,13 +66,15 @@ class Ape extends BaseApe {
 
           // Flag
           this.shieldActive = true;
-          this.shieldAnimation(function() {
+          this.shieldAnimation(SHIELD_TIME, function() {
             this.shieldActive = false;
           }, this);
         }
         break;
       case 'BLINK':
         if (this.powerupInventory.BLINK > 0) {
+          this.game.ape.onPowerup.dispatch(requestedPowerup);
+
           // Use a blink
           this.hud.updatePowerupLegend(
               'BLINK',
@@ -121,18 +124,25 @@ class Ape extends BaseApe {
         );
   }
 
-  broadcastKeys(){
-    this.game.socket.emit("move",{
+  die(causeOfDeath) {
+    if (!this.isInvincible() && !this.isDead) {
+      super.die(causeOfDeath);
+
+      this.game.ape.onDeath.dispatch(causeOfDeath);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  update() {
+    this.game.ape.onUpdate.dispatch({
       jumpKey: this.jumpKey.isDown,
       leftKey: this.leftKey.isDown,
       rightKey: this.rightKey.isDown,
       blinkKey: this.blinkKey.isDown,
       shieldKey: this.shieldKey.isDown
     });
-  }
-
-  update() {
-    this.broadcastKeys();
     super.update();
   }
 }
