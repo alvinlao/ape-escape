@@ -17,11 +17,11 @@ class GuardLevelState extends LevelState {
 
     // TODO Listen to server events
     //
-    // Grab powerup
-    // this.game.powerups.onGrab.dispatch( powerupid )
-    //
     // Ape death
     // this.ape.die()
+    //
+    // Grab powerup
+    // this.game.ape.onGrabPowerup.dispatch( powerupid )
     //
     // Ape uses powerup
     // this.ape.powerup( 

@@ -5,7 +5,6 @@ var ROLE = require('../util/role.js');
 var Ape = require('../entities/ape.js');
 var Map = require('../map.js');
 var TrapManager = require('../managers/trapmanager.js');
-var PowerupManager = require('../managers/powerupmanager.js');
 var ApeManager = require('../managers/apemanager.js');
 
 var GameOver = require('../sprites/gameover.js');
@@ -14,7 +13,6 @@ class LevelState extends Phaser.State {
   init(numGuards) {
     this.game.numGuards = numGuards;
     this.game.traps = new TrapManager();
-    this.game.powerups = new PowerupManager();
     this.game.ape = new ApeManager();
 
     this.ape = null;
@@ -119,7 +117,7 @@ class LevelState extends Phaser.State {
 
       // Clean up managers
       this.game.traps.removeAll();
-      this.game.powerups.removeAll();
+      this.game.ape.removeAllPowerups();
     }
   }
 

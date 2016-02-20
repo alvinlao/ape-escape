@@ -34,7 +34,7 @@ class ApeLevelState extends LevelState {
     //
     // SEND
     // Grab powerup
-    // this.game.powerups.onGrab.add( listener );
+    // this.game.ape.onGrab.add( listener );
     //
     // SEND (in progress?)
     // Send ape movement
@@ -85,7 +85,7 @@ class ApeLevelState extends LevelState {
       if(tile.index===-1) return;
 
       this.ape.grabPowerup(tile.properties.powerup, parseInt(tile.properties.quantity));
-      this.game.powerups.onGrab.dispatch(tile.id);
+      this.game.ape.onGrabPowerup.dispatch(tile.id);
     }, null, this);
 
     // Active Traps

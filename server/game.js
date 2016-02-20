@@ -30,15 +30,26 @@ var startGame = function(){
 
 var attachApe = function(socket){
 	socket.game = new Ape();
+
 	socket.on("move", function(position){
 		//socket.game.x = position.x;
 		//socket.game.y = position.y;
 		socket.broadcast.emit("ape:move", position);
 	});
+
 	socket.on("powerup", function(type){
 		console.log("powerup used: " + type);
 		socket.broadcast.emit("powerup", type);
 	});
+
+  socket.on("death", function(causeofdeath) {
+    console.log("ape died: " + causeofdeath);
+  });
+
+  socket.on("grabpowerup", function(powerupid) {
+    console.log("ape grabbed powerup: " + powerupid);
+  });
+
 	//powerup
 	//death
 	//teleporter --> state.currentLevel++

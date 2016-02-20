@@ -10,18 +10,28 @@ class ApeClient {
       this.socket.emit("move", keys);
     }, this);
 
+    this.game.ape.onDeath.add(function (causeOfDeath) {
+      this.socket.emit("death", causeOfDeath);
+    }, this);
+
+    this.game.ape.onGrabPowerup.add(function (powerupid) {
+      this.socket.emit("grabpowerup", powerupid);
+    }, this);
+
     // TODO Send powerup information
     this.game.ape.onPowerup.add(function (powerup) {
       this.socket.emit("powerup", powerup);
     }, this);
 
-    this.game.ape.onDeath.add(function (causeOfDeath) {
-      this.socket.emit("death", causeOfDeath);
-    }, this);
-
     // TRAPS
 
+    this.socket.on(
+        "trap_activate",
+        this.game.traps.onActivate.dispatch.bind(this)
+        );
+
     // MAP
+
   }
 }
 
