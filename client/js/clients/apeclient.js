@@ -14,8 +14,8 @@ class ApeClient {
       this.socket.emit("death", causeOfDeath);
     }, this);
 
-    this.game.ape.onGrabPowerup.add(function (powerupid) {
-      this.socket.emit("grabpowerup", powerupid);
+    this.game.ape.onGrabPowerup.add(function (powerupid, quantity) {
+      this.socket.emit("grabpowerup", { powerupid: powerupid, quantity: quantity });
     }, this);
 
     this.game.ape.onPowerup.add(function (powerup, powerupArgs) {

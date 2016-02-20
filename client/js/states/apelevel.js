@@ -25,20 +25,6 @@ class ApeLevelState extends LevelState {
   create() {
     super.create();
 
-    // TODO: Create client
-    // The client should send & receive game events
-    //
-    // RECEIVE
-    // Activate a trap
-    // this.game.traps.onActivate.dispatch( trapid );
-    //
-    // SEND
-    // Grab powerup
-    // this.game.ape.onGrab.add( listener );
-    //
-    // SEND (in progress?)
-    // Send ape movement
-
     // Input
     var controls = config.APE.CONTROLS;
     var keys = [];
@@ -69,7 +55,6 @@ class ApeLevelState extends LevelState {
 
       this.loadingLevel = true;
       this.game.time.events.add((Phaser.Timer.SECOND * config.APE.TELEPORT_DELAY), function() {
-        //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
         this.loadNextLevel();
       }, this);
     }, null, this);
@@ -84,9 +69,10 @@ class ApeLevelState extends LevelState {
     this.game.physics.arcade.overlap(this.ape, this.map.createdLayers['powerups'], function(sprite, tile){
       //TODO why does it call this all the time?
       if(tile.index===-1) return;
+      var quantity = parseInt(tile.properties.quantity);
 
       this.ape.grabPowerup(tile.properties.powerup, parseInt(tile.properties.quantity));
-      this.game.ape.onGrabPowerup.dispatch(tile.id);
+      this.game.ape.onGrabPowerup.dispatch(tile.id, quantity);
     }, null, this);
 
     // Active Traps

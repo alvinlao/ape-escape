@@ -45,9 +45,9 @@ var attachApe = function(socket){
 		socket.broadcast.emit("death", causeofdeath);
   });
 
-  socket.on("grabpowerup", function(powerupid) {
-    console.log("ape grabbed powerup: " + powerupid);
-		socket.broadcast.emit("grabpowerup", powerupid);
+  socket.on("grabpowerup", function(powerup) {
+    console.log("ape grabbed powerup: " + powerup.powerupid);
+		socket.broadcast.emit("grabpowerup", powerup);
   });
 
 	// TODO teleporter --> state.currentLevel++

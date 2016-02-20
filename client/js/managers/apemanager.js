@@ -19,6 +19,7 @@ class ApeManager {
 
     // Sent whenever the ape grabs a powerup
     // @param powerupid
+    // @param quantity
     this.onGrabPowerup = new Phaser.Signal();
 
     // Sent whenever the ape teleports to the next level
@@ -30,6 +31,7 @@ class ApeManager {
     for (var i = 0; i < powerups.length; ++i) {
       var powerup = powerups[i];
       powerup.id = this.nextPowerupId;
+      powerup.type = powerup.properties.powerup;
 
       this.powerups[this.nextPowerupId] = powerup;
       this.nextPowerupId++;

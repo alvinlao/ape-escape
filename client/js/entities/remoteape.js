@@ -3,6 +3,8 @@ var config = require('../util/config.js');
 
 var BaseApe = require('./baseape.js');
 
+var RemoteApeHUD = require('../components/remoteapehud.js');
+
 class RemoteApe extends BaseApe {
   constructor(game, x, y, name) {
     super(game, x, y, name);
@@ -30,7 +32,20 @@ class RemoteApe extends BaseApe {
 
     this.game.ape.onPowerup.add(function (powerup, powerupArgs) {
       this.powerup(powerup, powerupArgs);
+      this.hud.updatePowerupLegend(powerup, --this.powerupInventory[powerup]);
     }, this);
+
+    this.game.ape.onGrabPowerup.add(function (powerupid, quantity) {
+      var type = this.game.ape.powerups[powerupid].type
+        this.powerupInventory[type] += quantity;
+      this.hud.updatePowerupLegend(type, this.powerupInventory[type]);
+    }, this);
+
+    this.refresh();
+  }
+
+  refresh() {
+    this.hud = new RemoteApeHUD(this.game, this.powerupInventory);
   }
 
   powerup(requestedPowerup, powerupArgs) {
