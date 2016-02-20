@@ -43,7 +43,7 @@ class GuardLevelState extends LevelState {
     // this.game.traps.onClick.add( listener )
     //
     // Traps created for new level
-    // this.game.traps.onActivatorsCreate.add( listener )
+    // this.game.traps.onCreateActivators.add( listener )
   }
 
   update() {

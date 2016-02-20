@@ -5,26 +5,26 @@ class TrapManager {
 
     // Sent whenever a trap is clicked
     // @param trapid
-    this.onTrapClick = new Phaser.Signal();
+    this.onClick = new Phaser.Signal();
 
     // Sent whenever trap activators are created
     // @param { trapid: count }
-    this.onTrapActivatorsCreate = new Phaser.Signal();
+    this.onCreateActivators = new Phaser.Signal();
 
     // Send when a trap's clicks left needs to be updated
     // @param trapid
     // @param clicksLeft
-    this.onTrapUpdate = new Phaser.Signal();
+    this.onUpdate = new Phaser.Signal();
 
     // Send whenever a trap is activated
     // @param trapid
-    this.onTrapActivate = new Phaser.Signal();
+    this.onActivate = new Phaser.Signal();
 
 
     // Listeners
 
     // Activate the trap
-    this.onTrapActivate.add(function(trapid) {
+    this.onActivate.add(function(trapid) {
       if (!(trapid in this.traps)) {
         console.warn("Unable to find trap [" + trapid + "]");
         return;
@@ -52,7 +52,7 @@ class TrapManager {
     }
 
     if (Object.keys(newtraps).length > 0) {
-      this.onTrapActivatorsCreate.dispatch(newtraps);
+      this.onCreateActivators.dispatch(newtraps);
     }
   }
 
