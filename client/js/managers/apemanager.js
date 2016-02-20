@@ -20,6 +20,10 @@ class ApeManager {
     // Sent whenever the ape grabs a powerup
     // @param powerupid
     this.onGrabPowerup = new Phaser.Signal();
+
+    // Sent whenever the ape teleports to the next level
+    // @param levelIndex (int) = index of level as found in config.LEVELS
+    this.onTeleport = new Phaser.Signal();
   }
 
   addPowerups(powerups) {

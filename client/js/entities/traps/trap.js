@@ -22,7 +22,7 @@ class Trap extends Phaser.Sprite {
     }
 
     if (!this.remote) {
-      this.game.getActiveTraps().push(this);
+      this.game.activeTraps.push(this);
     }
   }
 
@@ -32,7 +32,7 @@ class Trap extends Phaser.Sprite {
     }
 
     if (!this.remote) {
-      var activeTraps = this.game.getActiveTraps();
+      var activeTraps = this.game.activeTraps;
       var i = activeTraps.indexOf(this);
       activeTraps.splice(i, 1);
     }

@@ -5,24 +5,28 @@
   <tile id="0">
    <properties>
     <property name="direction" value="left"/>
+    <property name="length" value="3"/>
     <property name="type" value="laser"/>
    </properties>
   </tile>
   <tile id="1">
    <properties>
     <property name="direction" value="right"/>
+    <property name="length" value="3"/>
     <property name="type" value="laser"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
     <property name="direction" value="up"/>
+    <property name="length" value="3"/>
     <property name="type" value="laser"/>
    </properties>
   </tile>
   <tile id="3">
    <properties>
     <property name="direction" value="down"/>
+    <property name="length" value="3"/>
     <property name="type" value="laser"/>
    </properties>
   </tile>

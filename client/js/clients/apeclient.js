@@ -22,16 +22,18 @@ class ApeClient {
       this.socket.emit("powerup", { type: powerup, args: powerupArgs });
     }, this);
 
+    this.game.ape.onTeleport.add(function (levelIndex) {
+      this.socket.emit("teleport", levelIndex);
+    }, this);
+
     // TRAPS
 
     this.socket.on(
         "trap_activate",
         function (trapid) {
+          console.log('o ge');
           game.traps.onActivate.dispatch(trapid);
-        }
-        );
-
-    // MAP
+        });
 
   }
 }

@@ -46,10 +46,14 @@ module.exports = {
   APE: {
     SPAWN_X: 100,
     SPAWN_Y: 50,
+
     SPEED: 350,
     JUMP_SPEED: 850,
+
     BLINK_DISTANCE: 100,
     SHIELD_TIME: 1.5,     // In seconds
+
+    TELEPORT_DELAY: 1,    // In seconds
 
     POWERUPS: {
       BLINK: {

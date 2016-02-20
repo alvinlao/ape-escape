@@ -35,9 +35,9 @@ var attachApe = function(socket){
 		socket.broadcast.emit("move", position);
 	});
 
-	socket.on("powerup", function(type){
-		console.log("powerup used: " + type);
-		socket.broadcast.emit("powerup", type);
+	socket.on("powerup", function(powerup){
+		console.log("powerup used: " + powerup.type);
+		socket.broadcast.emit("powerup", powerup);
 	});
 
   socket.on("death", function(causeofdeath) {
@@ -50,13 +50,18 @@ var attachApe = function(socket){
 		socket.broadcast.emit("grabpowerup", powerupid);
   });
 
-	//powerup
-	//death
-	//teleporter --> state.currentLevel++
+	// TODO teleporter --> state.currentLevel++
+  socket.on("teleport", function(levelIndex) {
+    console.log("new level: " + levelIndex);
+    socket.broadcast.emit("teleport", levelIndex);
+  });
 }
 
 var attachJailer = function(socket){
 	socket.game = new Jailer();
+  // TODO rename event to guard:move
+  // TODO rename event to guard:click
+  /*
 	socket.on("move", function(position){
 		socket.game.x = position.x;
 		socket.game.y = position.y;
@@ -66,13 +71,23 @@ var attachJailer = function(socket){
 			y: socket.game.y
 		});
 	});
+  */
 	//click
+  
+  socket.on("trap_click", function(trapid) {
+    // TODO trap logic
+    // Right now: one click = activate
+    console.log("trap activated: " + trapid);
+    io.emit("trap_activate", trapid);
+  });
 }
 
 var stopGame = function(){
 	for(var i=0;i<state.sockets;i++){
 		io.removeAllListeners("move");
 	}
+
+  // TODO: put all players back in unready queue
 	state.currentState = GAME_STATE.LOBBY;
 	io.emit("end_game", state.currentState);
 }

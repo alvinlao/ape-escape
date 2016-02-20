@@ -102,11 +102,12 @@ class Map extends Phaser.Tilemap {
             break;
           case "laser":
             var direction = tile.properties.direction;
+            var length = parseInt(tile.properties.length);
 
             if (this.game.role === ROLE.APE) {
-              trap = new LaserTrap(this.game, tile.worldX, tile.worldY);
+              trap = new LaserTrap(this.game, tile.worldX, tile.worldY, direction, length);
             } else if (this.game.role === ROLE.GUARD) {
-              trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards, direction, 3);
+              trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards, direction, length);
             }
             break;
           default:

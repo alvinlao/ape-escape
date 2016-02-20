@@ -16,22 +16,10 @@ class GuardLevelState extends LevelState {
 
     this.client = new GuardClient(this.game);
 
-    // TODO Guard camera control
+    this.game.ape.onTeleport.add(function (levelIndex) {
+      this.loadLevel(this.game.levelOrder[levelIndex]);
+    }, this);
 
-    // TODO Listen to server events
-    //
-    // Ape death
-    // this.ape.die()
-    //
-    // Grab powerup
-    // this.game.ape.onGrabPowerup.dispatch( powerupid )
-    //
-    // Ape uses powerup
-    // this.ape.powerup( 
-    //    POWERUP enum { 'BLINK' | 'SHIELD },
-    //    arg1, arg2, ... , argN
-    //  )
-    //
     // Next level
     // this.loadNextLevel()
     //

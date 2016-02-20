@@ -126,21 +126,25 @@
              "0":
                 {
                  "direction":"left",
+                 "length":"3",
                  "type":"laser"
                 },
              "1":
                 {
                  "direction":"right",
+                 "length":"3",
                  "type":"laser"
                 },
              "2":
                 {
                  "direction":"up",
+                 "length":"3",
                  "type":"laser"
                 },
              "3":
                 {
                  "direction":"down",
+                 "length":"3",
                  "type":"laser"
                 },
              "4":

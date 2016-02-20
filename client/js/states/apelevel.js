@@ -11,7 +11,7 @@ class ApeLevelState extends LevelState {
 
     this.loadingLevel = false;
     this.loadedLevel = false;
-    this.activeTraps = null;
+    this.game.activeTraps = null;
 
     this.client = new ApeClient(this.game);
   }
@@ -19,7 +19,7 @@ class ApeLevelState extends LevelState {
   shutdown() {
     super.shutdown();
 
-    this.activeTraps.forEach(function(trap) { trap.destroy() });
+    this.game.activeTraps.forEach(function(trap) { trap.destroy() });
   }
 
   create() {
@@ -49,7 +49,7 @@ class ApeLevelState extends LevelState {
     this.game.input.keyboard.addKeyCapture(keys);
 
     // Active Traps
-    this.activeTraps = [];
+    this.game.activeTraps = [];
 
     // Create our friendly neighbourhood ape
     this.ape = new Ape(this.game, config.APE.SPAWN_X, config.APE.SPAWN_Y, this.game.playerName);
@@ -62,12 +62,13 @@ class ApeLevelState extends LevelState {
     //Load next level!
     this.game.physics.arcade.overlap(this.ape, this.map.createdLayers['teleporters'], function(sprite, tile){
       if(tile.index===-1 || this.loadingLevel) return;
+      this.game.ape.onTeleport.dispatch(this.currentLevelId + 1);
 
       // Change teleporter color
       tile.teleporter.go();
 
       this.loadingLevel = true;
-      this.game.time.events.add((Phaser.Timer.SECOND * 1), function() {
+      this.game.time.events.add((Phaser.Timer.SECOND * config.APE.TELEPORT_DELAY), function() {
         //TODO make the jailers teleport instantly so they can set up traps, then the ape comes in?
         this.loadNextLevel();
       }, this);
@@ -91,7 +92,7 @@ class ApeLevelState extends LevelState {
     // Active Traps
     this.game.physics.arcade.overlap(
         this.ape,
-        this.activeTraps,
+        this.game.activeTraps,
         function(ape, trap) {
           trap.killedPlayer = this.ape.die(trap.getDeathMessage());
         },

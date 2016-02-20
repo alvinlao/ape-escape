@@ -8,7 +8,7 @@ var LASER_DURATION = config.TRAPS.LASER.DURATION;
 
 class LaserTrap extends Trap {
   constructor(game, x, y, direction, length) {
-    super(game, x, y);
+    super(game, x + (config.TILE_SIZE / 2), y + (config.TILE_SIZE / 2));
 
     this.direction = direction;
     this.length = length + 1;
@@ -62,7 +62,7 @@ class LaserTrap extends Trap {
 
       // Add section
       this.sections.push(section);
-      if (!remote) this.game.getActiveTraps().push(section);
+      if (!remote) this.game.activeTraps.push(section);
     }
 
     this.head.activate();
@@ -86,7 +86,7 @@ class LaserTrap extends Trap {
 
       section.visible = false;
       if (!this.remote) {
-        var activeTraps = this.game.getActiveTraps();
+        var activeTraps = this.game.activeTraps;
         var j = activeTraps.indexOf(section);
         activeTraps.splice(j, 1);
       }
