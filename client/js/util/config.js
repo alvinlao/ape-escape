@@ -4,8 +4,6 @@ module.exports = {
 
   TILE_SIZE: 64,
 
-  LEVELS: ["test", "level2", "level3"],
-
   PLAYER: {
     DEFAULT_NAMES: ["Ape Jr.", "Mrs. Ape", "Mr. Ape", "Baby Ape", "McApe", "King Ape", "Queen Ape", "George", "Caeser", "Cornelius", "Rafiki", "Kong"]
   },

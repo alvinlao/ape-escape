@@ -7,13 +7,8 @@ class TrapManager {
     // @param trapid
     this.onClick = new Phaser.Signal();
 
-    // Sent whenever trap activators are created
-    // @param { trapid: count }
-    this.onCreateActivators = new Phaser.Signal();
-
-    // Send when a trap's clicks left needs to be updated
-    // @param trapid
-    // @param clicksLeft
+    // Sent when trap counts are updated
+    // @param traps (obj) { trapid: (int), clicksLeft: (int) }
     this.onUpdate = new Phaser.Signal();
 
     // Send whenever a trap is activated
@@ -34,25 +29,22 @@ class TrapManager {
     }, this);
   }
 
-  add(traps) {
-    var newtraps = {};
+  add(traps, mapTraps) {
+    console.log(mapTraps);
     // Add id to each trap
     for (var i = 0; i < traps.length; i++) {
       var trap = traps[i];
       trap.id = this.nextid;
+      console.log(this.nextid);
 
-      // Only guards have traps with clicksLeft (trap activator)
-      if (typeof trap.clicksLeft !== 'undefined') {
-        newtraps[this.nextid] =  trap.clicksLeft;
+      // Only activators have #updateClicksLeft
+      if (trap.updateClicksLeft) {
+        trap.updateClicksLeft(mapTraps[this.nextid].clicksLeft);
       }
 
       this.traps[this.nextid] = trap;
 
       this.nextid++;
-    }
-
-    if (Object.keys(newtraps).length > 0) {
-      this.onCreateActivators.dispatch(newtraps);
     }
   }
 

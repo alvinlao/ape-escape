@@ -6,8 +6,8 @@ var LevelState = require('./level.js');
 var ApeClient = require('../clients/apeclient.js');
 
 class ApeLevelState extends LevelState {
-  init(numGuards) {
-    super.init(numGuards);
+  init(gameState) {
+    super.init(gameState);
 
     this.loadingLevel = false;
     this.loadedLevel = false;
@@ -103,8 +103,8 @@ class ApeLevelState extends LevelState {
     this.ape.update();
   }
 
-  loadLevel(levelName) {
-    super.loadLevel(levelName);
+  loadLevel(levelName, levelIndex) {
+    super.loadLevel(levelName, levelIndex);
     this.loadedLevel = true;
   }
 }

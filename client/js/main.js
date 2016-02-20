@@ -1,4 +1,5 @@
 var config = require('./util/config.js');
+var commonConfig = require('../../common/config.js');
 var spritesheets = require('./util/spritesheets.js');
 
 var BootState = require('./states/boot.js');
@@ -19,7 +20,7 @@ var gameConfig = {
 var game = new Phaser.Game(gameConfig);
 
 // Levels
-game.levelOrder = config.LEVELS;
+game.levelOrder = commonConfig.LEVELS;
 
 game.state.add('boot', new BootState());
 game.state.add('load', new LoadState());

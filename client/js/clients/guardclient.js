@@ -44,6 +44,12 @@ class GuardClient {
     }, this);
 
     this.socket.on(
+        "traps_update",
+        function (traps) {
+          game.traps.onUpdate.dispatch(traps);
+        });
+
+    this.socket.on(
         "trap_activate",
         function (trapid) {
           game.traps.onActivate.dispatch(trapid);

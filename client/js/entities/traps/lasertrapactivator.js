@@ -5,7 +5,7 @@ var TrapActivator = require('./trapactivator.js');
 var LaserTrap = require('./lasertrap.js');
 
 class LaserTrapActivator extends TrapActivator {
-  constructor(game, x, y, numPlayers, direction, length) {
+  constructor(game, x, y, direction, length) {
     var spriteIndex;
     switch (direction) {
       case 'left':
@@ -25,7 +25,7 @@ class LaserTrapActivator extends TrapActivator {
         break;
     }
 
-    super(game, x, y, spriteIndex, numPlayers);
+    super(game, x, y, spriteIndex);
 
     this.trap = new LaserTrap(game, x, y, direction, length);
   }

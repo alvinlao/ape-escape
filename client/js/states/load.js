@@ -22,7 +22,7 @@ class LoadState extends Phaser.State {
 
     for (var i = 0; i < game.levelOrder.length; i++) {
       var levelName = game.levelOrder[i]
-      game.load.tilemap(levelName, 'assets/maps/' + levelName + '.json', null, Phaser.Tilemap.TILED_JSON);
+      game.load.tilemap(levelName, 'common/maps/' + levelName + '.json', null, Phaser.Tilemap.TILED_JSON);
     }
 
     game.load.spritesheet(spritesheets.tiles.name, spritesheets.tiles.file, 64, 64);

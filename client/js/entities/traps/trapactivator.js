@@ -1,7 +1,7 @@
 var spritesheets = require('../../util/spritesheets.js');
 
 class TrapActivator extends Phaser.Sprite {
-  constructor(game, x, y, trapSpriteIndex, numPlayers) {
+  constructor(game, x, y, trapSpriteIndex) {
     super(game, x, y, spritesheets.traps.name);
     game.add.existing(this);
 
@@ -14,7 +14,7 @@ class TrapActivator extends Phaser.Sprite {
     this.events.onInputDown.add(this.click, this);
 
     // Activation
-    this.clicksLeft = this.calculateClicks(numPlayers);
+    this.clicksLeft = 0;
 
     // Activation draw
     var style = { font: "14px Arial", fill: "#562e03" };
@@ -22,11 +22,9 @@ class TrapActivator extends Phaser.Sprite {
     this.addChild(this.clicksLeftText);
 
     // Listen to trap manager
-    this.game.traps.onUpdate.add(function(id, clicksLeft) {
-      if (this.id === id) {
-        this.clicksLeft = clicksLeft;
-        this.clicksLeftText.text = this.clicksLeft;
-      }
+    this.game.traps.onUpdate.add(function(traps) {
+      this.clicksLeft = traps[id].clicksLeft;
+      this.clicksLeftText.text = this.clicksLeft;
     }, this);
   }
 
@@ -38,24 +36,17 @@ class TrapActivator extends Phaser.Sprite {
 
       this.game.traps.onClick.dispatch(this.id);
     }
+  }
 
-    // TODO REMOVE THIS
-    if (this.clicksLeft === 0) {
-      this.activate();
-    }
+  updateClicksLeft(clicksLeft) {
+    this.clicksLeft = clicksLeft;
+    this.clicksLeftText.text = this.clicksLeft;
   }
 
   // Override
   activate() {
-    this.clicksLeft--;
     this.alpha = 0.4;
-
     this.trap.activate(true);
-  }
-
-  // Override
-  calculateClicks(numPlayers) {
-    return 3 * numPlayers;
   }
 }
 

@@ -17,7 +17,7 @@ class GuardLevelState extends LevelState {
     this.client = new GuardClient(this.game);
 
     this.game.ape.onTeleport.add(function (levelIndex) {
-      this.loadLevel(this.game.levelOrder[levelIndex]);
+      this.loadLevel(this.game.levelOrder[levelIndex], levelIndex);
     }, this);
 
     // Next level

@@ -67,11 +67,21 @@ gulp.task('watch-assets', function() {
   gulp.watch('client/assets/**/*', ['assets']);
 });
 
+// Common
+gulp.task('common', function() {
+  return gulp.src('common/**/*')
+    .pipe(gulp.dest(config.outputDir + '/common'));
+});
+
+gulp.task('watch-common', function() {
+  gulp.watch('common/**/*', ['common']);
+});
+
 gulp.task('clean', function() {
   return gulp.src(config.outputDir, {read:false})
     .pipe(clean());
 });
 
-gulp.task('build', ['html', 'css', 'bower-files', 'js', 'assets']);
-gulp.task('watch', ['watch-bower-files', 'watch-html', 'watch-css', 'watch-js', 'watch-assets']);
-gulp.task('default', ['bower', 'clean']);
+gulp.task('build', ['html', 'css', 'bower-files', 'js', 'assets', 'common']);
+gulp.task('watch', ['watch-bower-files', 'watch-html', 'watch-css', 'watch-js', 'watch-assets', 'watch-common']);
+gulp.task('default', ['bower', 'clean', 'build']);

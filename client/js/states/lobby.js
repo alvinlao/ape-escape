@@ -70,12 +70,13 @@ class LobbyState extends Phaser.State {
         game.role = newRole;
     });
 
-    this.game.socket.on("start_game", function(numGuards){
+    this.game.socket.on("start_game", function(gameState){
       lobbyDiv.style.display = "none";
+
       if (game.role === ROLE.APE) {
-        game.state.start("apelevel", true, false, numGuards);
+        game.state.start("apelevel", true, false, gameState);
       } else {
-        game.state.start("guardlevel", true, false, numGuards);
+        game.state.start("guardlevel", true, false, gameState);
       }
     });
 

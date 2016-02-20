@@ -11,8 +11,10 @@ var LaserTrapActivator = require('./entities/traps/lasertrapactivator.js');
 var Teleporter = require('./entities/teleporter.js');
 
 class Map extends Phaser.Tilemap {
-  constructor(game, mapName, tilesetNames) {
+  constructor(game, mapName, levelIndex, tilesetNames) {
     super(game, mapName);
+
+    this.levelIndex = levelIndex;
 
     for (var i = 0; i < tilesetNames.length; i++) {
       this.addTilesetImage(tilesetNames[i]);
@@ -57,7 +59,7 @@ class Map extends Phaser.Tilemap {
 
       // Trap activator layer
       if (name === 'trap_activators') {
-        this.game.traps.add(this.buildTraps(layer));
+        this.game.traps.add(this.buildTraps(layer), this.game.gameState.mapTraps[this.levelIndex]);
       }
 
       // Teleporter
@@ -90,14 +92,14 @@ class Map extends Phaser.Tilemap {
             if (this.game.role === ROLE.APE) {
               trap = new DropTrap(this.game, tile.worldX, tile.worldY);
             } else if (this.game.role === ROLE.GUARD) {
-              trap = new DropTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards);
+              trap = new DropTrapActivator(this.game, tile.worldX, tile.worldY);
             }
             break;
           case "fire":
             if (this.game.role === ROLE.APE) {
               trap = new FireTrap(this.game, tile.worldX, tile.worldY);
             } else if (this.game.role === ROLE.GUARD) {
-              trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards);
+              trap = new FireTrapActivator(this.game, tile.worldX, tile.worldY);
             }
             break;
           case "laser":
@@ -107,7 +109,7 @@ class Map extends Phaser.Tilemap {
             if (this.game.role === ROLE.APE) {
               trap = new LaserTrap(this.game, tile.worldX, tile.worldY, direction, length);
             } else if (this.game.role === ROLE.GUARD) {
-              trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, this.game.numGuards, direction, length);
+              trap = new LaserTrapActivator(this.game, tile.worldX, tile.worldY, direction, length);
             }
             break;
           default:

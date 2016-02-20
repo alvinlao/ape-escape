@@ -10,8 +10,8 @@ var ApeManager = require('../managers/apemanager.js');
 var GameOver = require('../components/gameover.js');
 
 class LevelState extends Phaser.State {
-  init(numGuards) {
-    this.game.numGuards = numGuards;
+  init(gameState) {
+    this.game.gameState = gameState;
     this.game.traps = new TrapManager();
     this.game.ape = new ApeManager();
 
@@ -121,10 +121,10 @@ class LevelState extends Phaser.State {
     }
   }
 
-  loadLevel(levelName) {
+  loadLevel(levelName, levelIndex) {
     this.destroyLevel();
 
-    this.map = new Map(this.game, levelName,
+    this.map = new Map(this.game, levelName, levelIndex,
         [
           spritesheets.tiles.name,
           spritesheets.misc.name,
@@ -141,7 +141,8 @@ class LevelState extends Phaser.State {
   }
 
   loadNextLevel() {
-    this.loadLevel(this.game.levelOrder[++this.currentLevelId]);
+    var levelIndex = ++this.currentLevelId;
+    this.loadLevel(this.game.levelOrder[levelIndex], levelIndex);
   }
 }
 

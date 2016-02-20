@@ -1,3 +1,6 @@
+var config = require('../common/config');
+var map = require('./map');
+
 var state = require("./state");
 var GAME_STATE = require("./models/GAME_STATE");
 var ROLE = require("./models/ROLE");
@@ -12,6 +15,7 @@ exports.attachIO = function(newio){
 var startGame = function(){
 	console.log("Starting game...");
 	state.currentState = GAME_STATE.GAME;
+  state.mapTraps = map.parseTraps();
 
 	var ape = Math.floor(Math.random()*(state.sockets.length-1));
 
@@ -25,7 +29,14 @@ var startGame = function(){
 			state.sockets[i].emit("role", ROLE.JAILER);
 		}
 	}
-	io.emit("start_game", state.sockets.length);
+
+  var numGuards = (state.sockets.length - 1);
+  map.populateTraps(state.mapTraps, numGuards);
+
+	io.emit("start_game", {
+    numPlayers: state.sockets.length,
+    mapTraps: state.mapTraps
+  });
 }
 
 var attachApe = function(socket){
@@ -53,6 +64,8 @@ var attachApe = function(socket){
 	// TODO teleporter --> state.currentLevel++
   socket.on("teleport", function(levelIndex) {
     console.log("new level: " + levelIndex);
+
+    // TODO Message all guards
     socket.broadcast.emit("teleport", levelIndex);
   });
 }
