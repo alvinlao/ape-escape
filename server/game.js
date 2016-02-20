@@ -32,9 +32,7 @@ var attachApe = function(socket){
 	socket.game = new Ape();
 
 	socket.on("move", function(position){
-		//socket.game.x = position.x;
-		//socket.game.y = position.y;
-		socket.broadcast.emit("ape:move", position);
+		socket.broadcast.emit("move", position);
 	});
 
 	socket.on("powerup", function(type){
@@ -44,10 +42,12 @@ var attachApe = function(socket){
 
   socket.on("death", function(causeofdeath) {
     console.log("ape died: " + causeofdeath);
+		socket.broadcast.emit("death", causeofdeath);
   });
 
   socket.on("grabpowerup", function(powerupid) {
     console.log("ape grabbed powerup: " + powerupid);
+		socket.broadcast.emit("grabpowerup", powerupid);
   });
 
 	//powerup

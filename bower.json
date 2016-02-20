@@ -23,6 +23,9 @@
   "overrides": {
     "socket.io-client": {
       "main": "socket.io.js"
+    },
+    "phaser": {
+      "main": "build/phaser.min.js"
     }
   }
 }

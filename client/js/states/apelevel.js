@@ -3,7 +3,7 @@ var config = require('../util/config.js');
 var Ape = require('../entities/ape.js');
 var LevelState = require('./level.js');
 
-var ApeClient = require('../apeclient.js');
+var ApeClient = require('../clients/apeclient.js');
 
 class ApeLevelState extends LevelState {
   init(numGuards) {

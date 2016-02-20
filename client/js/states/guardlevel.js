@@ -4,14 +4,17 @@ var RemoteApe = require('../entities/remoteape.js');
 var Guard = require('../entities/guard.js');
 var LevelState = require('./level.js');
 
+var GuardClient = require('../clients/guardclient.js');
+
 class GuardLevelState extends LevelState {
   create() {
     super.create();
 
     // TODO Remote ape
     this.ape = new RemoteApe(this.game, config.APE.SPAWN_X, config.SPAWN_Y, this.game.playerName);
-
     this.guard = new Guard(this.game);
+
+    this.client = new GuardClient(this.game);
 
     // TODO Guard camera control
 

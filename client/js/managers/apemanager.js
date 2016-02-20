@@ -5,6 +5,7 @@ class ApeManager {
 
     // Sent whenever a powerup is activated
     // @param powerup ( 'SHIELD' | 'BLINK' )
+    // @param powerupArgs (obj)
     this.onPowerup = new Phaser.Signal();
 
     // Sent whenever the ape updates

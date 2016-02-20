@@ -14,30 +14,46 @@ class RemoteApe extends BaseApe {
     this.blinkKey = {isDown: false};
     this.shieldKey = {isDown: false};
 
-    var self = this;
-    game.socket.on("ape:move", function(keys){
-      self.jumpKey.isDown = keys.jumpKey;
-      self.leftKey.isDown = keys.leftKey;
-      self.rightKey.isDown = keys.rightKey;
-      self.blinkKey.isDown = keys.blinkKey;
-      self.shieldKey.isDown = keys.shieldKey;
-      self.update();
-    });
+    // Server instructions
+    this.game.ape.onUpdate.add(function (keys) {
+      this.jumpKey.isDown = keys.jumpKey;
+      this.leftKey.isDown = keys.leftKey;
+      this.rightKey.isDown = keys.rightKey;
+      this.blinkKey.isDown = keys.blinkKey;
+      this.shieldKey.isDown = keys.shieldKey;
+      this.update();
+    }, this);
 
-    game.socket.on("powerup", function(type){
-      self.powerup(null, type);
-    });
+    this.game.ape.onDeath.add(function (causeOfDeath) {
+      this.die(causeOfDeath);
+    }, this);
+
+    this.game.ape.onPowerup.add(function (powerup, powerupArgs) {
+      this.powerup(powerup, powerupArgs);
+    }, this);
   }
 
-  powerup(requestedPowerup) {
-    var args = arguments.splice(0, 1);
-
+  powerup(requestedPowerup, powerupArgs) {
     switch (requestedPowerup) {
       case 'SHIELD':
-        this.shieldAnimation(args);
+        var args = [
+          powerupArgs.duration
+        ];
+
+        this.shieldAnimation.apply(this, args);
         break;
       case 'BLINK':
-        this.blinkAnimation(args);
+        var args = [
+          powerupArgs.oldX,
+          powerupArgs.oldY,
+          powerupArgs.newX,
+          powerupArgs.newY
+        ];
+
+        this.x = powerupArgs.newX;
+        this.y = powerupArgs.newY;
+
+        this.blinkAnimation.apply(this, args);
         break;
       default:
         console.warn("Invalid requested powerup: " + requestedPowerup);

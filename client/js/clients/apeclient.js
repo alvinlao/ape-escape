@@ -18,16 +18,17 @@ class ApeClient {
       this.socket.emit("grabpowerup", powerupid);
     }, this);
 
-    // TODO Send powerup information
-    this.game.ape.onPowerup.add(function (powerup) {
-      this.socket.emit("powerup", powerup);
+    this.game.ape.onPowerup.add(function (powerup, powerupArgs) {
+      this.socket.emit("powerup", { type: powerup, args: powerupArgs });
     }, this);
 
     // TRAPS
 
     this.socket.on(
         "trap_activate",
-        this.game.traps.onActivate.dispatch.bind(this)
+        function (trapid) {
+          game.traps.onActivate.dispatch(trapid);
+        }
         );
 
     // MAP

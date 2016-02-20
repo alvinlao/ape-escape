@@ -56,7 +56,8 @@ class Ape extends BaseApe {
     switch(requestedPowerup){
       case 'SHIELD':
         if (!this.shieldActive && this.powerupInventory.SHIELD > 0) {
-          this.game.ape.onPowerup.dispatch(requestedPowerup);
+          var duration = SHIELD_TIME;
+          this.game.ape.onPowerup.dispatch(requestedPowerup, { duration: duration });
 
           // Use a shield
           this.hud.updatePowerupLegend(
@@ -66,15 +67,13 @@ class Ape extends BaseApe {
 
           // Flag
           this.shieldActive = true;
-          this.shieldAnimation(SHIELD_TIME, function() {
+          this.shieldAnimation(duration, function() {
             this.shieldActive = false;
           }, this);
         }
         break;
       case 'BLINK':
         if (this.powerupInventory.BLINK > 0) {
-          this.game.ape.onPowerup.dispatch(requestedPowerup);
-
           // Use a blink
           this.hud.updatePowerupLegend(
               'BLINK',
@@ -101,6 +100,8 @@ class Ape extends BaseApe {
           } else {
             this.x += BLINK_DISTANCE * this.scale.x;
           }
+
+          this.game.ape.onPowerup.dispatch(requestedPowerup, { oldX: oldX, oldY: oldY, newX: this.x, newY: this.y });
 
           // Animate
           this.blinkAnimation(oldX, oldY, this.x, this.y);
