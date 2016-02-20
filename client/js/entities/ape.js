@@ -9,13 +9,6 @@ var POWERUP = config.APE.POWERUP;
 
 var BLINK_DISTANCE = config.APE.BLINK_DISTANCE;
 
-// In seconds
-// NOTE: Last half second of the shield will start fading out
-var SHIELD_TIME = config.APE.SHIELD_TIME;
-
-//Entire duration of poof (in seconds)
-var POOF_TIME = 0.35;
-
 class Ape extends BaseApe {
   constructor(game, x, y, name) {
     super(game, x, y, name);
@@ -68,19 +61,8 @@ class Ape extends BaseApe {
 
           // Flag
           this.shieldActive = true;
-
-          // Display bubble
-          var shieldImage = this.addChild(this.game.add.image(-32,-32, 'shield')); //TODO magic #
-
-          // Remove bubble
-          this.game.time.events.add((Phaser.Timer.SECOND * SHIELD_TIME) - Phaser.Timer.HALF, function() {
-            // Make the shield fade out during last half second
-            var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
-
-            tween.onComplete.add(function() {
-              shieldImage.destroy();
-              this.shieldActive = false;
-            }, this);
+          this.shieldAnimation(function() {
+            this.shieldActive = false;
           }, this);
         }
         break;
@@ -92,21 +74,8 @@ class Ape extends BaseApe {
               --this.powerupInventory.BLINK
               );
 
-          //Poof!
-          var littlePoof = this.game.add.sprite(this.x - 32, this.y - 32, 'misc_spritesheet');
-          littlePoof.frame = 12;
-          var bigPoof = this.game.add.sprite(this.x - 32, this.y - 32,'misc_spritesheet');
-          bigPoof.frame = 13;
-
-          var bigPoofTween = this.game.add.tween(bigPoof).to({alpha: 0}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,false, 0, 0, false);
-          var littlePoofTween = this.game.add.tween(littlePoof).to({alpha:0}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,true, 0, 0, false);
-          this.game.time.events.add((Phaser.Timer.SECOND * POOF_TIME/2), function() {
-            bigPoofTween.start();
-            bigPoofTween.onComplete.add(function(){
-              bigPoof.destroy();
-              littlePoof.destroy();
-            });
-          });
+          // Save for animation
+          var oldX = this.x;
 
           //Raycast and determine future location
           var gameMap = this.game.getMap();
@@ -125,8 +94,8 @@ class Ape extends BaseApe {
             this.x += BLINK_DISTANCE * this.scale.x;
           }
 
-          //Move the big poof
-          bigPoof.x = (this.x-32 + bigPoof.x)/2;
+          // Animate
+          this.blinkAnimation(oldX, this.x);
         }
         break;
       default:

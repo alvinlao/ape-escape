@@ -7,6 +7,13 @@ var JUMP_SPEED = config.APE.JUMP_SPEED;
 var POWERUPS = config.APE.POWERUPS;
 var POWERUP = config.APE.POWERUP;
 
+// In seconds
+// NOTE: Last half second of the shield will start fading out
+var SHIELD_TIME = config.APE.SHIELD_TIME;
+
+//Entire duration of poof (in seconds)
+var POOF_TIME = 0.35;
+
 class BaseApe extends Phaser.Sprite {
   constructor(game, x, y, name) {
     super(game, x, y, spritesheets.ape.name);
@@ -124,6 +131,49 @@ class BaseApe extends Phaser.Sprite {
     if (this.jumpKey.isDown) {
       this.jump();
     }
+  }
+
+  shieldAnimation(callback, callbackContext) {
+    // Display bubble
+    var shieldImage = this.addChild(this.game.add.image(-32,-32, spritesheets.shield.name));
+
+    // Remove bubble
+    this.game.time.events.add((Phaser.Timer.SECOND * SHIELD_TIME) - Phaser.Timer.HALF, function() {
+      // Make the shield fade out during last half second
+      var tween = this.game.add.tween(shieldImage).to( { alpha: 0 }, Phaser.Timer.HALF, Phaser.Easing.Linear.None, true, 0, 0, false);
+
+      tween.onComplete.add(function() {
+        shieldImage.destroy();
+
+        if (callback) {
+          if (callbackContext) {
+            callback.call(callbackContext);
+          } else {
+            callback();
+          }
+        }
+      }, this);
+    }, this);
+  }
+
+  blinkAnimation(oldX, newX) {
+    //Poof!
+    var littlePoof = this.game.add.sprite(oldX, this.y, spritesheets.misc.name);
+    littlePoof.anchor.setTo(0.5);
+    littlePoof.frame = 12;
+    var bigPoof = this.game.add.sprite(newX, this.y, spritesheets.misc.name);
+    bigPoof.anchor.setTo(0.5);
+    bigPoof.frame = 13;
+
+    var bigPoofTween = this.game.add.tween(bigPoof).to({alpha: 0}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,false, 0, 0, false);
+    var littlePoofTween = this.game.add.tween(littlePoof).to({alpha:0}, (Phaser.Timer.SECOND * POOF_TIME/2), Phaser.Easing.Linear.None,true, 0, 0, false);
+    this.game.time.events.add((Phaser.Timer.SECOND * POOF_TIME/2), function() {
+      bigPoofTween.start();
+      bigPoofTween.onComplete.add(function(){
+        bigPoof.destroy();
+        littlePoof.destroy();
+      });
+    });
   }
 }
 
