@@ -31,7 +31,6 @@ class ApeClient {
     this.socket.on(
         "trap_activate",
         function (trapid) {
-          console.log('o ge');
           game.traps.onActivate.dispatch(trapid);
         });
 
