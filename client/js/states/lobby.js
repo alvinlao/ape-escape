@@ -107,7 +107,6 @@ class LobbyState extends Phaser.State {
 
   // @param players (object)
   drawLobby(players) {
-    console.log(players);
     // Clear the div
     while (this.lobbyDiv.firstChild) {
       this.lobbyDiv.removeChild(this.lobbyDiv.firstChild);
