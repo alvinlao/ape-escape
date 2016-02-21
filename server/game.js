@@ -19,6 +19,7 @@ var startGame = function(){
   state.currentLevelIndex = 0;
 
 	var ape = Math.floor(Math.random()*(state.sockets.length-1));
+  var apeName;
 
 	//TODO there might be a better way to attach all this jazz
 	for(var i=0;i<state.sockets.length;i++){
@@ -26,6 +27,7 @@ var startGame = function(){
     if (socket.lobby.isApe) {
 			attachApe(socket);
 			state.sockets[i].emit("role", ROLE.APE);
+      apeName = socket.lobby.name;
     } else {
 			attachJailer(socket);
 			state.sockets[i].emit("role", ROLE.JAILER);
@@ -40,7 +42,8 @@ var startGame = function(){
 
 	io.emit("start_game", {
     numPlayers: state.sockets.length,
-    mapTraps: state.mapTraps
+    mapTraps: state.mapTraps,
+    apeName: apeName
   });
 }
 

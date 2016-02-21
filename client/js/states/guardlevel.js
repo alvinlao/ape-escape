@@ -11,7 +11,7 @@ class GuardLevelState extends LevelState {
     super.create();
 
     // TODO Remote ape
-    this.ape = new RemoteApe(this.game, config.APE.SPAWN_X, config.SPAWN_Y, this.game.playerName);
+    this.ape = new RemoteApe(this.game, config.APE.SPAWN_X, config.SPAWN_Y, this.game.gameState.apeName);
 
     this.client = new GuardClient(this.game);
 
