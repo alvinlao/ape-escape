@@ -22,13 +22,17 @@ var startGame = function(){
 
 	//TODO there might be a better way to attach all this jazz
 	for(var i=0;i<state.sockets.length;i++){
-		if(i==ape){
-			attachApe(state.sockets[i]);
+    var socket = state.sockets[i];
+    if (socket.lobby.isApe) {
+			attachApe(socket);
 			state.sockets[i].emit("role", ROLE.APE);
-		} else {
-			attachJailer(state.sockets[i]);
+    } else {
+			attachJailer(socket);
 			state.sockets[i].emit("role", ROLE.JAILER);
-		}
+    }
+
+    // Reset
+    socket.lobby.isApe = false;
 	}
 
   var numGuards = (state.sockets.length - 1);
@@ -91,18 +95,16 @@ var attachJailer = function(socket){
 	//click
   
   socket.on("trap_click", function(trapid) {
-    // TODO trap logic
-    // Right now: one click = activate
-
-    console.log("trap clicked: " + trapid);
     var mapTraps = state.mapTraps[state.currentLevelIndex];
     if (trapid in mapTraps) {
       var trap = mapTraps[trapid];
 
+      // Decrement
       if (trap.clicksLeft > 0) {
         trap.clicksLeft -= 1;
         io.emit("traps_update", mapTraps);
 
+        // Activated
         if (trap.clicksLeft === 0) {
           console.log("trap activated: " + trapid);
           io.emit("trap_activate", trapid);

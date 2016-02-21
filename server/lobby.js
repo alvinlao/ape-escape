@@ -48,6 +48,24 @@ var leaveLobby = function(){
 }
 
 var startGame = function(){
+  // Pick ape
+  var apeCandidates = [];
+  for (var i = 0; i < state.sockets.length; i++) {
+    var socket = state.sockets[i];
+
+    if (socket.lobby.role === 'ape') {
+      apeCandidates.push(socket);
+    }
+  }
+
+  // No one wants to be the ape
+  if (apeCandidates.length === 0) {
+    apeCandidates = state.sockets;
+  }
+
+  var apeIndex = Math.floor(Math.random() * (apeCandidates.length - 1));
+  apeCandidates[apeIndex].lobby.isApe = true;
+
 	game.startGame();
 }
 
