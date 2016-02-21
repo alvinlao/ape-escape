@@ -4,6 +4,7 @@ var RemoteApe = require('../entities/remoteape.js');
 var Guard = require('../entities/guard.js');
 var LevelState = require('./level.js');
 
+var GuardGameOver = require('../components/guardgameover.js');
 var GuardClient = require('../clients/guardclient.js');
 
 class GuardLevelState extends LevelState {
@@ -34,6 +35,10 @@ class GuardLevelState extends LevelState {
     //
     // Traps created for new level
     // this.game.traps.onCreateActivators.add( listener )
+  }
+
+  createGameOverScreen(currentLevel, totalLevels, causeOfDeath) {
+    return new GuardGameOver(this.game, currentLevel, totalLevels, causeOfDeath);
   }
 
   loadLevel(levelName, levelIndex) {

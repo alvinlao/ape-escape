@@ -27,7 +27,7 @@ class FireTrap extends Trap {
   }
 
   getDeathMessage() {
-    return config.APE.DEATH.FIRE;
+    return 'FIRE';
   }
 }
 

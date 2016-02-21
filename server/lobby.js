@@ -28,7 +28,6 @@ var joinLobby = function(socket, name) {
 
 		//Start the game if we're ready
 		if(isReady()){
-			console.log("Game start...");
 			startGame();
 		}
 	}
@@ -47,7 +46,6 @@ var joinLobby = function(socket, name) {
 
 var leaveLobby = function(socket) {
   if (socket.lobby) {
-    console.log('reset');
     socket.lobby.ready = false;
     socket.lobby.isApe = false;
 
@@ -94,7 +92,11 @@ var isReady = function(){
 }
 
 var emitLobby = function(){
-	io.emit("lobby", state.sockets.map(function(a){return a.lobby}));
+	io.emit("lobby", state.sockets
+      .filter(function(socket) {
+        return socket.lobby;
+      })
+      .map(function(a){return a.lobby}));
 }
 
 exports.joinLobby = joinLobby;

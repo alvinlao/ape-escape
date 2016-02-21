@@ -164,7 +164,7 @@ class LaserTrap extends Trap {
   }
 
   getDeathMessage() {
-    return config.APE.DEATH.LASER;
+    return 'LASER';
   }
 }
 

@@ -1,6 +1,4 @@
 var config = require('../util/config.js');
-var spritesheets = require('../util/spritesheets.js');
-var buttonconfig = require('../util/buttonconfig.js');
 
 var TextButton = require('./textbutton.js');
 
@@ -9,8 +7,10 @@ class GameOver extends Phaser.Group {
     super(game);
 
     if (typeof causeOfDeath === 'undefined') {
-      causeOfDeath = "Game Over";
+      causeOfDeath = 'DEFAULT';
     }
+
+    var deathMessage = this.getDeathMessage(causeOfDeath);
 
     this.fixedToCamera = true;
 
@@ -30,19 +30,21 @@ class GameOver extends Phaser.Group {
 
     // Text
     var style = { font: "72px Arial", fill: "#ffffff", align: "center" };
-    var text = game.add.text(x + 0.5, y + titleYOffset, causeOfDeath, style);
+    var text = game.add.text(x + 0.5, y + titleYOffset, deathMessage, style);
     text.anchor.set(0.5);
 
     this.addChild(text);
 
     // Press space
+    var spaceButtonConfig = this.getSpaceButtonConfig();
+
     var pressspace = new TextButton(
         game,
         x,
         y + spaceYOffset,
-        spritesheets.bluebutton4.name,
+        spaceButtonConfig.spritesheetName,
         'space',
-        buttonconfig.BLUE_STYLE,
+        spaceButtonConfig.style,
         [Phaser.KeyCode.SPACEBAR, Phaser.KeyCode.ENTER],
         function() {
           this.game.state.start('lobby');
@@ -61,6 +63,11 @@ class GameOver extends Phaser.Group {
 
     this.alpha = 0;
     var tween = this.game.add.tween(this).to({ alpha: 1 }, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+  }
+
+  // Override
+  getDeathMessage(causeOfDeath) {
+    return '';
   }
 }
 

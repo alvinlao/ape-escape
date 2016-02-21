@@ -36,7 +36,7 @@ class DropTrap extends Trap {
   }
 
   getDeathMessage() {
-    return config.APE.DEATH.DROP;
+    return 'DROP';
   }
 }
 

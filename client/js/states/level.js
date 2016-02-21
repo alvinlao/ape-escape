@@ -92,8 +92,13 @@ class LevelState extends Phaser.State {
     if (this.ape.isDead && this.gameover === null) {
       var currentLevel = this.currentLevelId;
       var totalLevels = game.levelOrder.length;
-      this.gameover = new GameOver(game, currentLevel, totalLevels, this.ape.causeOfDeath);
+      this.gameover = this.createGameOverScreen(currentLevel, totalLevels, this.ape.causeOfDeath);
     }
+  }
+
+  // Override
+  createGameOverScreen() {
+    return null;
   }
 
   destroyLevel() {

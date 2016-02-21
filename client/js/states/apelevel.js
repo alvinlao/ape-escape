@@ -3,6 +3,7 @@ var config = require('../util/config.js');
 var Ape = require('../entities/ape.js');
 var LevelState = require('./level.js');
 
+var ApeGameOver = require('../components/apegameover.js');
 var ApeClient = require('../clients/apeclient.js');
 
 class ApeLevelState extends LevelState {
@@ -14,6 +15,10 @@ class ApeLevelState extends LevelState {
     this.game.activeTraps = null;
 
     this.client = new ApeClient(this.game);
+  }
+
+  createGameOverScreen(currentLevel, totalLevels, causeOfDeath) {
+    return new ApeGameOver(this.game, currentLevel, totalLevels, causeOfDeath);
   }
 
   shutdown() {
@@ -92,12 +97,12 @@ class ApeLevelState extends LevelState {
 
     // Pointy spikes
     this.game.physics.arcade.collide(this.ape, this.map.createdLayers['spikes'], function(){
-      this.ape.die(config.APE.DEATH.SPIKES);
+      this.ape.die('SPIKES');
     }, null, this);
 
     // Watery water
     this.game.physics.arcade.collide(this.ape, this.map.createdLayers['water'], function(){
-      this.ape.die(config.APE.DEATH.WATER);
+      this.ape.die('WATER');
     }, null, this);
 
     this.ape.update();
