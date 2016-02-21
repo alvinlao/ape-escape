@@ -80,10 +80,12 @@ class LobbyState extends Phaser.State {
       }
     });
 
-    // Initialize lobby with me
+    // Initialize lobby and listen for lobby updates
     this.drawLobby([{ name: this.game.playerName, ready: false, role: '' }]);
-
     this.game.socket.on("lobby", this.drawLobby.bind(this));
+
+    // Join the lobby
+    this.game.socket.emit("join_lobby", this.game.playerName);
   }
 
 	// @param player { name: string, ready: bool, role: { 'ape' | 'guard' | '' } }

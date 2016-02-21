@@ -8,17 +8,20 @@ var attachIO = function(io){
 	state.currentGameState = GAME_STATE.LOBBY;
 
 	io.on("connection", function(socket){
-		state.sockets.push(socket);
-
 		console.log("User connected");
-		lobby.joinLobby(socket);
+		state.sockets.push(socket);
 
 		socket.on("disconnect", function(){
 			console.log("User disconnected");
 			//Remove it from the array
 			state.sockets.splice(state.sockets.indexOf(socket), 1);
-      lobby.leaveLobby();
+      lobby.leaveLobby(this);
 		});
+
+    socket.on("join_lobby", function(name) {
+      console.log("'" + name + "' joined the lobby");
+      lobby.joinLobby(this, name);
+    });
 	});
 }
 

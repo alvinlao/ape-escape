@@ -8,9 +8,15 @@ exports.attachIO = function(newio){
 	game.attachIO(io);
 };
 
-var joinLobby = function(socket){
-	socket.lobby = new LobbyMember(socket);
-	console.log(socket.lobby);
+var joinLobby = function(socket, name) {
+  if (!socket.lobby) {
+    socket.lobby = new LobbyMember(socket);
+  }
+
+  // Name
+  if (typeof name !== 'undefined') {
+    socket.lobby.name = name;
+  }
 
 	//Lobby Handlers
 	var playerReady = function(role){
@@ -22,28 +28,32 @@ var joinLobby = function(socket){
 
 		//Start the game if we're ready
 		if(isReady()){
-			console.log("ready!");
+			console.log("Game start...");
 			startGame();
-		} else {
-			console.log("not ready!");
 		}
 	}
 
 	var setName = function(newName){
 		console.log("Player " + socket.lobby.name + " has changed their name to " + newName);
-		socket.lobby.name = newName;
 
 		emitLobby();
 	}
 
 	//Attach the lobby handlers
 	socket.on("player_ready", playerReady);
-	socket.on("player_name", setName);
 
 	emitLobby();
 }
 
-var leaveLobby = function(){
+var leaveLobby = function(socket) {
+  if (socket.lobby) {
+    console.log('reset');
+    socket.lobby.ready = false;
+    socket.lobby.isApe = false;
+
+    socket.removeAllListeners("player_ready");
+  }
+
 	emitLobby();
 }
 
@@ -67,6 +77,11 @@ var startGame = function(){
   apeCandidates[apeIndex].lobby.isApe = true;
 
 	game.startGame();
+
+  for (var i = 0; i < state.sockets.length; i++) {
+    // Leave
+    leaveLobby(state.sockets[i]);
+  }
 }
 
 var isReady = function(){

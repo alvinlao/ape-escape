@@ -32,12 +32,9 @@ var startGame = function(){
 			attachJailer(socket);
 			state.sockets[i].emit("role", ROLE.JAILER);
     }
-
-    // Reset
-    socket.lobby.isApe = false;
 	}
 
-  var numGuards = (state.sockets.length - 1);
+  var numGuards = state.sockets.length - 1;
   map.populateTraps(state.mapTraps, numGuards);
 
 	io.emit("start_game", {
@@ -118,9 +115,14 @@ var attachJailer = function(socket){
 }
 
 var stopGame = function(){
-	for(var i=0;i<state.sockets;i++){
+	for(var i=0; i<state.sockets.length; i++){
 		io.removeAllListeners("move");
-	}
+    io.removeAllListeners("powerup");
+    io.removeAllListeners("death");
+    io.removeAllListeners("grabpowerup");
+    io.removeAllListeners("teleport");
+    io.removeAllListeners("trap_click");
+  }
 
   // TODO: put all players back in unready queue
 	state.currentState = GAME_STATE.LOBBY;
