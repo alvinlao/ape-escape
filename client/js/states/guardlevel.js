@@ -12,7 +12,6 @@ class GuardLevelState extends LevelState {
 
     // TODO Remote ape
     this.ape = new RemoteApe(this.game, config.APE.SPAWN_X, config.SPAWN_Y, this.game.playerName);
-    this.guard = new Guard(this.game);
 
     this.client = new GuardClient(this.game);
 
@@ -35,6 +34,11 @@ class GuardLevelState extends LevelState {
     //
     // Traps created for new level
     // this.game.traps.onCreateActivators.add( listener )
+  }
+
+  loadLevel(levelName, levelIndex) {
+    super.loadLevel(levelName, levelIndex);
+    this.guard = new Guard(this.game);
   }
 
   update() {
