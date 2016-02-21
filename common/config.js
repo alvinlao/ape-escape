@@ -1,3 +1,3 @@
 module.exports = {
-  LEVELS: ["test", "level2", "level3"]
+  LEVELS: ["level1", "level2", "level3"]
 }
