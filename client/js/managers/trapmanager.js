@@ -30,12 +30,10 @@ class TrapManager {
   }
 
   add(traps, mapTraps) {
-    console.log(mapTraps);
     // Add id to each trap
     for (var i = 0; i < traps.length; i++) {
       var trap = traps[i];
       trap.id = this.nextid;
-      console.log(this.nextid);
 
       // Only activators have #updateClicksLeft
       if (trap.updateClicksLeft) {

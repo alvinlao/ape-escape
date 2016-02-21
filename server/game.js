@@ -16,6 +16,7 @@ var startGame = function(){
 	console.log("Starting game...");
 	state.currentState = GAME_STATE.GAME;
   state.mapTraps = map.parseTraps();
+  state.currentLevelIndex = 0;
 
 	var ape = Math.floor(Math.random()*(state.sockets.length-1));
 
@@ -65,6 +66,8 @@ var attachApe = function(socket){
   socket.on("teleport", function(levelIndex) {
     console.log("new level: " + levelIndex);
 
+    state.currentLevelIndex = levelIndex;
+
     // TODO Message all guards
     socket.broadcast.emit("teleport", levelIndex);
   });
@@ -90,8 +93,22 @@ var attachJailer = function(socket){
   socket.on("trap_click", function(trapid) {
     // TODO trap logic
     // Right now: one click = activate
-    console.log("trap activated: " + trapid);
-    io.emit("trap_activate", trapid);
+
+    console.log("trap clicked: " + trapid);
+    var mapTraps = state.mapTraps[state.currentLevelIndex];
+    if (trapid in mapTraps) {
+      var trap = mapTraps[trapid];
+
+      if (trap.clicksLeft > 0) {
+        trap.clicksLeft -= 1;
+        io.emit("traps_update", mapTraps);
+
+        if (trap.clicksLeft === 0) {
+          console.log("trap activated: " + trapid);
+          io.emit("trap_activate", trapid);
+        }
+      }
+    }
   });
 }
 

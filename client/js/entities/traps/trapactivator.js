@@ -23,8 +23,10 @@ class TrapActivator extends Phaser.Sprite {
 
     // Listen to trap manager
     this.game.traps.onUpdate.add(function(traps) {
-      this.clicksLeft = traps[id].clicksLeft;
-      this.clicksLeftText.text = this.clicksLeft;
+      if (this.id in traps) {
+        this.clicksLeft = traps[this.id].clicksLeft;
+        this.clicksLeftText.text = this.clicksLeft;
+      }
     }, this);
   }
 
