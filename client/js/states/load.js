@@ -1,4 +1,5 @@
 var spritesheets = require('../util/spritesheets.js');
+var state = require('../util/state.js');
 
 class LoadState extends Phaser.State {
   create() {
@@ -36,7 +37,24 @@ class LoadState extends Phaser.State {
 }
 
 function loadComplete() {
-  this.game.state.start('title');
+  var game = this.game;
+  game.socket.on("state", function(currentState){
+    switch(currentState){
+      case state.GAME:
+        game.state.start('inprogress');
+        //Wait for end game
+        game.socket.on("end_game", function(){
+          game.state.start('title');
+        });
+        break;
+      case state.LOADING:
+      case state.LOBBY:
+      default:
+        game.state.start('title');
+        break;
+    }
+  });
+  game.socket.emit("get_state");
 }
 
 module.exports = LoadState;

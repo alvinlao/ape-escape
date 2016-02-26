@@ -18,6 +18,8 @@ var startGame = function(){
   state.mapTraps = map.parseTraps();
   state.currentLevelIndex = 0;
 
+  console.log("Game state: " + state.currentState);
+
 	var ape = Math.floor(Math.random()*(state.sockets.length-1));
   var apeName;
 
@@ -73,6 +75,7 @@ var attachApe = function(socket){
   socket.on("death", function(causeofdeath) {
     console.log("ape died: " + causeofdeath);
 		socket.broadcast.emit("death", causeofdeath);
+    stopGame();
   });
 
   socket.on("grabpowerup", function(powerup) {
@@ -127,13 +130,14 @@ var attachJailer = function(socket){
 }
 
 var stopGame = function(){
+  console.log("Game Over!");
 	for(var i=0; i<state.sockets.length; i++){
-		io.removeAllListeners("move");
-    io.removeAllListeners("powerup");
-    io.removeAllListeners("death");
-    io.removeAllListeners("grabpowerup");
-    io.removeAllListeners("teleport");
-    io.removeAllListeners("trap_click");
+		state.sockets[i].removeAllListeners("move");
+    state.sockets[i].removeAllListeners("powerup");
+    state.sockets[i].removeAllListeners("death");
+    state.sockets[i].removeAllListeners("grabpowerup");
+    state.sockets[i].removeAllListeners("teleport");
+    state.sockets[i].removeAllListeners("trap_click");
   }
 
   // TODO: put all players back in unready queue

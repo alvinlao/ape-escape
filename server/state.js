@@ -1,4 +1,4 @@
-exports.currentGameState = 0;
+exports.currentState = 0;
 exports.sockets = []; //Array of io sockets
 exports.currentLevel = 0;
 
