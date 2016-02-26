@@ -9,9 +9,11 @@ class RemoteGuard extends Phaser.Sprite {
 
   // @param delta (int in ms) time delta
   moveTo(x, y, delta) {
-    if (this.tween) this.tween.stop();
+    this.x = x;
+    this.y = y;
+    //if (this.tween) this.tween.stop();
 
-    this.tween = this.game.add.tween(this).to( { x: x, y: y }, delta, Phaser.Easing.Linear.None, true, 0, 0);
+    //this.tween = this.game.add.tween(this).to( { x: x, y: y }, delta, Phaser.Easing.Linear.None, true, 0, 0);
   }
 }
 

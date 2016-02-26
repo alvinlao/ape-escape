@@ -56,7 +56,11 @@ class GuardClient {
         });
 
     // CURSORS
-    //this.socket.on("guard:move");
+    this.socket.on(
+      "guard:move",
+      function(info){
+        game.cursors.onMove.dispatch(info.id,info.x,info.y);
+      });
   }
 }
 

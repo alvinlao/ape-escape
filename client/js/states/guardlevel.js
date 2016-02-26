@@ -24,7 +24,7 @@ class GuardLevelState extends LevelState {
     //Add the cursors (tell the cursor manager)
     for(var i=0;i<this.game.gameState.guards.length;i++){
       var thisGuard = this.game.gameState.guards[i];
-      var newSprite = new RemoteGuard(this.game, 0, 0);
+      var newSprite = new RemoteGuard(this.game, -50, -50);
       this.game.cursors.newGuardCursor.dispatch(thisGuard.id, newSprite);
     }
 

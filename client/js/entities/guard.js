@@ -31,6 +31,13 @@ class Guard {
   }
 
   update() {
+
+    //Update position
+    this.game.socket.emit("move",{
+      x: this.game.input.mousePointer.x + this.game.camera.x,
+      y: this.game.input.mousePointer.y + this.game.camera.y
+    });
+
     if (!this.leftKey.isDown) {
       this.leftDownTime = -1;
     }

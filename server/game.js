@@ -94,9 +94,8 @@ var attachApe = function(socket){
 var attachJailer = function(socket){
 	socket.game = new Jailer();
   // TODO rename event to guard:move
-  // TODO rename event to guard:click
-  /*
-	socket.on("guard:move", function(position){
+  // TODO rename event to guard:click=
+	socket.on("move", function(position){
 		socket.game.x = position.x;
 		socket.game.y = position.y;
 		socket.broadcast.emit("guard:move", {
@@ -105,7 +104,6 @@ var attachJailer = function(socket){
 			y: socket.game.y
 		});
 	});
-  */
 	//click
   
   socket.on("trap_click", function(trapid) {
