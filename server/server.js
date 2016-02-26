@@ -11,6 +11,7 @@ var apeServer = http.createServer(apeApp);
 
 //Serve static files
 apeApp.use(express.static("../public"));
+apeApp.use("/common", express.static("../common"));
 
 //Start socket.io
 var io = socket_io().attach(apeServer);
