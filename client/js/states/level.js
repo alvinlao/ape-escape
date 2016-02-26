@@ -6,6 +6,7 @@ var Ape = require('../entities/ape.js');
 var Map = require('../map.js');
 var TrapManager = require('../managers/trapmanager.js');
 var ApeManager = require('../managers/apemanager.js');
+var CursorManager = require('../managers/cursormanager.js');
 
 var GameOver = require('../components/gameover.js');
 
@@ -14,6 +15,7 @@ class LevelState extends Phaser.State {
     this.game.gameState = gameState;
     this.game.traps = new TrapManager();
     this.game.ape = new ApeManager();
+    this.game.cursors = new CursorManager();
 
     this.ape = null;
     this.map = null;

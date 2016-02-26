@@ -54,6 +54,9 @@ class GuardClient {
         function (trapid) {
           game.traps.onActivate.dispatch(trapid);
         });
+
+    // CURSORS
+    //this.socket.on("guard:move");
   }
 }
 

@@ -82,10 +82,10 @@ var attachJailer = function(socket){
   // TODO rename event to guard:move
   // TODO rename event to guard:click
   /*
-	socket.on("move", function(position){
+	socket.on("guard:move", function(position){
 		socket.game.x = position.x;
 		socket.game.y = position.y;
-		socket.broadcast.emit("jailer:move", {
+		socket.broadcast.emit("guard:move", {
 			id: socket.lobby.id,
 			x: socket.game.x,
 			y: socket.game.y
