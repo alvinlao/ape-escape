@@ -3,6 +3,7 @@ var config = require('../util/config.js');
 var RemoteApe = require('../entities/remoteape.js');
 var Guard = require('../entities/guard.js');
 var LevelState = require('./level.js');
+var RemoteGuard = require('../entities/remoteguard.js');
 
 var GuardGameOver = require('../components/guardgameover.js');
 var GuardClient = require('../clients/guardclient.js');
@@ -19,6 +20,13 @@ class GuardLevelState extends LevelState {
     this.game.ape.onTeleport.add(function (levelIndex) {
       this.loadLevel(this.game.levelOrder[levelIndex], levelIndex);
     }, this);
+
+    //Add the cursors (tell the cursor manager)
+    for(var i=0;i<this.game.gameState.guards.length;i++){
+      var thisGuard = this.game.gameState.guards[i];
+      var newSprite = new RemoteGuard(this.game, 0, 0);
+      this.game.cursors.newGuardCursor.dispatch(thisGuard.id, newSprite);
+    }
 
     // Next level
     // this.loadNextLevel()

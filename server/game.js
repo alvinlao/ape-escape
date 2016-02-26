@@ -37,8 +37,22 @@ var startGame = function(){
   var numGuards = state.sockets.length - 1;
   map.populateTraps(state.mapTraps, numGuards);
 
+  var guards = state.sockets.filter(function(socket){
+    //Filter for guards
+    if(socket.game.role === ROLE.JAILER){
+      return true;
+    } else {
+      return false;
+    }
+  }).map(function(s){
+    return {
+      id: s.lobby.id,
+      name: s.lobby.name
+    }
+  });
+
 	io.emit("start_game", {
-    numPlayers: state.sockets.length,
+    guards: guards,
     mapTraps: state.mapTraps,
     apeName: apeName
   });
