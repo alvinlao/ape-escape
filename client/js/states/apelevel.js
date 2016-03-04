@@ -15,6 +15,10 @@ class ApeLevelState extends LevelState {
     this.game.activeTraps = null;
 
     this.client = new ApeClient(this.game);
+
+    this.game.ape.onWin.add(function(){
+      this.createGameOverScreen(this.game.levelOrder.length,this.game.levelOrder.length, "WIN");
+    }, this);
   }
 
   createGameOverScreen(currentLevel, totalLevels, causeOfDeath) {

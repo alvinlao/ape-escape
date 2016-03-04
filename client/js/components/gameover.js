@@ -3,14 +3,14 @@ var config = require('../util/config.js');
 var TextButton = require('./textbutton.js');
 
 class GameOver extends Phaser.Group {
-  constructor(game, currentLevel, totalLevels, causeOfDeath) {
+  constructor(game, currentLevel, totalLevels, cause) {
     super(game);
 
-    if (typeof causeOfDeath === 'undefined') {
-      causeOfDeath = 'DEFAULT';
+    if (typeof cause === 'undefined') {
+      cause = 'DEFAULT';
     }
 
-    var deathMessage = this.getDeathMessage(causeOfDeath);
+    var deathMessage = this.getMessage(cause);
 
     this.fixedToCamera = true;
 
@@ -66,7 +66,7 @@ class GameOver extends Phaser.Group {
   }
 
   // Override
-  getDeathMessage(causeOfDeath) {
+  getMessage(cause) {
     return '';
   }
 }

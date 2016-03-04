@@ -39,13 +39,14 @@ module.exports = {
         FRAMENUMBER: 6
       }
     },
-    DEATH: {
+    GAMEOVER: {
       DEAULT: "Game Over",
       SPIKES: "We impaled the ape!",
       WATER: "We drowned the ape!",
       FIRE: "We ignited the ape!",
       LASER: "We vaporized the ape!",
-      DROP: "We flattened the ape!"
+      DROP: "We flattened the ape!",
+      WIN: "The ape won!"
     }
   },
 
@@ -95,13 +96,14 @@ module.exports = {
       }
     },
 
-    DEATH: {
+    GAMEOVER: {
       DEAULT: "Game Over",
       SPIKES: "You were impaled!",
       WATER: "You drowned!",
       FIRE: "You were ignited!",
       LASER: "You were vaporized!",
-      DROP: "You were flattened!"
+      DROP: "You were flattened!",
+      WIN: "You won!"
     }
   },
 

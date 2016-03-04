@@ -30,6 +30,11 @@ class RemoteApe extends BaseApe {
       this.die(causeOfDeath);
     }, this);
 
+    this.game.ape.onWin.add(function(){
+      //Ape wins
+      console.log("Ape won!");
+    }, this);
+    
     this.game.ape.onPowerup.add(function (powerup, powerupArgs) {
       this.powerup(powerup, powerupArgs);
       this.hud.updatePowerupLegend(powerup, --this.powerupInventory[powerup]);

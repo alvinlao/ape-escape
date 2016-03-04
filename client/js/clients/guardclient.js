@@ -18,6 +18,12 @@ class GuardClient {
         });
 
     this.socket.on(
+      "win",
+      function () {
+        game.ape.onWin.dispatch();
+      });
+
+    this.socket.on(
         "grabpowerup",
         function (powerup) {
           game.ape.onGrabPowerup.dispatch(powerup.powerupid, powerup.quantity);

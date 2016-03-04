@@ -5,12 +5,12 @@ var buttonconfig = require('../util/buttonconfig.js');
 var GameOver = require('./gameover.js');
 
 class GuardGameOver extends GameOver {
-  constructor(game, currentLevel, totalLevels, causeOfDeath) {
-    super(game, currentLevel, totalLevels, causeOfDeath);
+  constructor(game, currentLevel, totalLevels, cause) {
+    super(game, currentLevel, totalLevels, cause);
   }
 
-  getDeathMessage(causeOfDeath) {
-    return config.GUARD.DEATH[causeOfDeath];
+  getMessage(cause) {
+    return config.GUARD.GAMEOVER[cause];
   }
 
   getSpaceButtonConfig() {

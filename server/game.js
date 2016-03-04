@@ -78,6 +78,12 @@ var attachApe = function(socket){
     stopGame();
   });
 
+  socket.on("win", function(){
+    console.log("Ape won!");
+    socket.broadcast.emit("win");
+    stopGame();
+  });
+
   socket.on("grabpowerup", function(powerup) {
     console.log("ape grabbed powerup: " + powerup.powerupid);
 		socket.broadcast.emit("grabpowerup", powerup);

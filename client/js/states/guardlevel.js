@@ -21,6 +21,10 @@ class GuardLevelState extends LevelState {
       this.loadLevel(this.game.levelOrder[levelIndex], levelIndex);
     }, this);
 
+    this.game.ape.onWin.add(function(){
+      this.createGameOverScreen(this.game.levelOrder.length,this.game.levelOrder.length, "WIN");
+    }, this);
+
     //Add the cursors (tell the cursor manager)
     for(var i=0;i<this.game.gameState.guards.length;i++){
       var thisGuard = this.game.gameState.guards[i];
@@ -45,8 +49,8 @@ class GuardLevelState extends LevelState {
     // this.game.traps.onCreateActivators.add( listener )
   }
 
-  createGameOverScreen(currentLevel, totalLevels, causeOfDeath) {
-    return new GuardGameOver(this.game, currentLevel, totalLevels, causeOfDeath);
+  createGameOverScreen(currentLevel, totalLevels, cause) {
+    return new GuardGameOver(this.game, currentLevel, totalLevels, cause);
   }
 
   loadLevel(levelName, levelIndex) {

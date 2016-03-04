@@ -149,7 +149,16 @@ class LevelState extends Phaser.State {
 
   loadNextLevel() {
     var levelIndex = ++this.currentLevelId;
-    this.loadLevel(this.game.levelOrder[levelIndex], levelIndex);
+    console.log("Loading level: " + levelIndex + "/" + this.game.levelOrder.length);
+    if(levelIndex === this.game.levelOrder.length){
+      //Ape wins!
+      //TODO this function is currently only called by the ape, so it works. Once we clean up the code this won't work anymore
+      console.log("Ape wins!");
+      this.game.ape.onWin.dispatch();
+      this.game.socket.emit("win");
+    } else {
+      this.loadLevel(this.game.levelOrder[levelIndex], levelIndex);
+    }
   }
 }
 

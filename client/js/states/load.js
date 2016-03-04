@@ -45,6 +45,7 @@ function loadComplete() {
         game.state.start('inprogress');
         //Wait for end game
         game.socket.on("end_game", function(){
+          game.socket.removeAllListeners("end_game");
           game.state.start('title');
         });
         break;

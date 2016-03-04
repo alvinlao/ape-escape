@@ -5,12 +5,12 @@ var buttonconfig = require('../util/buttonconfig.js');
 var GameOver = require('./gameover.js');
 
 class ApeGameOver extends GameOver {
-  constructor(game, currentLevel, totalLevels, causeOfDeath) {
-    super(game, currentLevel, totalLevels, causeOfDeath);
+  constructor(game, currentLevel, totalLevels, cause) {
+    super(game, currentLevel, totalLevels, cause);
   }
 
-  getDeathMessage(causeOfDeath) {
-    return config.APE.DEATH[causeOfDeath];
+  getMessage(cause) {
+    return config.APE.GAMEOVER[cause];
   }
 
   getSpaceButtonConfig() {

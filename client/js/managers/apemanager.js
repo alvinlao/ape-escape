@@ -25,6 +25,9 @@ class ApeManager {
     // Sent whenever the ape teleports to the next level
     // @param levelIndex (int) = index of level as found in config.LEVELS
     this.onTeleport = new Phaser.Signal();
+
+    //Sent whenever the Ape wins
+    this.onWin = new Phaser.Signal();
   }
 
   addPowerups(powerups) {
