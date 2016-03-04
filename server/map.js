@@ -63,6 +63,19 @@ function populateTraps(mapTraps, numGuards) {
   }
 }
 
+function playerLeave(mapTraps, guardsLeft){
+
+	var scaleFactor = guardsLeft/(guardsLeft+1);
+
+	for(var index in mapTraps){
+		var traps = mapTraps[index];
+
+		for(var trapid in traps){
+			traps[trapid].clicksLeft = Math.ceil(traps[trapid].clicksLeft * scaleFactor);
+		}
+	}
+}
+
 function laserTrapClicks(numGuards) {
   return 12 * numGuards;
 }
@@ -77,3 +90,4 @@ function fireTrapClicks(numGuards) {
 
 exports.parseTraps = parseTraps;
 exports.populateTraps = populateTraps;
+exports.playerLeave = playerLeave;

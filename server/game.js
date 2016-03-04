@@ -132,7 +132,7 @@ var attachJailer = function(socket){
 var stopGame = function(){
   console.log("Game Over!");
 	for(var i=0; i<state.sockets.length; i++){
-		state.sockets[i].removeAllListeners("move");
+	state.sockets[i].removeAllListeners("move");
     state.sockets[i].removeAllListeners("powerup");
     state.sockets[i].removeAllListeners("death");
     state.sockets[i].removeAllListeners("grabpowerup");
@@ -145,4 +145,20 @@ var stopGame = function(){
 	io.emit("end_game", state.currentState);
 }
 
+var leaveGame = function(socket){
+  if(!socket.game) return;
+	switch(socket.game.role){
+		case ROLE.JAILER:
+			map.playerLeave(state.mapTraps, state.sockets.length);
+        	io.emit("traps_update", state.mapTraps);
+		break;
+		case ROLE.APE:
+			stopGame();
+		break;
+		default:
+		break;
+	}
+}
+
 exports.startGame = startGame;
+exports.leaveGame = leaveGame;
