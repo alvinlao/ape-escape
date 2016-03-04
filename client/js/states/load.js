@@ -39,6 +39,7 @@ class LoadState extends Phaser.State {
 function loadComplete() {
   var game = this.game;
   game.socket.on("state", function(currentState){
+    game.socket.removeAllListeners("state");
     switch(currentState){
       case state.GAME:
         game.state.start('inprogress');

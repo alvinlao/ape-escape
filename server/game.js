@@ -142,7 +142,8 @@ var stopGame = function(){
 
   // TODO: put all players back in unready queue
 	state.currentState = GAME_STATE.LOBBY;
-	io.emit("end_game", state.currentState);
+	io.emit("state", state.currentState);
+  io.emit("end_game");
 }
 
 var leaveGame = function(socket){
@@ -153,7 +154,8 @@ var leaveGame = function(socket){
         	io.emit("traps_update", state.mapTraps);
 		break;
 		case ROLE.APE:
-			stopGame();
+      io.emit("death", "left");
+      stopGame();
 		break;
 		default:
 		break;
