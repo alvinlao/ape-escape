@@ -5,9 +5,16 @@ var state = require("./state");
 var attachIO = function(io){
     lobby.attachIO(io);
     console.log("IO attached.");
-    state.currentState = GAME_STATE.LOBBY;
+    setTimeout(function(){
+        state.currentState = GAME_STATE.LOBBY;
+    },3000);
 
     io.on("connection", function(socket){
+        if(state.currentState === GAME_STATE.LOADING){
+            //Haven't finished loading yet.
+            socket.emit("end_game", state.currentState);
+            socket.emit("state", state.currentState);
+        }
         console.log("User connected");
         state.sockets.push(socket);
 

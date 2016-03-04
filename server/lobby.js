@@ -1,6 +1,7 @@
 var LobbyMember = require("./models/LobbyMember");
 var game = require("./game");
 var state = require("./state");
+var GAME_STATE = require("./models/GAME_STATE");
 
 var io;
 exports.attachIO = function(newio){
@@ -45,6 +46,13 @@ var joinLobby = function(socket, name) {
 }
 
 var leaveLobby = function(socket) {
+  if(state.currentState == GAME_STATE.GAME){
+    game.leaveGame(socket);
+  }
+  emitLobby();
+}
+
+var joinGame = function(socket){
   if (socket.lobby) {
     socket.lobby.ready = false;
     socket.lobby.isApe = false;
@@ -52,7 +60,7 @@ var leaveLobby = function(socket) {
     socket.removeAllListeners("player_ready");
   }
 
-	emitLobby();
+  emitLobby();
 }
 
 var startGame = function(){
@@ -78,7 +86,7 @@ var startGame = function(){
 
   for (var i = 0; i < state.sockets.length; i++) {
     // Leave
-    leaveLobby(state.sockets[i]);
+    joinGame(state.sockets[i]);
   }
 }
 
